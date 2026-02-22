@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SISTEM KERJA 2026 - AHMAD ZILALUL HILMI BIN ADNAN</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+
+        :root { 
+            --primary: #2563eb; 
+            --success: #10b981; 
+            --danger: #ef4444; 
+            --warning: #f59e0b;
+            --today-bg: #2563eb; 
+            --card-shadow: 0 10px 15px -3px rgba(0,0,0,0.08);
+        }
+
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background: #f8fafc; 
+            padding: 20px; 
+            margin: 0; 
+            color: #1e293b;
+            text-transform: uppercase;
+        }
+
+        .container { 
+            max-width: 1200px; 
+            margin: auto; 
+            display: grid; 
+            grid-template-columns: 1fr 400px; 
+            gap: 20px; 
+        }
+
+        /* HEADER */
+        .profile-header { 
+            grid-column: 1 / span 2; 
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%); 
+            color: white; 
+            padding: 30px; 
+            border-radius: 24px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between;
+            gap: 25px;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+        }
+
+        .profile-main-info { display: flex; align-items: center; gap: 25px; }
+
+        .big-date-display {
+            text-align: right;
+            border-left: 2px solid rgba(255,255,255,0.2);
+            padding-left: 25px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .time-val { font-size: 2.2rem; font-weight: 800; color: #ffffff; letter-spacing: 2px; }
+        .separator { font-size: 2rem; font-weight: 300; color: rgba(255,255,255,0.3); }
+        .date-group { text-align: left; }
+        .date-val { font-size: 2.2rem; font-weight: 800; color: #60a5fa; }
+        .day-month-group { font-size: 0.8rem; font-weight: 600; opacity: 0.8; margin-top: -5px; }
+
+        .profile-pic-container {
+            width: 100px; height: 100px; 
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%; 
+            border: 4px solid rgba(255,255,255,0.4);
+            cursor: pointer; overflow: hidden;
+            display: flex; justify-content: center; align-items: center;
+            backdrop-filter: blur(8px);
+        }
+        
+        .profile-pic-container img { width: 100%; height: 100%; object-fit: cover; }
+        .profile-info h1 { margin: 0; font-size: 1.3rem; letter-spacing: 2px; font-weight: 800; }
+        .profile-info p { margin: 5px 0 0 0; font-size: 0.8rem; opacity: 0.8; }
+
+        /* CARDS & GRIDS */
+        .card { 
+            background: white; padding: 24px; 
+            border-radius: 20px;
+            box-shadow: var(--card-shadow); border: 1px solid rgba(226, 232, 240, 0.8);
+            margin-bottom: 20px;
+        }
+
+        .schedule-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 20px;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 15px;
+        }
+
+        /* NAVIGASI BULAN STYLING */
+        .month-nav {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .nav-btn {
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            padding: 8px 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 800;
+            transition: 0.2s;
+        }
+        .nav-btn:hover { background: var(--primary); color: white; }
+        .month-title { text-align: center; min-width: 150px; }
+        .month-title h2 { margin: 0; font-size: 1.1rem; }
+
+        .today-task-card {
+            background: #f8fafc;
+            border-left: 6px solid var(--primary);
+            padding: 10px 15px;
+            border-radius: 12px;
+            min-width: 300px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .today-task-label { font-size: 0.6rem; color: #64748b; font-weight: 800; }
+        .today-task-value { font-size: 1rem; color: var(--primary); font-weight: 900; }
+
+        .shift-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; }
+        .day-label { text-align: center; font-size: 0.6rem; font-weight: 800; color: #94a3b8; padding-bottom: 5px; }
+
+        .box { 
+            background: #fff; 
+            border: 1px solid #e2e8f0; 
+            border-radius: 12px; 
+            min-height: 80px; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .box:hover {
+            transform: scale(1.1);
+            z-index: 10; 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15); 
+            border-color: var(--primary);
+        }
+
+        @keyframes shine {
+            0% { background-position: -200%; }
+            100% { background-position: 200%; }
+        }
+
+        .is-today { 
+            background: var(--today-bg) !important; 
+            color: white !important; 
+            position: relative;
+            overflow: hidden; 
+            box-shadow: 0 0 15px rgba(37, 99, 235, 0.4);
+        }
+
+        .is-today:hover {
+            background: linear-gradient(110deg, #2563eb 45%, #60a5fa 50%, #2563eb 55%) !important;
+            background-size: 200% 100% !important;
+            animation: shine 1.5s infinite linear;
+        }
+
+        .date-num { font-size: 0.7rem; font-weight: 700; color: #94a3b8; }
+        .is-today .date-num { color: white; }
+        .shift-code { font-weight: 800; font-size: 0.8rem; text-align: center; padding: 0 5px; }
+
+        .month-stats { margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
+        .stat-item { background: #f8fafc; padding: 12px; border-radius: 12px; border-left: 4px solid var(--primary); }
+        .stat-item strong { display: block; font-size: 0.6rem; color: #64748b; }
+        .stat-item span { font-size: 0.8rem; font-weight: 800; word-break: break-all; }
+
+        .note-area {
+            width: 100%; height: 100px; background: #fffbeb; border: 1px solid #fde68a;
+            border-radius: 12px; padding: 12px; font-size: 0.8rem; resize: none;
+            text-transform: uppercase; font-weight: 600; box-sizing: border-box;
+        }
+
+        .card-header-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .btn-link-hr {
+            background: #f1f5f9;
+            color: var(--primary);
+            text-decoration: none;
+            padding: 4px 8px;
+            border-radius: 8px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            border: 1px solid #e2e8f0;
+            transition: all 0.2s;
+        }
+
+        .btn-link-hr:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .leave-container { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 5px; }
+        .leave-card { background: #f8fafc; padding: 12px; border-radius: 16px; border: 1px solid #f1f5f9; cursor: pointer; transition: 0.2s; }
+        .leave-card:hover { border-color: var(--primary); background: #f1f5f9; }
+        .leave-card h3 { font-size: 0.65rem; color: #1e293b; margin: 0 0 8px 0; font-weight: 800; }
+        .leave-row { display: flex; justify-content: space-between; font-size: 0.7rem; font-weight: 600; margin-bottom: 4px; color: #64748b; }
+        .leave-baki-row { border-top: 1px dashed #cbd5e1; margin-top: 8px; padding-top: 8px; display: flex; justify-content: space-between; align-items: center; }
+        .leave-baki-label { color: var(--primary); font-weight: 800; font-size: 0.7rem; }
+        .leave-baki-val { color: var(--primary); font-weight: 800; font-size: 1rem; }
+
+        .scroll-area { max-height: 350px; overflow-y: auto; }
+        .ph-table { width: 100%; border-collapse: collapse; font-size: 0.65rem; }
+        .ph-table td { padding: 12px 5px; border-bottom: 1px solid #f1f5f9; font-weight: 600; }
+
+        .btn-save {
+            position: fixed; bottom: 20px; right: 20px;
+            background: var(--success); color: white; border: none;
+            padding: 12px 25px; border-radius: 50px; font-weight: 800;
+            box-shadow: 0 10px 15px rgba(16, 185, 129, 0.3); cursor: pointer;
+            z-index: 100;
+        }
+
+        @media (max-width: 900px) { 
+            .container { grid-template-columns: 1fr; } 
+            .schedule-header-row { flex-direction: column; align-items: flex-start; }
+            .today-task-card { min-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+<button class="btn-save" onclick="saveData()">💾 SIMPAN PERUBAHAN</button>
+
+<div class="container">
+    <header class="profile-header">
+        <div class="profile-main-info">
+            <div class="profile-pic-container" onclick="document.getElementById('imgInput').click()">
+                <img id="profileDisplay" src="" style="display:none;">
+                <span id="picPlaceholder" style="font-size:0.5rem; font-weight:800; text-align:center;">AMBIL GAMBAR</span>
+                <input type="file" id="imgInput" style="display:none;" accept="image/*" onchange="previewImage(this)">
+            </div>
+            <div class="profile-info">
+                <h1>AHMAD ZILALUL HILMI BIN ADNAN</h1>
+                <p>STAFF ID: 0656 | <span id="headerYear">2026</span></p>
+            </div>
+        </div>
+        
+        <div class="big-date-display">
+            <div class="time-val" id="currentTime">00:00:00</div>
+            <div class="separator">|</div>
+            <div class="date-group">
+                <div class="date-val" id="currentDateVal">--</div>
+                <div class="day-month-group">
+                    <span id="currentDayName">MEMUATKAN</span>, <span id="currentMonthYear">--- 2026</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-content">
+        <div class="card">
+            <div class="schedule-header-row">
+                <div class="month-nav">
+                    <button class="nav-btn" onclick="changeMonth(-1)">◀</button>
+                    <div class="month-title">
+                        <h2 id="displayMonth">FEBRUARI 2026</h2>
+                        <small style="font-size: 0.5rem; color: #64748b;">JADUAL KERJA</small>
+                    </div>
+                    <button class="nav-btn" onclick="changeMonth(1)">▶</button>
+                </div>
+                
+                <div class="today-task-card">
+                    <div class="today-task-label" id="taskLabel">TUGASAN HARI INI (---):</div>
+                    <div class="today-task-value" id="taskFullDesc">MEMUATKAN...</div>
+                </div>
+            </div>
+
+            <div class="shift-grid" id="calendarGrid"></div>
+            
+            <div class="month-stats">
+                <div class="stat-item"><strong>🌙 MALAM</strong><span id="nightDates">-</span></div>
+                <div class="stat-item" style="border-left-color: var(--success);"><strong>🏥 LOCUM</strong><span id="locumDates">-</span></div>
+                <div class="stat-item" style="border-left-color: var(--warning);"><strong>💳 PAID</strong><span id="paidDates">-</span></div>
+            </div>
+
+            <div class="note-section" style="margin-top:20px;">
+                <h2 style="font-size: 0.8rem; color: var(--primary);">📝 CATATAN / NOTA</h2>
+                <textarea class="note-area" id="userNotes" placeholder="TULIS NOTA ANDA..."></textarea>
+            </div>
+        </div>
+    </div>
+    
+    <div class="sidebar">
+        <div class="card">
+            <div class="card-header-flex">
+                <h2 style="border:none; margin:0; font-size: 0.9rem;">PERINCIAN CUTI</h2>
+                <a href="https://www.iloginhr.com/loginbs.aspx" target="_blank" class="btn-link-hr">
+                    🔗 HR LOGIN
+                </a>
+            </div>
+            
+            <div class="leave-container">
+                <div class="leave-card" onclick="editLeave('al')">
+                    <h3>ANNUAL (AL)</h3>
+                    <div class="leave-row"><span>BF:</span><span id="al-bf">15.00</span></div>
+                    <div class="leave-row"><span>ENT:</span><span id="al-ent">3.00</span></div>
+                    <div class="leave-row"><span>USED:</span><span style="color:var(--danger)" id="al-used">-3.00</span></div>
+                    <div class="leave-baki-row">
+                        <span class="leave-baki-label">BAKI:</span>
+                        <span class="leave-baki-val" id="al-total">15.00</span>
+                    </div>
+                </div>
+
+                <div class="leave-card" onclick="editLeave('rpl')">
+                    <h3>REPLACE (RPL)</h3>
+                    <div class="leave-row"><span>BF:</span><span id="rpl-bf">0.00</span></div>
+                    <div class="leave-row"><span>ENT:</span><span id="rpl-ent">20.00</span></div>
+                    <div class="leave-row"><span>USED:</span><span style="color:var(--danger)" id="rpl-used">-1.00</span></div>
+                    <div class="leave-baki-row">
+                        <span class="leave-baki-label">BAKI:</span>
+                        <span class="leave-baki-val" id="rpl-total">19.00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 style="font-size: 0.8rem; color: var(--primary);">PUBLIC HOLIDAY (2026)</h2>
+            <div class="scroll-area">
+                <table class="ph-table">
+                    <tbody id="phTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const monthNamesFull = ["JANUARI", "FEBRUARI", "MAC", "APRIL", "MEI", "JUN", "JULAI", "OGOS", "SEPTEMBER", "OKTOBER", "NOVEMBER", "DISEMBER"];
+    const dayLabels = ["AHAD", "ISN", "SEL", "RAB", "KHA", "JUM", "SAB"];
+
+    let currentViewDate = new Date(2026, 1, 1); 
+
+    // Data Cuti
+    let leaveData = {
+        al: { bf: 15, ent: 3, taken: 3 },
+        rpl: { bf: 0, ent: 20, taken: 1 }
+    };
+
+    let allPH = [
+        { d: "2026-01-01", n: "TAHUN BARU", taken: false, paid: false },
+        { d: "2026-01-17", n: "ISRAJ MI'RAJ", taken: true, paid: false, takenOn: "17/01" },
+        { d: "2026-02-17", n: "TAHUN BARU CINA (H1)", taken: true, paid: false, takenOn: "26/02" },
+        { d: "2026-02-18", n: "TAHUN BARU CINA (H2)", taken: true, paid: false, takenOn: "18/02" },
+        { d: "2026-03-04", n: "HARI PERTABALAN SULTAN TRG", taken: false, paid: false },
+        { d: "2026-03-07", n: "HARI NUZUL AL-QURAN", taken: false, paid: false },
+        { d: "2026-03-21", n: "HARI RAYA AIDILFITRI (H1)", taken: false, paid: false },
+        { d: "2026-03-22", n: "HARI RAYA AIDILFITRI (H2)", taken: false, paid: false },
+        { d: "2026-04-26", n: "KEPUTERAAN SULTAN TRG", taken: false, paid: true },
+        { d: "2026-05-01", n: "HARI PEKERJA", taken: false, paid: true },
+        { d: "2026-06-01", n: "KEPUTERAAN YDP AGONG", taken: false, paid: true },
+        { d: "2026-08-31", n: "HARI KEBANGSAAN", taken: false, paid: true },
+        { d: "2026-09-16", n: "HARI MALAYSIA", taken: false, paid: true }
+    ];
+
+    let masterShifts = {
+        "2026-02-01":"E#","2026-02-02":"M#","2026-02-03":"M#","2026-02-04":"DO","2026-02-05":"E#",
+        "2026-02-06":"E(T)","2026-02-07":"E#","2026-02-08":"M*","2026-02-09":"M#","2026-02-10":"DO",
+        "2026-02-11":"M(T)/N#","2026-02-12":"N#","2026-02-13":"N*","2026-02-14":"SD","2026-02-15":"DO",
+        "2026-02-16":"E#","2026-02-17":"E#","2026-02-18":"PH","2026-02-19":"M#","2026-02-20":"M#/E(T)",
+        "2026-02-21":"N(T)","2026-02-22":"N#","2026-02-23":"N*","2026-02-24":"SD","2026-02-25":"DO",
+        "2026-02-26":"RPL17/2","2026-02-27":"AL","2026-02-28":"AL"
+    };
+
+    function translateShift(code) {
+        if (!code || code === "-") return "TIADA DATA";
+        let parts = code.split('/');
+        let results = parts.map(p => {
+            let desc = "";
+            if (p.includes("M")) desc = "PAGI";
+            else if (p.includes("E")) desc = "PETANG";
+            else if (p.includes("N")) desc = "MALAM";
+            else if (["DO", "SD", "PH", "AL", "RPL"].some(c => p.startsWith(c))) return "CUTI / KHAS";
+            if (p.includes("*")) desc += " (TEAM LEADER)";
+            if (p.includes("#")) desc += " (AMBULANCE)";
+            if (p.includes("(T)")) desc += " (TRIAGE)";
+            return desc || p;
+        });
+        return results.join(" / ");
+    }
+
+    function changeMonth(step) {
+        currentViewDate.setMonth(currentViewDate.getMonth() + step);
+        renderDashboard();
+    }
+
+    function editLeave(type) {
+        let label = type.toUpperCase();
+        let bf = prompt(`MASUKKAN BF (BROUGHT FORWARD) UNTUK ${label}:`, leaveData[type].bf);
+        let ent = prompt(`MASUKKAN ENT (ENTITLEMENT) UNTUK ${label}:`, leaveData[type].ent);
+        let taken = prompt(`MASUKKAN USED (CUTI DIAMBIL) UNTUK ${label}:`, leaveData[type].taken);
+
+        if (bf !== null && ent !== null && taken !== null) {
+            leaveData[type].bf = parseFloat(bf) || 0;
+            leaveData[type].ent = parseFloat(ent) || 0;
+            leaveData[type].taken = parseFloat(taken) || 0;
+            renderDashboard();
+        }
+    }
+
+    function startClock() {
+        const monthShort = ["JAN", "FEB", "MAC", "APR", "MEI", "JUN", "JUL", "OGO", "SEP", "OKT", "NOV", "DIS"];
+        const dayFull = ["AHAD", "ISNIN", "SELASA", "RABU", "KHAMIS", "JUMAAT", "SABTU"];
+
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById('currentTime').innerText = now.toLocaleTimeString('ms-MY', { hour12: false });
+            document.getElementById('currentDateVal').innerText = now.getDate();
+            document.getElementById('currentDayName').innerText = dayFull[now.getDay()];
+            document.getElementById('currentMonthYear').innerText = monthShort[now.getMonth()] + " " + now.getFullYear();
+        }, 1000);
+    }
+
+    function renderDashboard() {
+        const year = currentViewDate.getFullYear();
+        const month = currentViewDate.getMonth();
+        
+        document.getElementById('displayMonth').innerText = `${monthNamesFull[month]} ${year}`;
+        document.getElementById('headerYear').innerText = year;
+
+        // Render Cuti & Auto Kira Baki
+        ["al", "rpl"].forEach(type => {
+            const data = leaveData[type];
+            const baki = (data.bf + data.ent) - data.taken;
+            document.getElementById(`${type}-bf`).innerText = data.bf.toFixed(2);
+            document.getElementById(`${type}-ent`).innerText = data.ent.toFixed(2);
+            document.getElementById(`${type}-used`).innerText = `-${data.taken.toFixed(2)}`;
+            document.getElementById(`${type}-total`).innerText = baki.toFixed(2);
+        });
+
+        const phTable = document.getElementById('phTableBody');
+        phTable.innerHTML = "";
+        allPH.forEach((ph, index) => {
+            const statusHtml = ph.taken ? `<span style="color:var(--success)">DONE (${ph.takenOn})</span>` : `<span style="color:#94a3b8">PENDING</span>`;
+            phTable.innerHTML += `<tr onclick="togglePH(${index})" style="cursor:pointer">
+                <td>${ph.d.split('-')[2]}/${ph.d.split('-')[1]}</td>
+                <td>${ph.n} ${ph.paid ? '<small style="color:var(--warning)">(P)</small>':''}</td>
+                <td style="text-align:right">${statusHtml}</td>
+            </tr>`;
+        });
+
+        const grid = document.getElementById('calendarGrid');
+        grid.innerHTML = "";
+
+        dayLabels.forEach(label => {
+            grid.innerHTML += `<div class="day-label">${label}</div>`;
+        });
+
+        const firstDay = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const todayObj = new Date();
+        const todayStr = `${todayObj.getFullYear()}-${(todayObj.getMonth()+1).toString().padStart(2,'0')}-${todayObj.getDate().toString().padStart(2,'0')}`;
+
+        for (let i = 0; i < firstDay; i++) {
+            grid.innerHTML += `<div></div>`;
+        }
+
+        let nightList = [], locumList = [], paidList = [];
+
+        for (let d = 1; d <= daysInMonth; d++) {
+            const dateStr = `${year}-${(month+1).toString().padStart(2,'0')}-${d.toString().padStart(2,'0')}`;
+            const code = masterShifts[dateStr] || "-";
+            const isToday = (dateStr === todayStr);
+            const cls = isToday ? "is-today" : "";
+
+            if (isToday) {
+                document.getElementById('taskLabel').innerText = `TUGASAN HARI INI (${code}):`;
+                document.getElementById('taskFullDesc').innerText = translateShift(code);
+            }
+
+            if(code.includes("N")) nightList.push(d);
+            if(code.includes("/")) locumList.push(d);
+            
+            const isPaidPH = allPH.find(ph => ph.d === dateStr && ph.paid);
+            if(isPaidPH) paidList.push(d);
+
+            grid.innerHTML += `
+                <div class="box ${cls}" onclick="editShift('${dateStr}')">
+                    <span class="date-num">${d}</span>
+                    <span class="shift-code">${code}</span>
+                    ${isPaidPH ? '<div style="width:5px; height:5px; background:var(--warning); border-radius:50%; position:absolute; top:5px; right:5px;"></div>' : ''}
+                </div>`;
+        }
+
+        document.getElementById('nightDates').innerText = nightList.join(', ') || "-";
+        document.getElementById('locumDates').innerText = locumList.join(', ') || "-";
+        document.getElementById('paidDates').innerText = paidList.join(', ') || "-";
+    }
+
+    function editShift(date) {
+        let current = masterShifts[date] || "";
+        let newShift = prompt(`KEMASKINI SYIF UNTUK ${date}:`, current);
+        if (newShift !== null) {
+            masterShifts[date] = newShift.toUpperCase();
+            renderDashboard();
+        }
+    }
+
+    function togglePH(index) {
+        const ph = allPH[index];
+        if (!ph.taken) {
+            const useDate = prompt(`TARIKH PH INI DIGUNAKAN? (CONTOH: 26/02)`, ph.d.split('-')[2] + "/" + ph.d.split('-')[1]);
+            if (useDate) { ph.taken = true; ph.takenOn = useDate; }
+        } else {
+            if(confirm("TUKAR STATUS KEPADA PENDING SEMULA?")) { ph.taken = false; ph.takenOn = null; }
+        }
+        renderDashboard();
+    }
+
+    function previewImage(input) {
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = e => {
+                document.getElementById('profileDisplay').src = e.target.result;
+                document.getElementById('profileDisplay').style.display = 'block';
+                document.getElementById('picPlaceholder').style.display = 'none';
+                localStorage.setItem('zil_profile_pic', e.target.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    function saveData() {
+        localStorage.setItem('zil_master_shifts', JSON.stringify(masterShifts));
+        localStorage.setItem('zil_ph_2026', JSON.stringify(allPH));
+        localStorage.setItem('zil_leave_data', JSON.stringify(leaveData));
+        localStorage.setItem('zil_notes_2026', document.getElementById('userNotes').value);
+        alert("✅ SEMUA DATA BERJAYA DISIMPAN!");
+    }
+
+    window.onload = () => {
+        const savedPic = localStorage.getItem('zil_profile_pic');
+        if (savedPic) {
+            document.getElementById('profileDisplay').src = savedPic;
+            document.getElementById('profileDisplay').style.display = 'block';
+            document.getElementById('picPlaceholder').style.display = 'none';
+        }
+        if(localStorage.getItem('zil_master_shifts')) masterShifts = JSON.parse(localStorage.getItem('zil_master_shifts'));
+        if(localStorage.getItem('zil_ph_2026')) allPH = JSON.parse(localStorage.getItem('zil_ph_2026'));
+        if(localStorage.getItem('zil_leave_data')) leaveData = JSON.parse(localStorage.getItem('zil_leave_data'));
+        if(localStorage.getItem('zil_notes_2026')) document.getElementById('userNotes').value = localStorage.getItem('zil_notes_2026');
+        
+        startClock();
+        renderDashboard();
+    };
+</script>
+</body>
+</html>
