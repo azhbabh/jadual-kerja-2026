@@ -7,6 +7,7 @@
     <style>
         :root {
             --primary: #d4af37;
+            --primary-glow: rgba(212, 175, 55, 0.4);
             --bg: #0a0a0a;
             --card-bg: #161616;
             --text: #ffffff;
@@ -16,7 +17,7 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Franklin Gothic Medium Cond', 'Arial Narrow', sans-serif;
             background-color: var(--bg);
             color: var(--text);
             margin: 0;
@@ -24,53 +25,123 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* PROFILE */
+        /* --- PROFILE HEADER DENGAN TAJUK ED --- */
         .profile-header {
-            display: flex; align-items: center; gap: 15px; background: var(--card-bg);
-            padding: 20px; border-radius: 24px; border: 1px solid #222; margin-bottom: 12px;
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; /* Agihkan ruang antara info & tajuk */
+            background: var(--card-bg);
+            padding: 20px; 
+            border-radius: 24px; 
+            border: 1px solid #222; 
+            margin-bottom: 12px;
+            position: relative;
+            overflow: hidden;
         }
-        .profile-img { width: 65px; height: 65px; border-radius: 50%; border: 2px solid var(--primary); object-fit: cover; }
-        .profile-info h2 { margin: 0; font-size: 0.9rem; color: var(--primary); text-transform: uppercase; }
-        .staff-id { font-size: 0.75rem; color: var(--text-dim); }
 
-        /* CLOCK & SUMMARY */
+        .profile-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .profile-img { 
+            width: 65px; 
+            height: 65px; 
+            border-radius: 50%; 
+            border: 2px solid var(--primary); 
+            object-fit: cover; 
+            box-shadow: 0 0 10px var(--primary-glow);
+        }
+
+        .profile-info h2 { 
+            margin: 0; 
+            font-size: 1.05rem; 
+            color: #fff; 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px;
+        }
+
+        .staff-id { font-size: 0.8rem; color: var(--text-dim); margin-bottom: 2px; }
+        #live-clock { font-size: 0.85rem; color: var(--primary); font-weight: bold; }
+
+        /* --- STYLING TAJUK ROSTER ED (KANAN) --- */
+        .roster-title-box {
+            text-align: right;
+            border-left: 1px solid #333;
+            padding-left: 15px;
+        }
+
+        .roster-title-box .main {
+            font-size: 1.5rem;
+            font-weight: 900;
+            display: block;
+            line-height: 1;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background: linear-gradient(to bottom, #fcf6ba 0%, #d4af37 40%, #aa771c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 8px var(--primary-glow);
+            animation: shine 3s infinite linear;
+        }
+
+        .roster-title-box .sub {
+            font-size: 0.55rem;
+            color: #fff;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            display: block;
+            margin-top: 3px;
+            opacity: 0.7;
+        }
+
+        @keyframes shine {
+            0% { filter: brightness(1); }
+            50% { filter: brightness(1.4); }
+            100% { filter: brightness(1); }
+        }
+
+        /* --- EXISTING STYLES --- */
         .shift-summary-card {
             background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
             padding: 15px 20px; border-radius: 24px; border: 1px solid #333;
             margin-bottom: 20px; display: flex; flex-direction: column; gap: 8px;
         }
         .summary-item { display: flex; justify-content: space-between; align-items: center; }
-        .summary-label { font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase; font-weight: bold; }
-        .summary-val { font-size: 0.85rem; font-weight: bold; color: var(--primary); }
+        .summary-label { font-size: 0.8rem; color: var(--text-dim); text-transform: uppercase; font-weight: bold; }
+        .summary-val { font-size: 0.95rem; font-weight: bold; color: var(--primary); }
         .summary-val.today { color: var(--success); }
 
-        /* STATS */
         .stats-row { display: flex; gap: 12px; margin-bottom: 25px; }
         .stat-card { flex: 1; background: var(--card-bg); padding: 15px 10px; border-radius: 20px; text-align: center; border: 1px solid #222; cursor: pointer; }
-        .stat-card .val { font-size: 1.1rem; font-weight: 800; margin: 5px 0; }
+        .stat-card .val { font-size: 1.2rem; font-weight: 800; margin: 5px 0; }
         .progress-container { width: 100%; height: 4px; background: #222; border-radius: 10px; overflow: hidden; }
         .progress-bar { height: 100%; background: var(--primary); transition: width 0.5s; }
 
-        /* CALENDAR GRID */
         .section { background: var(--card-bg); padding: 18px; border-radius: 24px; border: 1px solid #222; margin-bottom: 20px; }
         .cal-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
         .nav-btn { background: #222; border: none; color: var(--primary); padding: 8px 15px; border-radius: 10px; font-weight: bold; }
         .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
-        .day-label { text-align: center; font-size: 0.6rem; font-weight: 800; color: #444; margin-bottom: 5px; }
+        .day-label { text-align: center; font-size: 0.75rem; font-weight: 800; color: #444; margin-bottom: 5px; }
+        
         .day-box {
             aspect-ratio: 1; background: #111; border-radius: 12px; display: flex; flex-direction: column;
             align-items: center; justify-content: center; border: 1px solid #1a1a1a; position: relative; cursor: pointer;
         }
         .day-box.today { border: 2px solid var(--primary); }
-        .day-box .date-num { position: absolute; top: 4px; left: 6px; font-size: 0.6rem; color: #555; }
-        .day-box .shift-text { font-size: 1.1rem; font-weight: 900; }
-        .day-box .assign-text { font-size: 0.45rem; color: var(--primary); font-weight: bold; text-align: center; width: 90%; overflow: hidden; }
+        .day-box .date-num { position: absolute; top: 4px; left: 6px; font-size: 0.7rem; color: #777; }
+        .day-box .shift-text { font-size: 1.15rem; font-weight: 900; }
+        .day-box .assign-text { font-size: 0.45rem; color: var(--primary); font-weight: bold; text-align: center; width: 95%; overflow: hidden; white-space: nowrap; }
 
-        /* FORM INPUTS */
-        input { background: #252525; border: 1px solid #333; color: white; padding: 14px; border-radius: 12px; width: 100%; box-sizing: border-box; margin-bottom: 10px; font-family: inherit; font-size: 1rem; }
-        label { font-size: 0.65rem; color: var(--primary); display: block; margin-top: 5px; font-weight: bold; text-transform: uppercase; }
+        input, select, textarea { 
+            background: #252525; border: 1px solid #333; color: white; padding: 14px; 
+            border-radius: 12px; width: 100%; box-sizing: border-box; margin-bottom: 10px; 
+            font-family: inherit; font-size: 1rem; 
+        }
+        textarea { resize: none; height: 100px; }
+        label { font-size: 0.75rem; color: var(--primary); display: block; margin-top: 5px; font-weight: bold; text-transform: uppercase; }
 
-        /* BOTTOM SHEET */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; }
         .bottom-sheet { 
             position: fixed; bottom: -100%; left: 0; width: 100%; background: #1a1a1a; 
@@ -80,23 +151,35 @@
         .bottom-sheet.active { bottom: 0; }
 
         .record-card, .todo-item { background: #222; padding: 12px; border-radius: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border-left: 3px solid var(--primary); }
-        .todo-text { flex: 1; font-size: 0.85rem; margin-left: 10px; color: #eee; }
+        .todo-text { flex: 1; font-size: 0.9rem; margin-left: 10px; color: #eee; }
         .todo-text span.done { text-decoration: line-through; color: #555 !important; }
-        .btn-delete, .todo-del { color: var(--danger); background: none; border: none; font-size: 1.2rem; cursor: pointer; padding: 5px; }
+        .btn-delete, .todo-del { color: var(--danger); background: none; border: none; font-size: 1.4rem; cursor: pointer; padding: 5px; }
         
         .selection-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 15px; }
         .select-btn { background: #252525; padding: 15px; border-radius: 15px; text-align: center; font-weight: bold; border: 1px solid #333; color: white; }
+
+        .paid-alert {
+            background: rgba(46, 204, 113, 0.1); color: var(--success); padding: 10px; border-radius: 8px; font-size: 0.8rem; margin-bottom: 10px; text-align: center; border: 1px solid var(--success); display: none;
+        }
+        .time-row { display: flex; gap: 10px; }
     </style>
 </head>
 <body>
 
     <div class="profile-header">
-        <img id="profile-pic" src="https://ui-avatars.com/api/?name=Ahmad+Zilalul&background=d4af37&color=000" class="profile-img" onclick="document.getElementById('upload').click()">
-        <input type="file" id="upload" hidden onchange="loadImg(event)">
-        <div class="profile-info">
-            <h2>AHMAD ZILALUL HILMI</h2>
-            <div class="staff-id">Staff No: 0656</div>
-            <div id="live-clock">--/--/---- | --:--:--</div>
+        <div class="profile-left">
+            <img id="profile-pic" src="https://ui-avatars.com/api/?name=Ahmad+Zilalul&background=d4af37&color=000" class="profile-img" onclick="document.getElementById('upload').click()">
+            <input type="file" id="upload" hidden onchange="loadImg(event)">
+            <div class="profile-info">
+                <h2>AHMAD ZILALUL HILMI BIN ADNAN</h2>
+                <div class="staff-id">Staff No: 0656</div>
+                <div id="live-clock">--/--/---- | --:--:--</div>
+            </div>
+        </div>
+
+        <div class="roster-title-box">
+            <span class="main">ROSTER</span>
+            <span class="sub">Emergency Department</span>
         </div>
     </div>
 
@@ -108,8 +191,8 @@
 
     <div class="stats-row">
         <div class="stat-card" onclick="openRecordSheet('AL')">
-            <small>Rekod AL</small><div class="val" id="text-al">20</div>
-            <div class="progress-container"><div id="bar-al" class="progress-bar"></div></div>
+            <small>Rekod AL</small><div class="val" id="text-al">0</div>
+            <div class="progress-container"><div id="bar-al" class="progress-bar" style="width:100%"></div></div>
         </div>
         <div class="stat-card" onclick="openRecordSheet('RPL')">
             <small>Rekod RPL</small><div class="val" id="text-rpl">0</div>
@@ -141,6 +224,9 @@
             <button onclick="openTodoPopup()" style="background:var(--primary); border:none; padding:0 20px; border-radius:12px; font-weight:bold; color:black;">+</button>
         </div>
         <div id="todo-list" style="margin-top:15px;"></div>
+        <hr style="border: 0; border-top: 1px solid #333; margin: 20px 0;">
+        <h3>Nota Ringkas</h3>
+        <textarea id="personal-notes" placeholder="Tulis nota di sini..." oninput="saveNotes()"></textarea>
     </div>
 
     <div class="modal-overlay" id="overlay" onclick="closeSheet()"></div>
@@ -150,53 +236,63 @@
     </div>
 
     <script>
-        // Database
+        // --- LOGIK JAVASCRIPT DIKEKALKAN SEPERTI ASAL ---
+        const ph2026 = [
+            {n: "Israk dan Mikraj", d: "2026-01-17", paid: false}, {n: "Tahun Baru Cina", d: "2026-02-17", paid: false},
+            {n: "Tahun Baru Cina (Hari ke-2)", d: "2026-02-18", paid: false}, {n: "Hari Ulangtahun Sultan TRG", d: "2026-03-04", paid: false},
+            {n: "Nuzul Quran", d: "2026-03-07", paid: false}, {n: "Hari Raya Puasa", d: "2026-03-21", paid: false},
+            {n: "Hari Raya Puasa (Hari ke-2)", d: "2026-03-22", paid: false}, {n: "Hari Keputeraan Sultan TRG", d: "2026-04-26", paid: true},
+            {n: "Hari Pekerja", d: "2026-05-01", paid: true}, {n: "Hari Arafah", d: "2026-05-26", paid: false},
+            {n: "Hari Raya Haji", d: "2026-05-27", paid: false}, {n: "Hari Raya Haji (Hari ke-2)", d: "2026-05-28", paid: false},
+            {n: "Hari Wesak", d: "2026-05-31", paid: false}, {n: "Hari Keputeraan YDPA", d: "2026-06-01", paid: true},
+            {n: "Awal Muharam", d: "2026-06-17", paid: false}, {n: "Maulidur Rasul", d: "2026-08-25", paid: false},
+            {n: "Hari Kebangsaan", d: "2026-08-31", paid: true}, {n: "Hari Malaysia", d: "2026-09-16", paid: true},
+            {n: "Deepavali", d: "2026-11-08", paid: false}, {n: "Hari Krismas", d: "2026-12-25", paid: false}
+        ];
+
         let currentCalDate = new Date();
         let store = JSON.parse(localStorage.getItem('roster_ultimate_v2')) || {
-            al: { total: 20, taken: [] },
+            al: { total: 0, taken: [] },
             rpl: { records: [] },
             cpd: { records: [] },
             calendar: {},
-            todos: []
+            todos: [],
+            notes: ""
         };
 
-        // Paparan Tarikh MY
         function toMY(d) {
             if(!d) return '';
             const p = d.split('-');
             return p.length === 3 ? `${p[2]}/${p[1]}/${p[0]}` : d;
         }
 
-        // Simpan Data
         function saveData() {
             localStorage.setItem('roster_ultimate_v2', JSON.stringify(store));
             renderStats();
             updateShiftSummary();
         }
 
-        // Fungsi Paksa Kalendar Popup
-        function triggerDatePicker(id) {
-            const el = document.getElementById(id);
-            if (el) {
-                if ('showPicker' in HTMLInputElement.prototype) {
-                    el.showPicker();
-                } else {
-                    el.focus();
-                    el.click();
-                }
-            }
+        function saveNotes() {
+            store.notes = document.getElementById('personal-notes').value;
+            localStorage.setItem('roster_ultimate_v2', JSON.stringify(store));
         }
 
-        // Jam Digital
+        function loadNotes() {
+            document.getElementById('personal-notes').value = store.notes || "";
+        }
+
+        function triggerDatePicker(id) {
+            const el = document.getElementById(id);
+            if (el && 'showPicker' in HTMLInputElement.prototype) el.showPicker();
+            else if(el) { el.focus(); el.click(); }
+        }
+
         function updateTime() {
             const n = new Date();
-            const d = String(n.getDate()).padStart(2, '0');
-            const m = String(n.getMonth()+1).padStart(2, '0');
-            const y = n.getFullYear();
+            const d = String(n.getDate()).padStart(2, '0'), m = String(n.getMonth()+1).padStart(2, '0'), y = n.getFullYear();
             document.getElementById('live-clock').innerText = `${d}/${m}/${y} | ${n.toLocaleTimeString('ms-MY', {hour12:false})}`;
         }
 
-        // --- FUNGSI ROSTER ---
         function changeMonth(dir) { currentCalDate.setMonth(currentCalDate.getMonth() + dir); generateCalendar(); }
 
         function generateCalendar() {
@@ -208,6 +304,7 @@
             body.innerHTML = '';
             const firstDay = new Date(year, month, 1).getDay();
             const daysInMonth = new Date(year, month + 1, 0).getDate();
+
             for(let i=0; i<firstDay; i++) body.appendChild(document.createElement('div'));
             for(let d=1; d<=daysInMonth; d++) {
                 const key = `${year}-${month+1}-${d}`;
@@ -237,39 +334,58 @@
             const content = document.getElementById('sheet-content');
             document.getElementById('sheet-title').innerText = "Pilih Shift";
             let html = '<div class="selection-grid">';
-            ["M", "E", "N", "SD", "DO", "RPL", "PH", "AL", "MC"].forEach(s => {
+            const shifts = ["M", "E", "N", "M/E", "M/N", "SD", "DO", "AL", "PH", "RPL", "TD", "ST", "WP", "MC"];
+            shifts.forEach(s => {
                 html += `<div class="select-btn" onclick="handleShift('${key}','${s}')">${s}</div>`;
             });
+            html += `<div class="select-btn" style="background: #333;" onclick="customShiftPrompt('${key}')">Tulis Sendiri</div>`;
             content.innerHTML = html + '</div>';
             openSheet();
         }
 
-        function handleShift(key, s) {
-            if(["M", "E", "N", "SD"].includes(s)) openAssignPicker(key, s);
-            else { store.calendar[key] = {s, a:''}; saveData(); generateCalendar(); closeSheet(); }
+        function customShiftPrompt(key) {
+            const val = prompt("Masukkan kod shift anda:");
+            if(val) handleShift(key, val.toUpperCase());
         }
 
-        function openAssignPicker(key, s) {
+        function handleShift(key, s) {
+            const hasAssign = ["M", "E", "N", "SD"];
+            const doubleShift = ["M/E", "M/N"];
+            if(doubleShift.includes(s)) openAssignPicker(key, s, 1);
+            else if(hasAssign.includes(s)) openAssignPicker(key, s);
+            else {
+                store.calendar[key] = {s, a:''};
+                saveData(); generateCalendar(); closeSheet();
+            }
+        }
+
+        function openAssignPicker(key, s, step = 0, firstA = '') {
             const content = document.getElementById('sheet-content');
-            document.getElementById('sheet-title').innerText = `Tugasan (${s})`;
+            const title = step > 0 ? `Tugasan ${step} (${s})` : `Tugasan (${s})`;
+            document.getElementById('sheet-title').innerText = title;
             let html = '<div class="selection-grid">';
             ["Ambulance", "Triage", "Team Leader", "Skip"].forEach(a => {
-                html += `<div class="select-btn" onclick="store.calendar['${key}']={s:'${s}', a:'${a==='Skip'?'':a}'}; saveData(); generateCalendar(); closeSheet();">${a}</div>`;
+                const displayA = a === 'Skip' ? '' : a;
+                if(step === 1) html += `<div class="select-btn" onclick="openAssignPicker('${key}', '${s}', 2, '${displayA}')">${a}</div>`;
+                else if(step === 2) {
+                    const combinedA = (firstA && displayA) ? `${firstA} / ${displayA}` : (firstA || displayA);
+                    html += `<div class="select-btn" onclick="finalizeShift('${key}','${s}','${combinedA}')">${a}</div>`;
+                } else html += `<div class="select-btn" onclick="finalizeShift('${key}','${s}','${displayA}')">${a}</div>`;
             });
             content.innerHTML = html + '</div>';
         }
 
-        // --- FUNGSI TO-DO ---
+        function finalizeShift(key, s, a) {
+            store.calendar[key] = {s, a};
+            saveData(); generateCalendar(); closeSheet();
+        }
+
         function openTodoPopup() {
             const val = document.getElementById('todo-input').value;
             if(!val.trim()) return;
             const content = document.getElementById('sheet-content');
             document.getElementById('sheet-title').innerText = "Set Tarikh Akhir";
-            content.innerHTML = `
-                <p>Tugasan: <b>${val}</b></p>
-                <label>Pilih Tarikh</label>
-                <input type="date" id="pop-due" onclick="triggerDatePicker('pop-due')">
-                <button onclick="saveTodoFinal()" style="width:100%; margin-top:10px; background:var(--primary); padding:15px; border-radius:12px; border:none; font-weight:bold; color:black;">SIMPAN</button>`;
+            content.innerHTML = `<p>Tugasan: <b>${val}</b></p><label>Pilih Tarikh</label><input type="date" id="pop-due" onclick="triggerDatePicker('pop-due')"><button onclick="saveTodoFinal()" style="width:100%; margin-top:10px; background:var(--primary); padding:15px; border-radius:12px; border:none; font-weight:bold; color:black;">SIMPAN</button>`;
             openSheet();
         }
 
@@ -284,23 +400,35 @@
             const list = document.getElementById('todo-list');
             list.innerHTML = '';
             store.todos.forEach((todo, i) => {
-                list.innerHTML += `<div class="todo-item">
-                    <input type="checkbox" style="width:20px; height:20px;" ${todo.done ? 'checked' : ''} onchange="store.todos[${i}].done=!store.todos[${i}].done; saveData(); renderTodos();">
-                    <div class="todo-text">
-                        <span class="${todo.done ? 'done' : ''}">${todo.t}</span>
-                        ${todo.date ? `<br><small style="color:#666">Due: ${toMY(todo.date)}</small>` : ''}
-                    </div>
-                    <button class="todo-del" onclick="store.todos.splice(${i},1); saveData(); renderTodos();">×</button>
-                </div>`;
+                list.innerHTML += `<div class="todo-item"><input type="checkbox" style="width:20px; height:20px;" ${todo.done ? 'checked' : ''} onchange="store.todos[${i}].done=!store.todos[${i}].done; saveData(); renderTodos();"><div class="todo-text"><span class="${todo.done ? 'done' : ''}">${todo.t}</span>${todo.date ? `<br><small style="color:#666">Due: ${toMY(todo.date)}</small>` : ''}</div><button class="todo-del" onclick="store.todos.splice(${i},1); saveData(); renderTodos();">×</button></div>`;
             });
         }
 
-        // --- FUNGSI AL, RPL, CPD ---
         function openRecordSheet(type) {
             const content = document.getElementById('sheet-content');
             document.getElementById('sheet-title').innerText = type==='AL'?'Rekod AL':(type==='RPL'?'Rekod RPL':'Mata CPD');
             renderRecords(type);
             openSheet();
+        }
+
+        function checkPaidPH() {
+            const sel = document.getElementById('in-ph-select');
+            if(!sel) return;
+            const opt = sel.options[sel.selectedIndex];
+            const isPaid = opt.getAttribute('data-paid') === 'true';
+            const alertBox = document.getElementById('paid-alert');
+            const rplInput = document.getElementById('in-d2');
+            const rplLabel = document.getElementById('label-rpl');
+
+            if(isPaid) {
+                if(alertBox) alertBox.style.display = 'block';
+                if(rplInput) { rplInput.style.display = 'none'; rplInput.value = ''; }
+                if(rplLabel) rplLabel.style.display = 'none';
+            } else {
+                if(alertBox) alertBox.style.display = 'none';
+                if(rplInput) { rplInput.style.display = 'block'; rplInput.value = ''; }
+                if(rplLabel) rplLabel.style.display = 'block';
+            }
         }
 
         function renderRecords(type) {
@@ -310,11 +438,28 @@
                 store.al.taken.forEach((d, i) => html += `<div class="record-card"><div>Cuti: ${toMY(d)}</div><button class="btn-delete" onclick="store.al.taken.splice(${i},1); saveData(); renderRecords('AL')">×</button></div>`);
                 html += `<label>Pilih Tarikh Cuti</label><input type="date" id="in-d" onclick="triggerDatePicker('in-d')">`;
             } else if(type === 'RPL') {
-                store.rpl.records.forEach((r, i) => html += `<div class="record-card"><div><b>${r.t}</b><br><small>${toMY(r.d1)} ➔ ${toMY(r.d2)}</small></div><button class="btn-delete" onclick="store.rpl.records.splice(${i},1); saveData(); renderRecords('RPL')">×</button></div>`);
-                html += `<label>Sebab</label><input id="in-t" placeholder="Cth: Kerja Raya"><label>Tarikh PH</label><input type="date" id="in-d1" onclick="triggerDatePicker('in-d1')"><label>Tarikh RPL</label><input type="date" id="in-d2" onclick="triggerDatePicker('in-d2')">`;
+                store.rpl.records.forEach((r, i) => html += `<div class="record-card"><div><b>${r.t} ${r.isPaid ? '<span style="color:#2ecc71">[DIBAYAR]</span>' : ''}</b><br><small>PH: ${toMY(r.d1)} ➔ RPL: ${r.isPaid ? 'TIADA' : toMY(r.d2)}</small></div><button class="btn-delete" onclick="store.rpl.records.splice(${i},1); saveData(); renderRecords('RPL')">×</button></div>`);
+                const recordedPHDates = store.rpl.records.map(r => r.d1);
+                const availablePH = ph2026.filter(p => !recordedPHDates.includes(p.d));
+                html += `
+                <div id="paid-alert" class="paid-alert">STATUS: PH DIBAYAR (TIADA RPL)</div>
+                <label>Pilih Jenis PH</label>
+                <select id="in-ph-select" onchange="document.getElementById('in-d1').value = this.value; checkPaidPH();">
+                    <option value="">-- Pilih Cuti --</option>
+                    ${availablePH.map(p => `<option value="${p.d}" data-paid="${p.paid}">${p.n}</option>`).join('')}
+                </select>
+                <label>Tarikh PH</label><input type="date" id="in-d1" readonly style="opacity:0.6">
+                <label id="label-rpl">Tarikh Ganti (RPL)</label><input type="date" id="in-d2" onclick="triggerDatePicker('in-d2')">`;
             } else if(type === 'CPD') {
-                store.cpd.records.forEach((r, i) => html += `<div class="record-card"><div style="flex:1"><b>${r.t}</b><br><small>Tkh: ${toMY(r.d)}</small></div><div style="font-weight:bold; margin-right:10px;">${r.p} Pts</div><button class="btn-delete" onclick="store.cpd.records.splice(${i},1); saveData(); renderRecords('CPD')">×</button></div>`);
-                html += `<label>Nama Kursus</label><input id="in-t"><label>Tarikh</label><input type="date" id="in-d" onclick="triggerDatePicker('in-d')"><label>Mata</label><input type="number" id="in-p">`;
+                store.cpd.records.forEach((r, i) => html += `<div class="record-card"><div style="flex:1"><b>${r.t}</b><br><small>${toMY(r.d)} | ${r.t1} - ${r.t2}</small></div><div style="font-weight:bold; margin-right:10px;">${r.p} Pts</div><button class="btn-delete" onclick="store.cpd.records.splice(${i},1); saveData(); renderRecords('CPD')">×</button></div>`);
+                html += `
+                <label>Nama Kursus</label><input id="in-t">
+                <label>Tarikh</label><input type="date" id="in-d" onclick="triggerDatePicker('in-d')">
+                <div class="time-row">
+                    <div style="flex:1"><label>Waktu Mula</label><input type="time" id="in-t1"></div>
+                    <div style="flex:1"><label>Waktu Tamat</label><input type="time" id="in-t2"></div>
+                </div>
+                <label>Mata</label><input type="number" id="in-p">`;
             }
             html += `</div><button onclick="addRec('${type}')" style="width:100%; margin-top:15px; background:var(--primary); padding:15px; border-radius:12px; border:none; font-weight:bold; color:black;">SIMPAN</button>`;
             content.innerHTML = html;
@@ -322,16 +467,28 @@
 
         function addRec(type) {
             if(type==='AL') { const d=document.getElementById('in-d').value; if(d) store.al.taken.push(d); }
-            else if(type==='RPL') { const t=document.getElementById('in-t').value, d1=document.getElementById('in-d1').value, d2=document.getElementById('in-d2').value; if(t&&d1&&d2) store.rpl.records.push({t, d1, d2}); }
-            else if(type==='CPD') { const t=document.getElementById('in-t').value, d=document.getElementById('in-d').value, p=document.getElementById('in-p').value; if(t&&d&&p) store.cpd.records.push({t, d, p}); }
+            else if(type==='RPL') { 
+                const sel = document.getElementById('in-ph-select'), 
+                      t = sel.options[sel.selectedIndex].text, 
+                      d1 = document.getElementById('in-d1').value, 
+                      d2 = document.getElementById('in-d2').value,
+                      isPaid = sel.options[sel.selectedIndex].getAttribute('data-paid') === 'true';
+                if(t && d1 && (isPaid || d2)) store.rpl.records.push({t, d1, d2, isPaid}); 
+            }
+            else if(type==='CPD') { 
+                const t=document.getElementById('in-t').value, 
+                      d=document.getElementById('in-d').value, 
+                      p=document.getElementById('in-p').value,
+                      t1=document.getElementById('in-t1').value,
+                      t2=document.getElementById('in-t2').value;
+                if(t&&d&&p&&t1&&t2) store.cpd.records.push({t, d, p, t1, t2}); 
+            }
             saveData(); renderRecords(type);
         }
 
-        // --- DASHBOARD RENDER ---
         function renderStats() {
-            const alBal = 20 - store.al.taken.length;
-            document.getElementById('text-al').innerText = alBal;
-            document.getElementById('bar-al').style.width = (alBal/20*100)+'%';
+            document.getElementById('text-al').innerText = store.al.taken.length; 
+            document.getElementById('bar-al').style.width = '100%';
             document.getElementById('text-rpl').innerText = store.rpl.records.length;
             const cpdPts = store.cpd.records.reduce((sum, r) => sum + Number(r.p), 0);
             document.getElementById('text-cpd').innerText = `${cpdPts}/20`;
@@ -339,16 +496,12 @@
             renderTodos();
         }
 
-        // MODAL HELPERS
         function openSheet() { document.getElementById('overlay').style.display='block'; setTimeout(()=>document.getElementById('sheet').classList.add('active'), 10); }
         function closeSheet() { document.getElementById('sheet').classList.remove('active'); setTimeout(()=>document.getElementById('overlay').style.display='none', 300); }
         function loadImg(e) { const r = new FileReader(); r.onload=()=>document.getElementById('profile-pic').src=r.result; r.readAsDataURL(e.target.files[0]); }
 
-        // Start App
         setInterval(updateTime, 1000);
-        updateTime();
-        generateCalendar();
-        renderStats();
+        updateTime(); generateCalendar(); renderStats(); loadNotes();
     </script>
 </body>
 </html>
