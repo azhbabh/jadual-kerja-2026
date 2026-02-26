@@ -29,7 +29,7 @@
         .profile-header {
             display: flex; 
             align-items: center; 
-            justify-content: space-between; /* Agihkan ruang antara info & tajuk */
+            justify-content: space-between; 
             background: var(--card-bg);
             padding: 20px; 
             border-radius: 24px; 
@@ -65,7 +65,6 @@
         .staff-id { font-size: 0.8rem; color: var(--text-dim); margin-bottom: 2px; }
         #live-clock { font-size: 0.85rem; color: var(--primary); font-weight: bold; }
 
-        /* --- STYLING TAJUK ROSTER ED (KANAN) --- */
         .roster-title-box {
             text-align: right;
             border-left: 1px solid #333;
@@ -102,7 +101,6 @@
             100% { filter: brightness(1); }
         }
 
-        /* --- EXISTING STYLES --- */
         .shift-summary-card {
             background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
             padding: 15px 20px; border-radius: 24px; border: 1px solid #333;
@@ -236,7 +234,6 @@
     </div>
 
     <script>
-        // --- LOGIK JAVASCRIPT DIKEKALKAN SEPERTI ASAL ---
         const ph2026 = [
             {n: "Israk dan Mikraj", d: "2026-01-17", paid: false}, {n: "Tahun Baru Cina", d: "2026-02-17", paid: false},
             {n: "Tahun Baru Cina (Hari ke-2)", d: "2026-02-18", paid: false}, {n: "Hari Ulangtahun Sultan TRG", d: "2026-03-04", paid: false},
@@ -321,11 +318,26 @@
 
         function updateShiftSummary() {
             const now = new Date(), tom = new Date(now); tom.setDate(now.getDate() + 1);
+            
+            // Fungsi pembantu untuk menukar singkatan kepada perkataan asal
+            const getFullAssign = (short) => {
+                if (!short) return '';
+                return short.split(' / ').map(item => {
+                    if (item === 'Amb') return 'Ambulance';
+                    if (item === 'TL') return 'Team Leader';
+                    return item;
+                }).join(' / ');
+            };
+
             const getS = (date) => {
                 const key = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`;
                 const d = store.calendar[key];
-                return (!d || d.s === '-') ? "OFF" : `${d.s} ${d.a ? '@ '+d.a : ''}`;
+                if (!d || d.s === '-') return "OFF";
+                
+                const fullA = getFullAssign(d.a);
+                return `${d.s} ${fullA ? '@ '+fullA : ''}`;
             };
+
             document.getElementById('summary-today').innerText = getS(now);
             document.getElementById('summary-tomorrow').innerText = getS(tom);
         }
@@ -376,7 +388,9 @@
         }
 
         function finalizeShift(key, s, a) {
-            store.calendar[key] = {s, a};
+            // Tukar perkataan panjang kepada singkatan untuk kotak kalendar
+            let shortA = a.replace(/Ambulance/g, "Amb").replace(/Team Leader/g, "TL");
+            store.calendar[key] = {s, a: shortA};
             saveData(); generateCalendar(); closeSheet();
         }
 
