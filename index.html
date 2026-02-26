@@ -25,7 +25,7 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* --- PROFILE HEADER DENGAN TAJUK ED --- */
+        /* --- PROFILE HEADER --- */
         .profile-header {
             display: flex; 
             align-items: center; 
@@ -155,6 +155,7 @@
         
         .selection-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 15px; }
         .select-btn { background: #252525; padding: 15px; border-radius: 15px; text-align: center; font-weight: bold; border: 1px solid #333; color: white; }
+        .btn-clear { background: var(--danger) !important; color: white !important; }
 
         .paid-alert {
             background: rgba(46, 204, 113, 0.1); color: var(--success); padding: 10px; border-radius: 8px; font-size: 0.8rem; margin-bottom: 10px; text-align: center; border: 1px solid var(--success); display: none;
@@ -319,7 +320,6 @@
         function updateShiftSummary() {
             const now = new Date(), tom = new Date(now); tom.setDate(now.getDate() + 1);
             
-            // Fungsi pembantu untuk menukar singkatan kepada perkataan asal
             const getFullAssign = (short) => {
                 if (!short) return '';
                 return short.split(' / ').map(item => {
@@ -350,9 +350,19 @@
             shifts.forEach(s => {
                 html += `<div class="select-btn" onclick="handleShift('${key}','${s}')">${s}</div>`;
             });
-            html += `<div class="select-btn" style="background: #333;" onclick="customShiftPrompt('${key}')">Tulis Sendiri</div>`;
+            html += `<div class="select-btn" style="background: #333;" onclick="customShiftPrompt('${key}')">Lain-lain</div>`;
+            html += `<div class="select-btn btn-clear" onclick="clearShift('${key}')">KOSONGKAN</div>`;
             content.innerHTML = html + '</div>';
             openSheet();
+        }
+
+        function clearShift(key) {
+            if(store.calendar[key]) {
+                delete store.calendar[key];
+                saveData();
+                generateCalendar();
+                closeSheet();
+            }
         }
 
         function customShiftPrompt(key) {
@@ -388,7 +398,6 @@
         }
 
         function finalizeShift(key, s, a) {
-            // Tukar perkataan panjang kepada singkatan untuk kotak kalendar
             let shortA = a.replace(/Ambulance/g, "Amb").replace(/Team Leader/g, "TL");
             store.calendar[key] = {s, a: shortA};
             saveData(); generateCalendar(); closeSheet();
