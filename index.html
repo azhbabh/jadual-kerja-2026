@@ -12,20 +12,8 @@
             --card-bg: #161616;
             --text: #ffffff;
             --text-dim: #999;
-            --border: #222;
             --danger: #ff4d4d;
             --success: #2ecc71;
-            --input-bg: #252525;
-        }
-
-        /* Light Theme Variables */
-        [data-theme="light"] {
-            --bg: #f5f5f5;
-            --card-bg: #ffffff;
-            --text: #1a1a1a;
-            --text-dim: #666;
-            --border: #ddd;
-            --input-bg: #eee;
         }
 
         body {
@@ -33,34 +21,8 @@
             background-color: var(--bg);
             color: var(--text);
             margin: 0;
-            padding: 15px 10px 80px 10px; /* Lebarkan sedikit margin */
+            padding: 15px 15px 80px 15px;
             -webkit-tap-highlight-color: transparent;
-            transition: background 0.3s, color 0.3s;
-        }
-
-        /* Container adjustment for wider screen */
-        .main-wrapper {
-            max-width: 100%; /* Sesuai untuk skrin lebar seperti Redmi Note 12 Pro */
-            margin: 0 auto;
-        }
-
-        /* --- THEME SWITCHER --- */
-        .theme-toggle {
-            position: fixed;
-            top: 15px;
-            right: 15px;
-            z-index: 2000;
-            background: var(--primary);
-            border: none;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
         }
 
         /* --- PROFILE HEADER --- */
@@ -71,15 +33,21 @@
             background: var(--card-bg);
             padding: 20px; 
             border-radius: 24px; 
-            border: 1px solid var(--border); 
+            border: 1px solid #222; 
             margin-bottom: 12px;
             position: relative;
+            overflow: hidden;
         }
 
-        .profile-left { display: flex; align-items: center; gap: 15px; }
+        .profile-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
 
         .profile-img { 
-            width: 65px; height: 65px; 
+            width: 65px; 
+            height: 65px; 
             border-radius: 50%; 
             border: 2px solid var(--primary); 
             object-fit: cover; 
@@ -87,182 +55,202 @@
         }
 
         .profile-info h2 { 
-            margin: 0; font-size: 1.05rem; 
-            text-transform: uppercase; letter-spacing: 0.5px;
+            margin: 0; 
+            font-size: 1.05rem; 
+            color: #fff; 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px;
         }
 
-        .staff-id { font-size: 0.8rem; color: var(--text-dim); }
+        .staff-id { font-size: 0.8rem; color: var(--text-dim); margin-bottom: 2px; }
         #live-clock { font-size: 0.85rem; color: var(--primary); font-weight: bold; }
 
         .roster-title-box {
             text-align: right;
-            border-left: 1px solid var(--border);
+            border-left: 1px solid #333;
             padding-left: 15px;
         }
 
         .roster-title-box .main {
-            font-size: 1.5rem; font-weight: 900; display: block; line-height: 1;
-            text-transform: uppercase; letter-spacing: 1px;
+            font-size: 1.5rem;
+            font-weight: 900;
+            display: block;
+            line-height: 1;
+            text-transform: uppercase;
+            letter-spacing: 1px;
             background: linear-gradient(to bottom, #fcf6ba 0%, #d4af37 40%, #aa771c 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             text-shadow: 0 0 8px var(--primary-glow);
+            animation: shine 3s infinite linear;
         }
 
-        .roster-title-box .sub { font-size: 0.55rem; letter-spacing: 2px; text-transform: uppercase; opacity: 0.7; }
+        .roster-title-box .sub {
+            font-size: 0.55rem;
+            color: #fff;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            display: block;
+            margin-top: 3px;
+            opacity: 0.7;
+        }
 
-        /* --- CONSISTENT TEXT SIZE --- */
-        h3, .summary-label, .val, .select-btn, .todo-text, .summary-val {
-            font-size: 1.2rem !important; /* Saiz sama dengan Stats */
-            font-weight: 800;
+        @keyframes shine {
+            0% { filter: brightness(1); }
+            50% { filter: brightness(1.4); }
+            100% { filter: brightness(1); }
         }
 
         .shift-summary-card {
-            background: var(--card-bg);
-            padding: 15px 20px; border-radius: 24px; border: 1px solid var(--border);
+            background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
+            padding: 15px 20px; border-radius: 24px; border: 1px solid #333;
             margin-bottom: 20px; display: flex; flex-direction: column; gap: 8px;
         }
         .summary-item { display: flex; justify-content: space-between; align-items: center; }
-        .summary-label { color: var(--text-dim); text-transform: uppercase; }
-        .summary-val { color: var(--primary); }
+        .summary-label { font-size: 0.8rem; color: var(--text-dim); text-transform: uppercase; font-weight: bold; }
+        .summary-val { font-size: 0.95rem; font-weight: bold; color: var(--primary); }
+        .summary-val.today { color: var(--success); }
 
-        .stats-row { display: flex; gap: 12px; margin-bottom: 25px; }
-        .stat-card { flex: 1; background: var(--card-bg); padding: 15px 10px; border-radius: 20px; text-align: center; border: 1px solid var(--border); cursor: pointer; }
-        .stat-card small { font-size: 0.8rem; text-transform: uppercase; color: var(--text-dim); }
-
-        .progress-container { width: 100%; height: 4px; background: var(--border); border-radius: 10px; overflow: hidden; margin-top: 5px; }
+        .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 25px; }
+        .stat-card { background: var(--card-bg); padding: 12px 5px; border-radius: 18px; text-align: center; border: 1px solid #222; cursor: pointer; text-decoration: none; color: inherit; }
+        .stat-card .val { font-size: 1.1rem; font-weight: 800; margin: 3px 0; }
+        .stat-card small { font-size: 0.65rem; color: var(--text-dim); font-weight: bold; }
+        .progress-container { width: 80%; height: 3px; background: #222; border-radius: 10px; overflow: hidden; margin: 0 auto; }
         .progress-bar { height: 100%; background: var(--primary); transition: width 0.5s; }
 
-        .section { background: var(--card-bg); padding: 18px; border-radius: 24px; border: 1px solid var(--border); margin-bottom: 20px; }
-        
-        /* TO DO HEADER STYLE */
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        .btn-add-todo {
-            background: var(--primary);
-            color: #000;
-            border: none;
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            font-size: 1.5rem;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        /* CALENDAR */
+        .section { background: var(--card-bg); padding: 18px; border-radius: 24px; border: 1px solid #222; margin-bottom: 20px; }
         .cal-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .nav-btn { background: var(--border); border: none; color: var(--primary); padding: 8px 15px; border-radius: 10px; font-weight: bold; }
+        .nav-btn { background: #222; border: none; color: var(--primary); padding: 8px 15px; border-radius: 10px; font-weight: bold; }
         .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
-        .day-label { text-align: center; font-size: 0.75rem; font-weight: 800; color: var(--text-dim); margin-bottom: 5px; }
+        .day-label { text-align: center; font-size: 0.75rem; font-weight: 800; color: #444; margin-bottom: 5px; }
         
         .day-box {
-            aspect-ratio: 1; background: var(--bg); border-radius: 12px; display: flex; flex-direction: column;
-            align-items: center; justify-content: center; border: 1px solid var(--border); position: relative; cursor: pointer;
+            aspect-ratio: 1; background: #111; border-radius: 12px; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; border: 1px solid #1a1a1a; position: relative; cursor: pointer;
         }
         .day-box.today { border: 2px solid var(--primary); }
-        .day-box .date-num { position: absolute; top: 4px; left: 6px; font-size: 0.7rem; color: var(--text-dim); }
+        .day-box .date-num { position: absolute; top: 4px; left: 6px; font-size: 0.7rem; color: #777; }
         .day-box .shift-text { font-size: 1.15rem; font-weight: 900; }
-        .day-box .assign-text { font-size: 0.45rem; color: var(--primary); font-weight: bold; text-align: center; }
+        .day-box .assign-text { font-size: 0.45rem; color: var(--primary); font-weight: bold; text-align: center; width: 95%; overflow: hidden; white-space: nowrap; }
 
-        /* INPUTS */
         input, select, textarea { 
-            background: var(--input-bg); border: 1px solid var(--border); color: var(--text); padding: 14px; 
+            background: #252525; border: 1px solid #333; color: white; padding: 14px; 
             border-radius: 12px; width: 100%; box-sizing: border-box; margin-bottom: 10px; 
             font-family: inherit; font-size: 1rem; 
         }
+        textarea { resize: none; height: 100px; }
         label { font-size: 0.75rem; color: var(--primary); display: block; margin-top: 5px; font-weight: bold; text-transform: uppercase; }
 
-        /* MODAL */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; }
         .bottom-sheet { 
-            position: fixed; bottom: -100%; left: 0; width: 100%; background: var(--card-bg); 
-            border-radius: 30px 30px 0 0; padding: 25px; box-sizing: border-box; transition: bottom 0.3s ease; z-index: 1001;
-            border-top: 2px solid var(--primary); max-height: 85vh; overflow-y: auto; color: var(--text);
+            position: fixed; bottom: -100%; left: 0; width: 100%; background: #1a1a1a; 
+            border-radius: 30px 30px 0 0; padding: 25px; box-sizing: border-box; transition: bottom 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 1001;
+            border-top: 2px solid var(--primary); max-height: 85vh; overflow-y: auto;
         }
         .bottom-sheet.active { bottom: 0; }
 
-        .record-card, .todo-item { background: var(--bg); padding: 12px; border-radius: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border-left: 3px solid var(--primary); border: 1px solid var(--border); }
-        .todo-text { flex: 1; margin-left: 10px; color: var(--text); }
-        .todo-text span.done { text-decoration: line-through; opacity: 0.5; }
-        .btn-delete, .todo-del { color: var(--danger); background: none; border: none; font-size: 1.4rem; cursor: pointer; }
+        .record-card, .todo-item { background: #222; padding: 12px; border-radius: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border-left: 3px solid var(--primary); }
+        .todo-text { flex: 1; font-size: 0.9rem; margin-left: 10px; color: #eee; }
+        .todo-text span.done { text-decoration: line-through; color: #555 !important; }
+        .btn-delete, .todo-del { color: var(--danger); background: none; border: none; font-size: 1.4rem; cursor: pointer; padding: 5px; }
         
         .selection-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 15px; }
-        .select-btn { background: var(--input-bg); padding: 15px; border-radius: 15px; text-align: center; border: 1px solid var(--border); color: var(--text); }
+        .select-btn { background: #252525; padding: 15px; border-radius: 15px; text-align: center; font-weight: bold; border: 1px solid #333; color: white; }
         .btn-clear { background: var(--danger) !important; color: white !important; }
 
-        .paid-alert { background: rgba(46, 204, 113, 0.1); color: var(--success); padding: 10px; border-radius: 8px; font-size: 0.8rem; margin-bottom: 10px; text-align: center; border: 1px solid var(--success); display: none; }
+        .paid-alert {
+            background: rgba(46, 204, 113, 0.1); color: var(--success); padding: 10px; border-radius: 8px; font-size: 0.8rem; margin-bottom: 10px; text-align: center; border: 1px solid var(--success); display: none;
+        }
         .time-row { display: flex; gap: 10px; }
+
+        /* --- DRUG SEARCH SECTION --- */
+        .drug-list { margin-top: 10px; }
+        .drug-item { 
+            background: #222; padding: 15px; border-radius: 15px; margin-bottom: 8px; 
+            border: 1px solid #333; cursor: pointer; transition: 0.2s;
+        }
+        .drug-name { font-weight: bold; color: var(--primary); font-size: 1rem; }
+        .drug-prep-label { font-size: 0.7rem; color: #777; text-transform: uppercase; margin-top: 5px; }
+        .drug-prep-val { font-size: 0.9rem; color: #fff; }
     </style>
 </head>
 <body>
 
-    <button class="theme-toggle" onclick="toggleTheme()">🌓</button>
-
-    <div class="main-wrapper">
-        <div class="profile-header">
-            <div class="profile-left">
-                <img id="profile-pic" src="https://ui-avatars.com/api/?name=Ahmad+Zilalul&background=d4af37&color=000" class="profile-img" onclick="document.getElementById('upload').click()">
-                <input type="file" id="upload" hidden onchange="loadImg(event)">
-                <div class="profile-info">
-                    <h2>AHMAD ZILALUL HILMI ADNAN</h2>
-                    <div class="staff-id">Staff No: 0656</div>
-                    <div id="live-clock">--/--/---- | --:--:--</div>
-                </div>
-            </div>
-            <div class="roster-title-box">
-                <span class="main">ROSTER</span>
-                <span class="sub">Emergency Dept</span>
+    <div class="profile-header">
+        <div class="profile-left">
+            <img id="profile-pic" src="https://ui-avatars.com/api/?name=Ahmad+Zilalul&background=d4af37&color=000" class="profile-img" onclick="document.getElementById('upload').click()">
+            <input type="file" id="upload" hidden onchange="loadImg(event)">
+            <div class="profile-info">
+                <h2>AHMAD ZILALUL HILMI BIN ADNAN</h2>
+                <div class="staff-id">Staff No: 0656</div>
+                <div id="live-clock">--/--/---- | --:--:--</div>
             </div>
         </div>
 
-        <div class="shift-summary-card">
-            <div class="summary-item"><span class="summary-label">Hari Ini</span><span class="summary-val" id="summary-today">Tiada Data</span></div>
-            <div style="height: 1px; background: var(--border); margin: 2px 0;"></div>
-            <div class="summary-item"><span class="summary-label">Esok</span><span class="summary-val" id="summary-tomorrow">Tiada Data</span></div>
+        <div class="roster-title-box">
+            <span class="main">ROSTER</span>
+            <span class="sub">Emergency Department</span>
         </div>
+    </div>
 
-        <div class="stats-row">
-            <div class="stat-card" onclick="openRecordSheet('AL')">
-                <small>Rekod AL</small><div class="val" id="text-al">0</div>
-                <div class="progress-container"><div id="bar-al" class="progress-bar" style="width:100%"></div></div>
-            </div>
-            <div class="stat-card" onclick="openRecordSheet('RPL')">
-                <small>Rekod RPL</small><div class="val" id="text-rpl">0</div>
-                <div class="progress-container"><div id="bar-rpl" class="progress-bar" style="width:100%"></div></div>
-            </div>
-            <div class="stat-card" onclick="openRecordSheet('CPD')">
-                <small>CPD Pts</small><div class="val" id="text-cpd">0/20</div>
-                <div class="progress-container"><div id="bar-cpd" class="progress-bar"></div></div>
-            </div>
-        </div>
+    <div class="shift-summary-card">
+        <div class="summary-item"><span class="summary-label">Shift Hari Ini</span><span class="summary-val today" id="summary-today">Tiada Data</span></div>
+        <div style="height: 1px; background: #333; margin: 2px 0;"></div>
+        <div class="summary-item"><span class="summary-label">Shift Esok</span><span class="summary-val" id="summary-tomorrow">Tiada Data</span></div>
+    </div>
 
-        <div class="section">
-            <div class="cal-nav">
-                <button class="nav-btn" onclick="changeMonth(-1)">❮</button>
-                <h3 id="cal-title" style="margin:0">--</h3>
-                <button class="nav-btn" onclick="changeMonth(1)">❯</button>
-            </div>
-            <div class="calendar-grid">
-                <div class="day-label">AH</div><div class="day-label">IS</div><div class="day-label">SE</div>
-                <div class="day-label">RA</div><div class="day-label">KH</div><div class="day-label">JU</div><div class="day-label">SA</div>
-            </div>
-            <div id="calendar-body" class="calendar-grid"></div>
+    <div class="stats-row">
+        <div class="stat-card" onclick="openRecordSheet('AL')">
+            <small>Rekod AL</small><div class="val" id="text-al">0</div>
+            <div class="progress-container"><div id="bar-al" class="progress-bar" style="width:100%"></div></div>
         </div>
+        <div class="stat-card" onclick="openRecordSheet('RPL')">
+            <small>Rekod RPL</small><div class="val" id="text-rpl">0</div>
+            <div class="progress-container"><div id="bar-rpl" class="progress-bar" style="width:100%"></div></div>
+        </div>
+        <a href="https://www.iloginhr.com/" target="_blank" class="stat-card">
+            <small>i-LoginHR</small>
+            <div class="val" style="color:#3498db; font-size: 1.5rem;">🌐</div>
+            <div style="font-size: 0.5rem; color: #555;">KLIK SINI</div>
+        </a>
+        <div class="stat-card" onclick="openRecordSheet('CPD')">
+            <small>CPD Pts</small><div class="val" id="text-cpd">0/20</div>
+            <div class="progress-container"><div id="bar-cpd" class="progress-bar"></div></div>
+        </div>
+    </div>
 
-        <div class="section">
-            <div class="section-header">
-                <h3 style="margin:0">To-Do List</h3>
-                <button class="btn-add-todo" onclick="promptNewTodo()">+</button>
-            </div>
-            <div id="todo-list"></div>
-            <hr style="border: 0; border-top: 1px solid var(--border); margin: 20px 0;">
-            <h3 style="margin-bottom:10px">Nota Ringkas</h3>
-            <textarea id="personal-notes" placeholder="Tulis nota di sini..." oninput="saveNotes()"></textarea>
+    <div class="section">
+        <div class="cal-nav">
+            <button class="nav-btn" onclick="changeMonth(-1)">❮</button>
+            <h3 id="cal-title">--</h3>
+            <button class="nav-btn" onclick="changeMonth(1)">❯</button>
         </div>
+        <div class="calendar-grid">
+            <div class="day-label">AH</div><div class="day-label">IS</div><div class="day-label">SE</div>
+            <div class="day-label">RA</div><div class="day-label">KH</div><div class="day-label">JU</div><div class="day-label">SA</div>
+        </div>
+        <div id="calendar-body" class="calendar-grid"></div>
+    </div>
+
+    <div class="section">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h3>Emergency Drug</h3>
+            <button onclick="openAddDrugSheet()" style="background:none; border:1px solid var(--primary); color:var(--primary); border-radius:8px; padding:4px 10px; font-size:0.7rem;">+ TAMBAH</button>
+        </div>
+        <input type="text" id="drug-search" placeholder="Cari ubat (Cth: Fentanyl)..." oninput="searchDrugs()" style="margin-top:10px;">
+        <div id="drug-results" class="drug-list"></div>
+    </div>
+
+    <div class="section">
+        <h3>To-Do List</h3>
+        <div style="display:flex; gap:10px;">
+            <input type="text" id="todo-input" placeholder="Tulis tugasan..." style="margin-bottom:0; flex:1;">
+            <button onclick="openTodoPopup()" style="background:var(--primary); border:none; padding:0 20px; border-radius:12px; font-weight:bold; color:black;">+</button>
+        </div>
+        <div id="todo-list" style="margin-top:15px;"></div>
+        <hr style="border: 0; border-top: 1px solid #333; margin: 20px 0;">
+        <h3>Nota Ringkas</h3>
+        <textarea id="personal-notes" placeholder="Tulis nota di sini..." oninput="saveNotes()"></textarea>
     </div>
 
     <div class="modal-overlay" id="overlay" onclick="closeSheet()"></div>
@@ -286,26 +274,17 @@
         ];
 
         let currentCalDate = new Date();
-        let store = JSON.parse(localStorage.getItem('roster_ultimate_v2')) || {
+        let store = JSON.parse(localStorage.getItem('roster_ultimate_v3')) || {
             al: { total: 0, taken: [] },
             rpl: { records: [] },
             cpd: { records: [] },
             calendar: {},
             todos: [],
             notes: "",
-            theme: "dark"
+            drugs: [
+                { name: "IV Fentanyl 0.1mg/2ml", prep: "Undiluted" }
+            ]
         };
-
-        // --- THEME LOGIC ---
-        function toggleTheme() {
-            store.theme = store.theme === 'dark' ? 'light' : 'dark';
-            applyTheme();
-            saveData();
-        }
-
-        function applyTheme() {
-            document.body.setAttribute('data-theme', store.theme);
-        }
 
         function toMY(d) {
             if(!d) return '';
@@ -314,14 +293,24 @@
         }
 
         function saveData() {
-            localStorage.setItem('roster_ultimate_v2', JSON.stringify(store));
+            localStorage.setItem('roster_ultimate_v3', JSON.stringify(store));
             renderStats();
             updateShiftSummary();
         }
 
         function saveNotes() {
             store.notes = document.getElementById('personal-notes').value;
-            localStorage.setItem('roster_ultimate_v2', JSON.stringify(store));
+            localStorage.setItem('roster_ultimate_v3', JSON.stringify(store));
+        }
+
+        function loadNotes() {
+            document.getElementById('personal-notes').value = store.notes || "";
+        }
+
+        function triggerDatePicker(id) {
+            const el = document.getElementById(id);
+            if (el && 'showPicker' in HTMLInputElement.prototype) el.showPicker();
+            else if(el) { el.focus(); el.click(); }
         }
 
         function updateTime() {
@@ -358,71 +347,137 @@
 
         function updateShiftSummary() {
             const now = new Date(), tom = new Date(now); tom.setDate(now.getDate() + 1);
+            const getFullAssign = (short) => {
+                if (!short) return '';
+                return short.split(' / ').map(item => {
+                    if (item === 'Amb') return 'Ambulance';
+                    if (item === 'TL') return 'Team Leader';
+                    return item;
+                }).join(' / ');
+            };
             const getS = (date) => {
                 const key = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`;
                 const d = store.calendar[key];
-                return (!d || d.s === '-') ? "OFF" : `${d.s} ${d.a ? '@ '+d.a : ''}`;
+                if (!d || d.s === '-') return "OFF";
+                const fullA = getFullAssign(d.a);
+                return `${d.s} ${fullA ? '@ '+fullA : ''}`;
             };
             document.getElementById('summary-today').innerText = getS(now);
             document.getElementById('summary-tomorrow').innerText = getS(tom);
         }
 
-        // TO DO LOGIC UPDATE
-        function promptNewTodo() {
-            const task = prompt("Masukkan tugasan baru:");
-            if (task) {
-                const content = document.getElementById('sheet-content');
-                document.getElementById('sheet-title').innerText = "Set Tarikh Akhir";
-                content.innerHTML = `
-                    <p>Tugasan: <b>${task}</b></p>
-                    <label>Pilih Tarikh (Opsional)</label>
-                    <input type="date" id="pop-due">
-                    <button onclick="saveTodoFinal('${task}')" style="width:100%; margin-top:10px; background:var(--primary); padding:15px; border-radius:12px; border:none; font-weight:bold; color:black;">SIMPAN TUGASAN</button>
-                `;
-                openSheet();
-            }
-        }
+        /* --- DRUG FUNCTIONS (PERBAIKAN UTAMA) --- */
+        function searchDrugs() {
+            const q = document.getElementById('drug-search').value.toLowerCase();
+            const results = document.getElementById('drug-results');
+            results.innerHTML = '';
+            if(!q) return;
 
-        function saveTodoFinal(task) {
-            const dueDate = document.getElementById('pop-due').value;
-            store.todos.push({ t: task, date: dueDate, done: false });
-            saveData();
-            closeSheet();
-            renderTodos();
-        }
-
-        function renderTodos() {
-            const list = document.getElementById('todo-list');
-            list.innerHTML = '';
-            store.todos.forEach((todo, i) => {
-                list.innerHTML += `
-                <div class="todo-item">
-                    <input type="checkbox" style="width:20px; height:20px;" ${todo.done ? 'checked' : ''} onchange="store.todos[${i}].done=!store.todos[${i}].done; saveData(); renderTodos();">
-                    <div class="todo-text">
-                        <span class="${todo.done ? 'done' : ''}">${todo.t}</span>
-                        ${todo.date ? `<br><small style="color:var(--text-dim); font-size:0.7rem;">Due: ${toMY(todo.date)}</small>` : ''}
+            const filtered = store.drugs.filter(d => d.name.toLowerCase().includes(q));
+            filtered.forEach((d) => {
+                const realIdx = store.drugs.indexOf(d);
+                const div = document.createElement('div');
+                div.className = 'drug-item';
+                div.innerHTML = `
+                    <div class="drug-name">${d.name}</div>
+                    <div class="drug-prep-label">PREPARATION:</div>
+                    <div class="drug-prep-val">${d.prep}</div>
+                    <div style="margin-top:10px; display:flex; gap:10px;">
+                        <button onclick="event.stopPropagation(); openEditDrugSheet(${realIdx})" style="background:none; color:var(--success); border:none; font-size:0.7rem; cursor:pointer;">EDIT</button>
+                        <button onclick="event.stopPropagation(); deleteDrug(${realIdx})" style="background:none; color:var(--danger); border:none; font-size:0.7rem; cursor:pointer;">PADAM</button>
                     </div>
-                    <button class="todo-del" onclick="store.todos.splice(${i},1); saveData(); renderTodos();">×</button>
-                </div>`;
+                `;
+                results.appendChild(div);
             });
         }
 
-        // Functions asal yang lain dikekalkan
+        function openAddDrugSheet() {
+            const content = document.getElementById('sheet-content');
+            document.getElementById('sheet-title').innerText = "Tambah Ubat Emergency";
+            content.innerHTML = `
+                <div id="add-drug-form">
+                    <label>Nama Medication & Dose</label>
+                    <input type="text" id="drug-name-in" placeholder="Contoh: IV Fentanyl 0.1mg/2ml" autocomplete="off">
+                    <label>Cara Preparation</label>
+                    <textarea id="drug-prep-in" placeholder="Contoh: Undiluted"></textarea>
+                    <button id="btn-save-drug" onclick="saveDrug()" style="width:100%; background:var(--primary); padding:15px; border-radius:12px; border:none; font-weight:bold; color:black; margin-top:10px; cursor:pointer;">SIMPAN</button>
+                </div>
+            `;
+            openSheet();
+        }
+
+        function saveDrug() {
+            // Menggunakan selector yang lebih spesifik untuk mengelakkan ralat null
+            const nameVal = document.querySelector('#drug-name-in').value.trim();
+            const prepVal = document.querySelector('#drug-prep-in').value.trim();
+
+            if(nameVal && prepVal) {
+                store.drugs.push({
+                    name: nameVal,
+                    prep: prepVal
+                });
+                
+                // Simpan ke LocalStorage
+                localStorage.setItem('roster_ultimate_v3', JSON.stringify(store));
+                
+                // Tutup modal
+                closeSheet();
+                
+                // Paparkan ubat yang baru disimpan dalam carian
+                document.getElementById('drug-search').value = nameVal;
+                searchDrugs();
+                
+                // Makluman visual (optional)
+                console.log("Drug saved successfully");
+            } else {
+                alert("Sila isi semua ruangan (Nama & Cara Preparation).");
+            }
+        }
+
+        function openEditDrugSheet(idx) {
+            const drug = store.drugs[idx];
+            const content = document.getElementById('sheet-content');
+            document.getElementById('sheet-title').innerText = "Edit Ubat";
+            content.innerHTML = `
+                <label>Nama Medication & Dose</label><input type="text" id="edit-name" value="${drug.name}">
+                <label>Cara Preparation</label><textarea id="edit-prep">${drug.prep}</textarea>
+                <button onclick="updateDrug(${idx})" style="width:100%; background:var(--primary); padding:15px; border-radius:12px; border:none; font-weight:bold; color:black; cursor:pointer;">KEMASKINI</button>
+            `;
+            openSheet();
+        }
+
+        function updateDrug(idx) {
+            const name = document.getElementById('edit-name').value.trim();
+            const prep = document.getElementById('edit-prep').value.trim();
+            if(name && prep) {
+                store.drugs[idx].name = name;
+                store.drugs[idx].prep = prep;
+                saveData(); closeSheet(); searchDrugs();
+            }
+        }
+
+        function deleteDrug(idx) {
+            if(confirm("Padam ubat ini dari rekod?")) {
+                store.drugs.splice(idx, 1);
+                saveData(); searchDrugs();
+            }
+        }
+
+        /* --- OTHER CORE FUNCTIONS --- */
         function openShiftPicker(key) {
             const content = document.getElementById('sheet-content');
             document.getElementById('sheet-title').innerText = "Pilih Shift";
             let html = '<div class="selection-grid">';
             const shifts = ["M", "E", "N", "M/E", "M/N", "SD", "DO", "AL", "PH", "RPL", "TD", "ST", "WP", "MC"];
             shifts.forEach(s => html += `<div class="select-btn" onclick="handleShift('${key}','${s}')">${s}</div>`);
-            html += `<div class="select-btn" style="background: var(--border);" onclick="customShiftPrompt('${key}')">Lain</div>`;
-            html += `<div class="select-btn btn-clear" onclick="clearShift('${key}')">CLEAR</div>`;
+            html += `<div class="select-btn" style="background: #333;" onclick="customShiftPrompt('${key}')">Lain-lain</div><div class="select-btn btn-clear" onclick="clearShift('${key}')">KOSONGKAN</div>`;
             content.innerHTML = html + '</div>';
             openSheet();
         }
 
         function clearShift(key) { if(store.calendar[key]) { delete store.calendar[key]; saveData(); generateCalendar(); closeSheet(); } }
-        function customShiftPrompt(key) { const val = prompt("Kod shift:"); if(val) handleShift(key, val.toUpperCase()); }
-        
+        function customShiftPrompt(key) { const val = prompt("Masukkan kod shift anda:"); if(val) handleShift(key, val.toUpperCase()); }
+
         function handleShift(key, s) {
             const hasAssign = ["M", "E", "N", "SD"];
             const doubleShift = ["M/E", "M/N"];
@@ -433,13 +488,14 @@
 
         function openAssignPicker(key, s, step = 0, firstA = '') {
             const content = document.getElementById('sheet-content');
-            document.getElementById('sheet-title').innerText = `Tugasan (${s})`;
+            const title = step > 0 ? `Tugasan ${step} (${s})` : `Tugasan (${s})`;
+            document.getElementById('sheet-title').innerText = title;
             let html = '<div class="selection-grid">';
             ["Ambulance", "Triage", "Team Leader", "Skip"].forEach(a => {
                 const displayA = a === 'Skip' ? '' : a;
                 if(step === 1) html += `<div class="select-btn" onclick="openAssignPicker('${key}', '${s}', 2, '${displayA}')">${a}</div>`;
                 else if(step === 2) {
-                    const combinedA = (firstA && displayA) ? `${firstA}/${displayA}` : (firstA || displayA);
+                    const combinedA = (firstA && displayA) ? `${firstA} / ${displayA}` : (firstA || displayA);
                     html += `<div class="select-btn" onclick="finalizeShift('${key}','${s}','${combinedA}')">${a}</div>`;
                 } else html += `<div class="select-btn" onclick="finalizeShift('${key}','${s}','${displayA}')">${a}</div>`;
             });
@@ -452,6 +508,30 @@
             saveData(); generateCalendar(); closeSheet();
         }
 
+        function openTodoPopup() {
+            const val = document.getElementById('todo-input').value;
+            if(!val.trim()) return;
+            const content = document.getElementById('sheet-content');
+            document.getElementById('sheet-title').innerText = "Set Tarikh Akhir";
+            content.innerHTML = `<p>Tugasan: <b>${val}</b></p><label>Pilih Tarikh</label><input type="date" id="pop-due" onclick="triggerDatePicker('pop-due')"><button onclick="saveTodoFinal()" style="width:100%; margin-top:10px; background:var(--primary); padding:15px; border-radius:12px; border:none; font-weight:bold; color:black;">SIMPAN</button>`;
+            openSheet();
+        }
+
+        function saveTodoFinal() {
+            const t = document.getElementById('todo-input').value, d = document.getElementById('pop-due').value;
+            store.todos.push({ t, date: d, done: false });
+            document.getElementById('todo-input').value = '';
+            saveData(); closeSheet(); renderTodos();
+        }
+
+        function renderTodos() {
+            const list = document.getElementById('todo-list');
+            list.innerHTML = '';
+            store.todos.forEach((todo, i) => {
+                list.innerHTML += `<div class="todo-item"><input type="checkbox" style="width:20px; height:20px;" ${todo.done ? 'checked' : ''} onchange="store.todos[${i}].done=!store.todos[${i}].done; saveData(); renderTodos();"><div class="todo-text"><span class="${todo.done ? 'done' : ''}">${todo.t}</span>${todo.date ? `<br><small style="color:#666">Due: ${toMY(todo.date)}</small>` : ''}</div><button class="todo-del" onclick="store.todos.splice(${i},1); saveData(); renderTodos();">×</button></div>`;
+            });
+        }
+
         function openRecordSheet(type) {
             const content = document.getElementById('sheet-content');
             document.getElementById('sheet-title').innerText = type==='AL'?'Rekod AL':(type==='RPL'?'Rekod RPL':'Mata CPD');
@@ -459,40 +539,63 @@
             openSheet();
         }
 
+        function checkPaidPH() {
+            const sel = document.getElementById('in-ph-select');
+            if(!sel) return;
+            const isPaid = sel.options[sel.selectedIndex].getAttribute('data-paid') === 'true';
+            document.getElementById('paid-alert').style.display = isPaid ? 'block' : 'none';
+            document.getElementById('in-d2').style.display = isPaid ? 'none' : 'block';
+            document.getElementById('label-rpl').style.display = isPaid ? 'none' : 'block';
+        }
+
         function renderRecords(type) {
             const content = document.getElementById('sheet-content');
             let html = '<div>';
             if(type === 'AL') {
                 store.al.taken.forEach((d, i) => html += `<div class="record-card"><div>Cuti: ${toMY(d)}</div><button class="btn-delete" onclick="store.al.taken.splice(${i},1); saveData(); renderRecords('AL')">×</button></div>`);
-                html += `<label>Tambah Tarikh AL</label><input type="date" id="in-d">`;
+                html += `<label>Pilih Tarikh Cuti</label><input type="date" id="in-d" onclick="triggerDatePicker('in-d')">`;
             } else if(type === 'RPL') {
-                store.rpl.records.forEach((r, i) => html += `<div class="record-card"><div><b>${r.t}</b><br><small>${toMY(r.d1)} ➔ ${r.isPaid ? 'PAID' : toMY(r.d2)}</small></div><button class="btn-delete" onclick="store.rpl.records.splice(${i},1); saveData(); renderRecords('RPL')">×</button></div>`);
+                store.rpl.records.forEach((r, i) => html += `<div class="record-card"><div><b>${r.t} ${r.isPaid ? '<span style="color:#2ecc71">[DIBAYAR]</span>' : ''}</b><br><small>PH: ${toMY(r.d1)} ➔ RPL: ${r.isPaid ? 'TIADA' : toMY(r.d2)}</small></div><button class="btn-delete" onclick="store.rpl.records.splice(${i},1); saveData(); renderRecords('RPL')">×</button></div>`);
                 const recordedPHDates = store.rpl.records.map(r => r.d1);
                 const availablePH = ph2026.filter(p => !recordedPHDates.includes(p.d));
                 html += `
-                <select id="in-ph-select" onchange="document.getElementById('in-d1').value = this.value;">
-                    <option value="">-- Pilih PH --</option>
+                <div id="paid-alert" class="paid-alert">STATUS: PH DIBAYAR (TIADA RPL)</div>
+                <label>Pilih Jenis PH</label>
+                <select id="in-ph-select" onchange="document.getElementById('in-d1').value = this.value; checkPaidPH();">
+                    <option value="">-- Pilih Cuti --</option>
                     ${availablePH.map(p => `<option value="${p.d}" data-paid="${p.paid}">${p.n}</option>`).join('')}
                 </select>
-                <input type="date" id="in-d1" readonly style="opacity:0.5">
-                <label>Tarikh Ganti (RPL)</label><input type="date" id="in-d2">`;
+                <label>Tarikh PH</label><input type="date" id="in-d1" readonly style="opacity:0.6">
+                <label id="label-rpl">Tarikh Ganti (RPL)</label><input type="date" id="in-d2" onclick="triggerDatePicker('in-d2')">`;
             } else if(type === 'CPD') {
-                store.cpd.records.forEach((r, i) => html += `<div class="record-card"><div style="flex:1"><b>${r.t}</b><br><small>${toMY(r.d)}</small></div><div style="font-weight:bold; margin-right:10px;">${r.p} Pts</div><button class="btn-delete" onclick="store.cpd.records.splice(${i},1); saveData(); renderRecords('CPD')">×</button></div>`);
-                html += `<label>Kursus</label><input id="in-t"><label>Tarikh</label><input type="date" id="in-d"><label>Mata</label><input type="number" id="in-p">`;
+                store.cpd.records.forEach((r, i) => html += `
+                    <div class="record-card">
+                        <div style="flex:1">
+                            <b style="color:var(--primary)">${r.t}</b><br>
+                            <small>📅 ${toMY(r.d)} | 🕒 ${r.t1} - ${r.t2}</small>
+                        </div>
+                        <div style="font-weight:bold; margin-right:10px; color:var(--success);">${r.p} Pts</div>
+                        <button class="btn-delete" onclick="store.cpd.records.splice(${i},1); saveData(); renderRecords('CPD')">×</button>
+                    </div>`);
+                html += `
+                <label>Nama Kursus</label><input type="text" id="in-t">
+                <label>Tarikh</label><input type="date" id="in-d" onclick="triggerDatePicker('in-d')">
+                <div class="time-row"><div style="flex:1"><label>Mula</label><input type="time" id="in-t1"></div><div style="flex:1"><label>Tamat</label><input type="time" id="in-t2"></div></div>
+                <label>Mata</label><input type="number" id="in-p">`;
             }
-            html += `</div><button onclick="addRec('${type}')" style="width:100%; margin-top:15px; background:var(--primary); padding:15px; border-radius:12px; border:none; font-weight:bold; color:black;">SIMPAN</button>`;
+            html += `</div><button onclick="addRec('${type}')" style="width:100%; margin-top:15px; background:var(--primary); padding:15px; border-radius:12px; border:none; font-weight:bold; color:black; cursor:pointer;">SIMPAN</button>`;
             content.innerHTML = html;
         }
 
         function addRec(type) {
             if(type==='AL') { const d=document.getElementById('in-d').value; if(d) store.al.taken.push(d); }
             else if(type==='RPL') { 
-                const sel = document.getElementById('in-ph-select'), t = sel.options[sel.selectedIndex].text, d1 = document.getElementById('in-d1').value, d2 = document.getElementById('in-d2').value, isPaid = sel.options[sel.selectedIndex].getAttribute('data-paid') === 'true';
+                const sel=document.getElementById('in-ph-select'), t=sel.options[sel.selectedIndex].text, d1=document.getElementById('in-d1').value, d2=document.getElementById('in-d2').value, isPaid=sel.options[sel.selectedIndex].getAttribute('data-paid')==='true';
                 if(t && d1 && (isPaid || d2)) store.rpl.records.push({t, d1, d2, isPaid}); 
             }
             else if(type==='CPD') { 
-                const t=document.getElementById('in-t').value, d=document.getElementById('in-d').value, p=document.getElementById('in-p').value;
-                if(t&&d&&p) store.cpd.records.push({t, d, p}); 
+                const t=document.getElementById('in-t').value, d=document.getElementById('in-d').value, p=document.getElementById('in-p').value, t1=document.getElementById('in-t1').value, t2=document.getElementById('in-t2').value;
+                if(t&&d&&p&&t1&&t2) store.cpd.records.push({t, d, p, t1, t2}); 
             }
             saveData(); renderRecords(type);
         }
@@ -511,8 +614,7 @@
         function loadImg(e) { const r = new FileReader(); r.onload=()=>document.getElementById('profile-pic').src=r.result; r.readAsDataURL(e.target.files[0]); }
 
         setInterval(updateTime, 1000);
-        updateTime(); generateCalendar(); renderStats(); applyTheme();
-        document.getElementById('personal-notes').value = store.notes || "";
+        updateTime(); generateCalendar(); renderStats(); loadNotes();
     </script>
 </body>
 </html>
