@@ -307,98 +307,70 @@
             pdfData: null
         };
 
-        // --- FUNGSI PDF (BARU DIGABUNG) ---
-        function triggerPDFUpload(e) {
-            e.preventDefault();
-            document.getElementById('pdf-upload').click();
-        }
-
+        // --- PDF FUNCTIONS ---
+        function triggerPDFUpload(e) { e.preventDefault(); document.getElementById('pdf-upload').click(); }
         function savePDF(e) {
             const file = e.target.files[0];
             if (file && file.type === "application/pdf") {
                 const reader = new FileReader();
                 reader.onload = function(event) {
-                    store.pdfData = event.target.result;
-                    saveData();
-                    checkPDFStatus();
-                    alert("PDF berjaya dimuat naik!");
+                    store.pdfData = event.target.result; saveData(); checkPDFStatus(); alert("PDF berjaya dimuat naik!");
                 };
                 reader.readAsDataURL(file);
-            } else {
-                alert("Sila pilih fail PDF sahaja.");
-            }
+            } else { alert("Sila pilih fail PDF sahaja."); }
         }
-
         function openStoredPDF() {
             if (store.pdfData) {
-                const newTab = window.open();
-                newTab.document.write(`<iframe src="${store.pdfData}" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>`);
+                const base64Parts = store.pdfData.split(',');
+                const contentType = base64Parts[0].split(':')[1].split(';')[0];
+                const byteCharacters = atob(base64Parts[1]);
+                const byteArrays = [];
+                for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+                    const slice = byteCharacters.slice(offset, offset + 512);
+                    const byteNumbers = new Array(slice.length);
+                    for (let i = 0; i < slice.length; i++) { byteNumbers[i] = slice.charCodeAt(i); }
+                    byteArrays.push(new Uint8Array(byteNumbers));
+                }
+                const blob = new Blob(byteArrays, {type: contentType});
+                const blobUrl = URL.createObjectURL(blob);
+                const link = document.createElement('a'); link.href = blobUrl; link.target = '_blank'; link.click();
+                setTimeout(() => URL.revokeObjectURL(blobUrl), 100);
             }
         }
-
         function checkPDFStatus() {
             const btnPdf = document.getElementById('btn-pdf');
             const btnUpload = document.getElementById('btn-upload-pdf');
             if (store.pdfData) {
                 btnPdf.style.display = 'flex';
-                btnUpload.innerText = "🔄 TUKAR PDF";
-                btnUpload.style.background = "#222";
-                btnUpload.style.fontSize = "0.6rem";
+                btnUpload.innerText = "🔄 TUKAR PDF"; btnUpload.style.background = "#222"; btnUpload.style.fontSize = "0.6rem";
             }
         }
 
-        // --- CORE FUNCTIONS (DIKEKALKAN) ---
-        function toMY(d) {
-            if(!d) return '';
-            const p = d.split('-');
-            return p.length === 3 ? `${p[2]}/${p[1]}/${p[0]}` : d;
-        }
-
-        function saveData() {
-            localStorage.setItem('roster_ultimate_v3', JSON.stringify(store));
-            renderStats();
-            updateShiftSummary();
-        }
-
-        function saveNotes() {
-            store.notes = document.getElementById('personal-notes').value;
-            localStorage.setItem('roster_ultimate_v3', JSON.stringify(store));
-        }
-
-        function loadNotes() {
-            document.getElementById('personal-notes').value = store.notes || "";
-        }
-
-        function triggerDatePicker(id) {
-            const el = document.getElementById(id);
-            if (el && 'showPicker' in HTMLInputElement.prototype) el.showPicker();
-            else if(el) { el.focus(); el.click(); }
-        }
-
+        // --- CORE LOGIC ---
+        function toMY(d) { if(!d) return ''; const p = d.split('-'); return p.length === 3 ? `${p[2]}/${p[1]}/${p[0]}` : d; }
+        function saveData() { localStorage.setItem('roster_ultimate_v3', JSON.stringify(store)); renderStats(); updateShiftSummary(); }
+        function saveNotes() { store.notes = document.getElementById('personal-notes').value; localStorage.setItem('roster_ultimate_v3', JSON.stringify(store)); }
+        function loadNotes() { document.getElementById('personal-notes').value = store.notes || ""; }
+        function triggerDatePicker(id) { const el = document.getElementById(id); if (el && 'showPicker' in HTMLInputElement.prototype) el.showPicker(); else if(el) { el.focus(); el.click(); } }
         function updateTime() {
             const n = new Date();
             const d = String(n.getDate()).padStart(2, '0'), m = String(n.getMonth()+1).padStart(2, '0'), y = n.getFullYear();
             document.getElementById('live-clock').innerText = `${d}/${m}/${y} | ${n.toLocaleTimeString('ms-MY', {hour12:false})}`;
         }
-
         function changeMonth(dir) { currentCalDate.setMonth(currentCalDate.getMonth() + dir); generateCalendar(); }
-
         function generateCalendar() {
             const body = document.getElementById('calendar-body');
             const title = document.getElementById('cal-title');
             const months = ["Januari", "Februari", "Mac", "April", "Mei", "Jun", "Julai", "Ogos", "September", "Oktober", "November", "Disember"];
             const year = currentCalDate.getFullYear(), month = currentCalDate.getMonth();
-            title.innerText = `${months[month]} ${year}`;
-            body.innerHTML = '';
+            title.innerText = `${months[month]} ${year}`; body.innerHTML = '';
             const firstDay = new Date(year, month, 1).getDay();
             const daysInMonth = new Date(year, month + 1, 0).getDate();
-
             for(let i=0; i<firstDay; i++) body.appendChild(document.createElement('div'));
             for(let d=1; d<=daysInMonth; d++) {
                 const key = `${year}-${month+1}-${d}`;
                 const data = store.calendar[key] || {s: '-', a: ''};
-                const box = document.createElement('div');
-                box.className = 'day-box';
+                const box = document.createElement('div'); box.className = 'day-box';
                 if(new Date().toDateString() === new Date(year, month, d).toDateString()) box.classList.add('today');
                 box.onclick = () => openShiftPicker(key);
                 box.innerHTML = `<div class="date-num">${d}</div><div class="shift-text">${data.s}</div><div class="assign-text">${data.a}</div>`;
@@ -406,252 +378,151 @@
             }
             updateShiftSummary();
         }
-
         function updateShiftSummary() {
             const now = new Date(), tom = new Date(now); tom.setDate(now.getDate() + 1);
-            const getFullAssign = (short) => {
-                if (!short) return '';
-                return short.split(' / ').map(item => {
-                    if (item === 'Amb') return 'Ambulance';
-                    if (item === 'TL') return 'Team Leader';
-                    return item;
-                }).join(' / ');
-            };
+            const getFullAssign = (short) => { if (!short) return ''; return short.replace(/Amb/g, 'Ambulance').replace(/TL/g, 'Team Leader'); };
             const getS = (date) => {
                 const key = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`;
-                const d = store.calendar[key];
-                if (!d || d.s === '-') return "OFF";
-                const fullA = getFullAssign(d.a);
-                return `${d.s} ${fullA ? '@ '+fullA : ''}`;
+                const d = store.calendar[key]; if (!d || d.s === '-') return "OFF";
+                return `${d.s} ${d.a ? '@ '+getFullAssign(d.a) : ''}`;
             };
-            const summaryToday = document.getElementById('summary-today');
-            const summaryTomorrow = document.getElementById('summary-tomorrow');
-            if(summaryToday) summaryToday.innerText = getS(now);
-            if(summaryTomorrow) summaryTomorrow.innerText = getS(tom);
+            document.getElementById('summary-today').innerText = getS(now);
+            document.getElementById('summary-tomorrow').innerText = getS(tom);
         }
 
-        // --- DRUG FUNCTIONS (DIKEKALKAN) ---
+        // --- DRUG LOGIC ---
         function searchDrugs() {
             const q = document.getElementById('drug-search').value.toLowerCase();
-            const results = document.getElementById('drug-results');
-            results.innerHTML = '';
-            if(!q) return;
-            const filtered = store.drugs.filter(d => d.name.toLowerCase().includes(q));
-            filtered.forEach((d) => {
-                const realIdx = store.drugs.indexOf(d);
-                const div = document.createElement('div');
-                div.className = 'drug-item';
-                div.innerHTML = `
-                    <div class="drug-name">${d.name}</div>
-                    <div class="drug-prep-label">PREPARATION:</div>
-                    <div class="drug-prep-val">${d.prep}</div>
-                    <div style="margin-top:10px; display:flex; gap:10px;">
-                        <button onclick="event.stopPropagation(); openEditDrugSheet(${realIdx})" style="background:none; color:var(--success); border:none; font-size:0.75rem; cursor:pointer;">EDIT</button>
-                        <button onclick="event.stopPropagation(); deleteDrug(${realIdx})" style="background:none; color:var(--danger); border:none; font-size:0.75rem; cursor:pointer;">PADAM</button>
-                    </div>`;
-                results.appendChild(div);
-            });
-        }
-
-        function openAddDrugSheet() {
-            const content = document.getElementById('sheet-content');
-            document.getElementById('sheet-title').innerText = "Tambah Ubat Emergency";
-            content.innerHTML = `
-                <div id="add-drug-form">
-                    <label>Nama Medication & Dose</label>
-                    <input type="text" id="drug-name-in" placeholder="Contoh: IV Fentanyl 0.1mg/2ml" autocomplete="off">
-                    <label>Cara Preparation</label>
-                    <textarea id="drug-prep-in" placeholder="Contoh: Undiluted"></textarea>
-                    <button id="btn-save-drug" onclick="saveDrug()" style="width:100%; background:var(--primary); padding:15px; border-radius:12px; border:none; font-weight:bold; color:black; margin-top:10px; cursor:pointer;">SIMPAN</button>
-                </div>`;
-            openSheet();
-        }
-
-        function saveDrug() {
-            const nameVal = document.querySelector('#drug-name-in').value.trim();
-            const prepVal = document.querySelector('#drug-prep-in').value.trim();
-            if(nameVal && prepVal) {
-                store.drugs.push({ name: nameVal, prep: prepVal });
-                saveData();
-                closeSheet();
-                document.getElementById('drug-search').value = nameVal;
-                searchDrugs();
-            } else { alert("Sila isi semua ruangan."); }
-        }
-
-        function openEditDrugSheet(idx) {
-            const drug = store.drugs[idx];
-            const content = document.getElementById('sheet-content');
-            document.getElementById('sheet-title').innerText = "Edit Ubat";
-            content.innerHTML = `
-                <label>Nama Medication & Dose</label><input type="text" id="edit-name" value="${drug.name}">
-                <label>Cara Preparation</label><textarea id="edit-prep">${drug.prep}</textarea>
-                <button onclick="updateDrug(${idx})" style="width:100%; background:var(--primary); padding:15px; border-radius:12px; border:none; font-weight:bold; color:black; cursor:pointer;">KEMASKINI</button>`;
-            openSheet();
-        }
-
-        function updateDrug(idx) {
-            const name = document.getElementById('edit-name').value.trim(), prep = document.getElementById('edit-prep').value.trim();
-            if(name && prep) { store.drugs[idx].name = name; store.drugs[idx].prep = prep; saveData(); closeSheet(); searchDrugs(); }
-        }
-
-        function deleteDrug(idx) { if(confirm("Padam ubat ini?")) { store.drugs.splice(idx, 1); saveData(); searchDrugs(); } }
-
-        // --- SHIFT & ASSIGN FUNCTIONS (DIKEKALKAN) ---
-        function openShiftPicker(key) {
-            const content = document.getElementById('sheet-content');
-            document.getElementById('sheet-title').innerText = "Pilih Shift";
-            let html = '<div class="selection-grid">';
-            const shifts = ["M", "E", "N", "M/E", "M/N", "SD", "DO", "AL", "PH", "RPL", "TD", "ST", "WP", "MC"];
-            shifts.forEach(s => html += `<div class="select-btn" onclick="handleShift('${key}','${s}')">${s}</div>`);
-            html += `<div class="select-btn" style="background: #333;" onclick="customShiftPrompt('${key}')">Lain-lain</div><div class="select-btn btn-clear" onclick="clearShift('${key}')">KOSONGKAN</div>`;
-            content.innerHTML = html + '</div>';
-            openSheet();
-        }
-
-        function clearShift(key) { if(store.calendar[key]) { delete store.calendar[key]; saveData(); generateCalendar(); closeSheet(); } }
-        function customShiftPrompt(key) { const val = prompt("Masukkan kod shift anda:"); if(val) handleShift(key, val.toUpperCase()); }
-
-        function handleShift(key, s) {
-            const doubleShift = ["M/E", "M/N"];
-            if(doubleShift.includes(s)) openAssignPicker(key, s, 1);
-            else openAssignPicker(key, s);
-        }
-
-        function openAssignPicker(key, s, step = 0, firstA = '') {
-            const content = document.getElementById('sheet-content');
-            const title = step > 0 ? `Tugasan ${step} (${s})` : `Tugasan (${s})`;
-            document.getElementById('sheet-title').innerText = title;
-            let html = '<div class="selection-grid">';
-            ["Ambulance", "Triage", "Team Leader", "Lain-lain", "Skip"].forEach(a => {
-                if(a === 'Lain-lain') {
-                    html += `<div class="select-btn" style="background:#333" onclick="customAssignPrompt('${key}', '${s}', ${step}, '${firstA}')">Lain-lain</div>`;
-                } else {
-                    const displayA = a === 'Skip' ? '' : a;
-                    if(step === 1) html += `<div class="select-btn" onclick="openAssignPicker('${key}', '${s}', 2, '${displayA}')">${a}</div>`;
-                    else if(step === 2) {
-                        const combinedA = (firstA && displayA) ? `${firstA} / ${displayA}` : (firstA || displayA);
-                        html += `<div class="select-btn" onclick="finalizeShift('${key}','${s}','${combinedA}')">${a}</div>`;
-                    } else html += `<div class="select-btn" onclick="finalizeShift('${key}','${s}','${displayA}')">${a}</div>`;
+            const results = document.getElementById('drug-results'); results.innerHTML = ''; if(!q) return;
+            store.drugs.forEach((d, idx) => {
+                if(d.name.toLowerCase().includes(q)) {
+                    const div = document.createElement('div'); div.className = 'drug-item';
+                    div.innerHTML = `<div class="drug-name">${d.name}</div><div class="drug-prep-label">PREP:</div><div class="drug-prep-val">${d.prep}</div><div style="margin-top:10px; display:flex; gap:10px;"><button onclick="event.stopPropagation(); openEditDrugSheet(${idx})" style="background:none; color:var(--success); border:none; font-size:0.75rem;">EDIT</button><button onclick="event.stopPropagation(); deleteDrug(${idx})" style="background:none; color:var(--danger); border:none; font-size:0.75rem;">PADAM</button></div>`;
+                    results.appendChild(div);
                 }
             });
-            content.innerHTML = html + '</div>';
         }
-
-        function customAssignPrompt(key, s, step, firstA) {
-            const val = prompt("Masukkan Tugasan:");
-            if(val) {
-                if(step === 1) openAssignPicker(key, s, 2, val);
-                else if(step === 2) finalizeShift(key, s, (firstA ? firstA + ' / ' + val : val));
-                else finalizeShift(key, s, val);
-            }
-        }
-
-        function finalizeShift(key, s, a) {
-            let shortA = a.replace(/Ambulance/g, "Amb").replace(/Team Leader/g, "TL");
-            store.calendar[key] = {s, a: shortA};
-            saveData(); generateCalendar(); closeSheet();
-        }
-
-        // --- TODO, RECORDS & STATS (DIKEKALKAN) ---
-        function openTodoPopup() {
-            const val = document.getElementById('todo-input').value;
-            if(!val.trim()) return;
-            const content = document.getElementById('sheet-content');
-            document.getElementById('sheet-title').innerText = "Set Tarikh Akhir";
-            content.innerHTML = `<p>Tugasan: <b>${val}</b></p><label>Pilih Tarikh</label><input type="date" id="pop-due" onclick="triggerDatePicker('pop-due')"><button onclick="saveTodoFinal()" style="width:100%; margin-top:10px; background:var(--primary); padding:15px; border-radius:12px; border:none; font-weight:bold; color:black;">SIMPAN</button>`;
+        function openAddDrugSheet() {
+            document.getElementById('sheet-title').innerText = "Tambah Ubat";
+            document.getElementById('sheet-content').innerHTML = `<label>Nama Ubat</label><input type="text" id="drug-name-in"><label>Prep</label><textarea id="drug-prep-in"></textarea><button onclick="saveDrug()" style="width:100%; background:var(--primary); padding:15px; border-radius:12px; border:none; font-weight:bold; color:black;">SIMPAN</button>`;
             openSheet();
         }
-
-        function saveTodoFinal() {
-            const t = document.getElementById('todo-input').value, d = document.getElementById('pop-due').value;
-            store.todos.push({ t, date: d, done: false });
-            document.getElementById('todo-input').value = '';
-            saveData(); closeSheet(); renderTodos();
+        function saveDrug() {
+            const name = document.getElementById('drug-name-in').value.trim(), prep = document.getElementById('drug-prep-in').value.trim();
+            if(name && prep) { store.drugs.push({name, prep}); saveData(); closeSheet(); searchDrugs(); }
         }
+        function openEditDrugSheet(idx) {
+            const d = store.drugs[idx]; document.getElementById('sheet-title').innerText = "Edit Ubat";
+            document.getElementById('sheet-content').innerHTML = `<label>Nama Ubat</label><input type="text" id="edit-name" value="${d.name}"><label>Prep</label><textarea id="edit-prep">${d.prep}</textarea><button onclick="updateDrug(${idx})" style="width:100%; background:var(--primary); padding:15px; border-radius:12px; border:none; font-weight:bold; color:black;">KEMASKINI</button>`;
+            openSheet();
+        }
+        function updateDrug(idx) {
+            const n = document.getElementById('edit-name').value.trim(), p = document.getElementById('edit-prep').value.trim();
+            if(n && p) { store.drugs[idx].name = n; store.drugs[idx].prep = p; saveData(); closeSheet(); searchDrugs(); }
+        }
+        function deleteDrug(idx) { if(confirm("Padam?")) { store.drugs.splice(idx,1); saveData(); searchDrugs(); } }
 
-        function renderTodos() {
-            const list = document.getElementById('todo-list');
-            if(!list) return;
-            list.innerHTML = '';
-            store.todos.forEach((todo, i) => {
-                list.innerHTML += `<div class="todo-item"><input type="checkbox" style="width:20px; height:20px;" ${todo.done ? 'checked' : ''} onchange="store.todos[${i}].done=!store.todos[${i}].done; saveData(); renderTodos();"><div class="todo-text"><span class="${todo.done ? 'done' : ''}">${todo.t}</span>${todo.date ? `<br><small style="color:#666">Due: ${toMY(todo.date)}</small>` : ''}</div><button class="todo-del" onclick="store.todos.splice(${i},1); saveData(); renderTodos();">×</button></div>`;
+        // --- SHIFT PICKER ---
+        function openShiftPicker(key) {
+            document.getElementById('sheet-title').innerText = "Pilih Shift";
+            let h = '<div class="selection-grid">';
+            ["M", "E", "N", "M/E", "M/N", "SD", "DO", "AL", "PH", "RPL", "TD", "ST", "WP", "MC"].forEach(s => h += `<div class="select-btn" onclick="handleShift('${key}','${s}')">${s}</div>`);
+            h += `<div class="select-btn btn-clear" onclick="clearShift('${key}')">KOSONGKAN</div>`;
+            document.getElementById('sheet-content').innerHTML = h + '</div>';
+            openSheet();
+        }
+        function clearShift(key) { if(store.calendar[key]) { delete store.calendar[key]; saveData(); generateCalendar(); closeSheet(); } }
+        function handleShift(key, s) { if(["M/E", "M/N"].includes(s)) openAssignPicker(key, s, 1); else openAssignPicker(key, s); }
+        function openAssignPicker(key, s, step = 0, firstA = '') {
+            document.getElementById('sheet-title').innerText = `Tugasan (${s})`;
+            let h = '<div class="selection-grid">';
+            ["Ambulance", "Triage", "Team Leader", "Lain-lain", "Skip"].forEach(a => {
+                if(a === 'Lain-lain') h += `<div class="select-btn" style="background:#333" onclick="customAssignPrompt('${key}','${s}',${step},'${firstA}')">Lain-lain</div>`;
+                else {
+                    const disp = a === 'Skip' ? '' : a;
+                    if(step === 1) h += `<div class="select-btn" onclick="openAssignPicker('${key}','${s}',2,'${disp}')">${a}</div>`;
+                    else if(step === 2) h += `<div class="select-btn" onclick="finalizeShift('${key}','${s}','${(firstA && disp ? firstA + ' / ' + disp : firstA || disp)}')">${a}</div>`;
+                    else h += `<div class="select-btn" onclick="finalizeShift('${key}','${s}','${disp}')">${a}</div>`;
+                }
             });
+            document.getElementById('sheet-content').innerHTML = h + '</div>';
         }
-
-        function openRecordSheet(type) {
-            const content = document.getElementById('sheet-content');
-            document.getElementById('sheet-title').innerText = type==='AL'?'Rekod AL':(type==='RPL'?'Rekod RPL':'Mata CPD');
-            renderRecords(type);
-            openSheet();
+        function customAssignPrompt(k, s, st, f) {
+            const v = prompt("Tugasan:");
+            if(v) { if(st === 1) openAssignPicker(k, s, 2, v); else if(st === 2) finalizeShift(k, s, (f ? f + ' / ' + v : v)); else finalizeShift(k, s, v); }
         }
+        function finalizeShift(k, s, a) { store.calendar[k] = {s, a: a.replace(/Ambulance/g, "Amb").replace(/Team Leader/g, "TL")}; saveData(); generateCalendar(); closeSheet(); }
 
+        // --- RECORDS & CPD LOGIC (GABUNGAN SEMULA WAKTU CPD) ---
+        function openRecordSheet(type) { document.getElementById('sheet-title').innerText = type; renderRecords(type); openSheet(); }
         function checkPaidPH() {
-            const sel = document.getElementById('in-ph-select');
-            if(!sel) return;
+            const sel = document.getElementById('in-ph-select'); if(!sel) return;
             const isPaid = sel.options[sel.selectedIndex].getAttribute('data-paid') === 'true';
             document.getElementById('paid-alert').style.display = isPaid ? 'block' : 'none';
             document.getElementById('in-d2').style.display = isPaid ? 'none' : 'block';
             document.getElementById('label-rpl').style.display = isPaid ? 'none' : 'block';
         }
-
         function renderRecords(type) {
-            const content = document.getElementById('sheet-content');
-            let html = '<div>';
+            const content = document.getElementById('sheet-content'); let html = '<div>';
             if(type === 'AL') {
                 store.al.taken.forEach((d, i) => html += `<div class="record-card"><div>Cuti: ${toMY(d)}</div><button class="btn-delete" onclick="store.al.taken.splice(${i},1); saveData(); renderRecords('AL')">×</button></div>`);
-                html += `<label>Pilih Tarikh Cuti</label><input type="date" id="in-d" onclick="triggerDatePicker('in-d')">`;
+                html += `<label>Tarikh Cuti</label><input type="date" id="in-d" onclick="triggerDatePicker('in-d')">`;
             } else if(type === 'RPL') {
-                store.rpl.records.forEach((r, i) => html += `<div class="record-card"><div><b>${r.t} ${r.isPaid ? '<span style="color:#2ecc71">[DIBAYAR]</span>' : ''}</b><br><small>PH: ${toMY(r.d1)} ➔ RPL: ${r.isPaid ? 'TIADA' : toMY(r.d2)}</small></div><button class="btn-delete" onclick="store.rpl.records.splice(${i},1); saveData(); renderRecords('RPL')">×</button></div>`);
-                const recordedPHDates = store.rpl.records.map(r => r.d1);
-                const availablePH = ph2026.filter(p => !recordedPHDates.includes(p.d));
-                html += `
-                <div id="paid-alert" class="paid-alert">STATUS: PH DIBAYAR (TIADA RPL)</div>
-                <label>Pilih Jenis PH</label>
-                <select id="in-ph-select" onchange="document.getElementById('in-d1').value = this.value; checkPaidPH();">
-                    <option value="">-- Pilih Cuti --</option>
-                    ${availablePH.map(p => `<option value="${p.d}" data-paid="${p.paid}">${p.n}</option>`).join('')}
-                </select>
-                <label>Tarikh PH</label><input type="date" id="in-d1" readonly style="opacity:0.6">
-                <label id="label-rpl">Tarikh Ganti (RPL)</label><input type="date" id="in-d2" onclick="triggerDatePicker('in-d2')">`;
+                store.rpl.records.forEach((r, i) => html += `<div class="record-card"><div><b>${r.t}</b><br><small>${toMY(r.d1)} ➔ ${r.isPaid ? 'PAID' : toMY(r.d2)}</small></div><button class="btn-delete" onclick="store.rpl.records.splice(${i},1); saveData(); renderRecords('RPL')">×</button></div>`);
+                const recordedDates = store.rpl.records.map(r => r.d1);
+                const avPH = ph2026.filter(p => !recordedDates.includes(p.d));
+                html += `<div id="paid-alert" class="paid-alert">STATUS: PH DIBAYAR</div><label>Pilih PH</label><select id="in-ph-select" onchange="document.getElementById('in-d1').value=this.value; checkPaidPH();"><option value="">-- Pilih --</option>${avPH.map(p => `<option value="${p.d}" data-paid="${p.paid}">${p.n}</option>`).join('')}</select><input type="date" id="in-d1" hidden><label id="label-rpl">Tarikh Ganti</label><input type="date" id="in-d2" onclick="triggerDatePicker('in-d2')">`;
             } else if(type === 'CPD') {
                 store.cpd.records.forEach((r, i) => html += `<div class="record-card"><div style="flex:1"><b style="color:var(--primary)">${r.t}</b><br><small>📅 ${toMY(r.d)} | 🕒 ${r.t1} - ${r.t2}</small></div><div style="font-weight:bold; margin-right:10px; color:var(--success);">${r.p} Pts</div><button class="btn-delete" onclick="store.cpd.records.splice(${i},1); saveData(); renderRecords('CPD')">×</button></div>`);
                 html += `<label>Nama Kursus</label><input type="text" id="in-t"><label>Tarikh</label><input type="date" id="in-d" onclick="triggerDatePicker('in-d')"><div class="time-row"><div style="flex:1"><label>Mula</label><input type="time" id="in-t1"></div><div style="flex:1"><label>Tamat</label><input type="time" id="in-t2"></div></div><label>Mata</label><input type="number" id="in-p">`;
             }
-            html += `</div><button onclick="addRec('${type}')" style="width:100%; margin-top:15px; background:var(--primary); padding:15px; border-radius:12px; border:none; font-weight:bold; color:black; cursor:pointer;">SIMPAN</button>`;
+            html += `</div><button onclick="addRec('${type}')" style="width:100%; margin-top:15px; background:var(--primary); padding:15px; border-radius:12px; border:none; font-weight:bold; color:black;">SIMPAN</button>`;
             content.innerHTML = html;
         }
-
         function addRec(type) {
             if(type==='AL') { const d=document.getElementById('in-d').value; if(d) store.al.taken.push(d); }
             else if(type==='RPL') {
                 const sel=document.getElementById('in-ph-select'), t=sel.options[sel.selectedIndex].text, d1=document.getElementById('in-d1').value, d2=document.getElementById('in-d2').value, isPaid=sel.options[sel.selectedIndex].getAttribute('data-paid')==='true';
                 if(t && d1 && (isPaid || d2)) store.rpl.records.push({t, d1, d2, isPaid}); 
             }
-            else if(type==='CPD') { 
+            else if(type==='CPD') {
                 const t=document.getElementById('in-t').value, d=document.getElementById('in-d').value, p=document.getElementById('in-p').value, t1=document.getElementById('in-t1').value, t2=document.getElementById('in-t2').value;
-                if(t&&d&&p&&t1&&t2) store.cpd.records.push({t, d, p, t1, t2}); 
+                if(t && d && p && t1 && t2) store.cpd.records.push({t, d, p, t1, t2}); 
             }
             saveData(); renderRecords(type);
         }
 
+        // --- STATS & TODO ---
+        function openTodoPopup() {
+            const v = document.getElementById('todo-input').value; if(!v.trim()) return;
+            document.getElementById('sheet-title').innerText = "Set Tarikh Akhir";
+            document.getElementById('sheet-content').innerHTML = `<p>Tugasan: <b>${v}</b></p><label>Tarikh</label><input type="date" id="pop-due" onclick="triggerDatePicker('pop-due')"><button onclick="saveTodoFinal()" style="width:100%; background:var(--primary); padding:15px; border-radius:12px; border:none; font-weight:bold; color:black;">SIMPAN</button>`;
+            openSheet();
+        }
+        function saveTodoFinal() {
+            const t = document.getElementById('todo-input').value, d = document.getElementById('pop-due').value;
+            store.todos.push({ t, date: d, done: false }); document.getElementById('todo-input').value = ''; saveData(); closeSheet(); renderTodos();
+        }
+        function renderTodos() {
+            const list = document.getElementById('todo-list'); if(!list) return; list.innerHTML = '';
+            store.todos.forEach((todo, i) => {
+                list.innerHTML += `<div class="todo-item"><input type="checkbox" style="width:20px; height:20px;" ${todo.done ? 'checked' : ''} onchange="store.todos[${i}].done=!store.todos[${i}].done; saveData(); renderTodos();"><div class="todo-text"><span class="${todo.done ? 'done' : ''}">${todo.t}</span>${todo.date ? `<br><small style="color:#666">Due: ${toMY(todo.date)}</small>` : ''}</div><button class="todo-del" onclick="store.todos.splice(${i},1); saveData(); renderTodos();">×</button></div>`;
+            });
+        }
         function renderStats() {
             document.getElementById('text-al').innerText = store.al.taken.length; 
             document.getElementById('text-rpl').innerText = store.rpl.records.length;
-            const cpdPts = store.cpd.records.reduce((sum, r) => sum + Number(r.p), 0);
-            document.getElementById('text-cpd').innerText = `${cpdPts}/20`;
-            document.getElementById('bar-cpd').style.width = Math.min((cpdPts/20*100), 100)+'%';
-            renderTodos();
+            const pts = store.cpd.records.reduce((s, r) => s + Number(r.p), 0);
+            document.getElementById('text-cpd').innerText = `${pts}/20`;
+            document.getElementById('bar-cpd').style.width = Math.min((pts/20*100), 100)+'%'; renderTodos();
         }
 
         function openSheet() { document.getElementById('overlay').style.display='block'; setTimeout(()=>document.getElementById('sheet').classList.add('active'), 10); }
         function closeSheet() { document.getElementById('sheet').classList.remove('active'); setTimeout(()=>document.getElementById('overlay').style.display='none', 300); }
         function loadImg(e) { const r = new FileReader(); r.onload=()=>document.getElementById('profile-pic').src=r.result; r.readAsDataURL(e.target.files[0]); }
 
-        // --- INITIALIZATION ---
         window.addEventListener('load', checkPDFStatus);
-        setInterval(updateTime, 1000);
-        updateTime(); generateCalendar(); renderStats(); loadNotes();
+        setInterval(updateTime, 1000); updateTime(); generateCalendar(); renderStats(); loadNotes();
     </script>
 </body>
 </html>
