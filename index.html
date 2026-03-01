@@ -170,7 +170,6 @@
         }
         .time-row { display: flex; gap: 10px; }
 
-        /* --- DRUG SEARCH SECTION --- */
         .drug-list { margin-top: 10px; }
         .drug-item { 
             background: #222; padding: 15px; border-radius: 15px; margin-bottom: 8px; 
@@ -193,7 +192,6 @@
                 <div id="live-clock">--/--/---- | --:--:--</div>
             </div>
         </div>
-
         <div class="roster-title-box">
             <span class="main">ROSTER</span>
             <span class="sub">Emergency Department</span>
@@ -240,9 +238,26 @@
     </div>
 
     <div class="section">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div style="display:flex; justify-content:space-between; align-items:center; gap: 8px;">
             <h3>Emergency Drug</h3>
-            <button onclick="openAddDrugSheet()" style="background:none; border:1px solid var(--primary); color:var(--primary); border-radius:8px; padding:6px 12px; font-size:0.75rem;">+ TAMBAH</button>
+            <div style="display:flex; gap: 8px;">
+                <input type="file" id="pdf-upload" accept="application/pdf" hidden onchange="savePDF(event)">
+                
+                <button id="btn-pdf" onclick="openStoredPDF()" oncontextmenu="triggerPDFUpload(event)"
+                        style="background: #3498db; border:none; color:white; border-radius:8px; padding:6px 12px; font-size:0.75rem; font-weight:bold; display:none; align-items:center; gap:5px;">
+                        📖 NOTA PDF
+                </button>
+
+                <button id="btn-upload-pdf" onclick="triggerPDFUpload(event)"
+                        style="background: #444; border:none; color:white; border-radius:8px; padding:6px 12px; font-size:0.75rem;">
+                        📁 UPLOAD PDF
+                </button>
+
+                <button onclick="openAddDrugSheet()" 
+                        style="background:none; border:1px solid var(--primary); color:var(--primary); border-radius:8px; padding:6px 12px; font-size:0.75rem;">
+                        + TAMBAH
+                </button>
+            </div>
         </div>
         <input type="text" id="drug-search" placeholder="Cari ubat (Cth: Fentanyl)..." oninput="searchDrugs()" style="margin-top:10px;">
         <div id="drug-results" class="drug-list"></div>
@@ -288,11 +303,51 @@
             calendar: {},
             todos: [],
             notes: "",
-            drugs: [
-                { name: "IV Fentanyl 0.1mg/2ml", prep: "Undiluted" }
-            ]
+            drugs: [{ name: "IV Fentanyl 0.1mg/2ml", prep: "Undiluted" }],
+            pdfData: null
         };
 
+        // --- FUNGSI PDF (BARU DIGABUNG) ---
+        function triggerPDFUpload(e) {
+            e.preventDefault();
+            document.getElementById('pdf-upload').click();
+        }
+
+        function savePDF(e) {
+            const file = e.target.files[0];
+            if (file && file.type === "application/pdf") {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    store.pdfData = event.target.result;
+                    saveData();
+                    checkPDFStatus();
+                    alert("PDF berjaya dimuat naik!");
+                };
+                reader.readAsDataURL(file);
+            } else {
+                alert("Sila pilih fail PDF sahaja.");
+            }
+        }
+
+        function openStoredPDF() {
+            if (store.pdfData) {
+                const newTab = window.open();
+                newTab.document.write(`<iframe src="${store.pdfData}" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>`);
+            }
+        }
+
+        function checkPDFStatus() {
+            const btnPdf = document.getElementById('btn-pdf');
+            const btnUpload = document.getElementById('btn-upload-pdf');
+            if (store.pdfData) {
+                btnPdf.style.display = 'flex';
+                btnUpload.innerText = "🔄 TUKAR PDF";
+                btnUpload.style.background = "#222";
+                btnUpload.style.fontSize = "0.6rem";
+            }
+        }
+
+        // --- CORE FUNCTIONS (DIKEKALKAN) ---
         function toMY(d) {
             if(!d) return '';
             const p = d.split('-');
@@ -375,6 +430,7 @@
             if(summaryTomorrow) summaryTomorrow.innerText = getS(tom);
         }
 
+        // --- DRUG FUNCTIONS (DIKEKALKAN) ---
         function searchDrugs() {
             const q = document.getElementById('drug-search').value.toLowerCase();
             const results = document.getElementById('drug-results');
@@ -392,8 +448,7 @@
                     <div style="margin-top:10px; display:flex; gap:10px;">
                         <button onclick="event.stopPropagation(); openEditDrugSheet(${realIdx})" style="background:none; color:var(--success); border:none; font-size:0.75rem; cursor:pointer;">EDIT</button>
                         <button onclick="event.stopPropagation(); deleteDrug(${realIdx})" style="background:none; color:var(--danger); border:none; font-size:0.75rem; cursor:pointer;">PADAM</button>
-                    </div>
-                `;
+                    </div>`;
                 results.appendChild(div);
             });
         }
@@ -408,8 +463,7 @@
                     <label>Cara Preparation</label>
                     <textarea id="drug-prep-in" placeholder="Contoh: Undiluted"></textarea>
                     <button id="btn-save-drug" onclick="saveDrug()" style="width:100%; background:var(--primary); padding:15px; border-radius:12px; border:none; font-weight:bold; color:black; margin-top:10px; cursor:pointer;">SIMPAN</button>
-                </div>
-            `;
+                </div>`;
             openSheet();
         }
 
@@ -418,7 +472,7 @@
             const prepVal = document.querySelector('#drug-prep-in').value.trim();
             if(nameVal && prepVal) {
                 store.drugs.push({ name: nameVal, prep: prepVal });
-                localStorage.setItem('roster_ultimate_v3', JSON.stringify(store));
+                saveData();
                 closeSheet();
                 document.getElementById('drug-search').value = nameVal;
                 searchDrugs();
@@ -432,8 +486,7 @@
             content.innerHTML = `
                 <label>Nama Medication & Dose</label><input type="text" id="edit-name" value="${drug.name}">
                 <label>Cara Preparation</label><textarea id="edit-prep">${drug.prep}</textarea>
-                <button onclick="updateDrug(${idx})" style="width:100%; background:var(--primary); padding:15px; border-radius:12px; border:none; font-weight:bold; color:black; cursor:pointer;">KEMASKINI</button>
-            `;
+                <button onclick="updateDrug(${idx})" style="width:100%; background:var(--primary); padding:15px; border-radius:12px; border:none; font-weight:bold; color:black; cursor:pointer;">KEMASKINI</button>`;
             openSheet();
         }
 
@@ -444,6 +497,7 @@
 
         function deleteDrug(idx) { if(confirm("Padam ubat ini?")) { store.drugs.splice(idx, 1); saveData(); searchDrugs(); } }
 
+        // --- SHIFT & ASSIGN FUNCTIONS (DIKEKALKAN) ---
         function openShiftPicker(key) {
             const content = document.getElementById('sheet-content');
             document.getElementById('sheet-title').innerText = "Pilih Shift";
@@ -460,7 +514,6 @@
 
         function handleShift(key, s) {
             const doubleShift = ["M/E", "M/N"];
-            // Semua shift kini mempunyai pilihan tugasan
             if(doubleShift.includes(s)) openAssignPicker(key, s, 1);
             else openAssignPicker(key, s);
         }
@@ -500,6 +553,7 @@
             saveData(); generateCalendar(); closeSheet();
         }
 
+        // --- TODO, RECORDS & STATS (DIKEKALKAN) ---
         function openTodoPopup() {
             const val = document.getElementById('todo-input').value;
             if(!val.trim()) return;
@@ -594,6 +648,8 @@
         function closeSheet() { document.getElementById('sheet').classList.remove('active'); setTimeout(()=>document.getElementById('overlay').style.display='none', 300); }
         function loadImg(e) { const r = new FileReader(); r.onload=()=>document.getElementById('profile-pic').src=r.result; r.readAsDataURL(e.target.files[0]); }
 
+        // --- INITIALIZATION ---
+        window.addEventListener('load', checkPDFStatus);
         setInterval(updateTime, 1000);
         updateTime(); generateCalendar(); renderStats(); loadNotes();
     </script>
