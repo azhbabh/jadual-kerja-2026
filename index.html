@@ -21,8 +21,15 @@
             background-color: var(--bg);
             color: var(--text);
             margin: 0;
-            padding: 15px 15px 80px 15px;
+            padding: 10px 10px 100px 10px; 
             -webkit-tap-highlight-color: transparent;
+        }
+
+        .stat-card:active, .day-box:active, .select-btn:active, .nav-btn:active, button:active {
+            background-color: var(--primary) !important;
+            color: black !important;
+            transform: scale(0.95);
+            transition: 0.1s;
         }
 
         /* --- PROFILE HEADER --- */
@@ -103,24 +110,24 @@
 
         .shift-summary-card {
             background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
-            padding: 15px 20px; border-radius: 24px; border: 1px solid #333;
+            padding: 20px; border-radius: 24px; border: 1px solid #333;
             margin-bottom: 20px; display: flex; flex-direction: column; gap: 8px;
         }
         .summary-item { display: flex; justify-content: space-between; align-items: center; }
         .summary-label { font-size: 0.8rem; color: var(--text-dim); text-transform: uppercase; font-weight: bold; }
-        .summary-val { font-size: 0.95rem; font-weight: bold; color: var(--primary); }
+        .summary-val { font-size: 1rem; font-weight: bold; color: var(--primary); }
         .summary-val.today { color: var(--success); }
 
         .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 25px; }
-        .stat-card { background: var(--card-bg); padding: 12px 5px; border-radius: 18px; text-align: center; border: 1px solid #222; cursor: pointer; text-decoration: none; color: inherit; }
-        .stat-card .val { font-size: 1.1rem; font-weight: 800; margin: 3px 0; }
+        .stat-card { background: var(--card-bg); padding: 15px 5px; border-radius: 18px; text-align: center; border: 1px solid #222; cursor: pointer; text-decoration: none; color: inherit; }
+        .stat-card .val { font-size: 1.15rem; font-weight: 800; margin: 3px 0; }
         .stat-card small { font-size: 0.65rem; color: var(--text-dim); font-weight: bold; }
         .progress-container { width: 80%; height: 3px; background: #222; border-radius: 10px; overflow: hidden; margin: 0 auto; }
         .progress-bar { height: 100%; background: var(--primary); transition: width 0.5s; }
 
-        .section { background: var(--card-bg); padding: 18px; border-radius: 24px; border: 1px solid #222; margin-bottom: 20px; }
+        .section { background: var(--card-bg); padding: 20px; border-radius: 24px; border: 1px solid #222; margin-bottom: 20px; }
         .cal-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .nav-btn { background: #222; border: none; color: var(--primary); padding: 8px 15px; border-radius: 10px; font-weight: bold; }
+        .nav-btn { background: #222; border: none; color: var(--primary); padding: 10px 18px; border-radius: 10px; font-weight: bold; }
         .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
         .day-label { text-align: center; font-size: 0.75rem; font-weight: 800; color: #444; margin-bottom: 5px; }
         
@@ -149,13 +156,13 @@
         }
         .bottom-sheet.active { bottom: 0; }
 
-        .record-card, .todo-item { background: #222; padding: 12px; border-radius: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border-left: 3px solid var(--primary); }
-        .todo-text { flex: 1; font-size: 0.9rem; margin-left: 10px; color: #eee; }
+        .record-card, .todo-item { background: #222; padding: 15px; border-radius: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border-left: 3px solid var(--primary); }
+        .todo-text { flex: 1; font-size: 0.95rem; margin-left: 10px; color: #eee; }
         .todo-text span.done { text-decoration: line-through; color: #555 !important; }
         .btn-delete, .todo-del { color: var(--danger); background: none; border: none; font-size: 1.4rem; cursor: pointer; padding: 5px; }
         
         .selection-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 15px; }
-        .select-btn { background: #252525; padding: 15px; border-radius: 15px; text-align: center; font-weight: bold; border: 1px solid #333; color: white; }
+        .select-btn { background: #252525; padding: 18px 5px; border-radius: 15px; text-align: center; font-weight: bold; border: 1px solid #333; color: white; font-size: 0.9rem; }
         .btn-clear { background: var(--danger) !important; color: white !important; }
 
         .paid-alert {
@@ -181,7 +188,7 @@
             <img id="profile-pic" src="https://ui-avatars.com/api/?name=Ahmad+Zilalul&background=d4af37&color=000" class="profile-img" onclick="document.getElementById('upload').click()">
             <input type="file" id="upload" hidden onchange="loadImg(event)">
             <div class="profile-info">
-                <h2>AHMAD ZILALUL HILMI BIN ADNAN</h2>
+                <h2>AHMAD ZILALUL HILMI ADNAN</h2>
                 <div class="staff-id">Staff No: 0656</div>
                 <div id="live-clock">--/--/---- | --:--:--</div>
             </div>
@@ -235,7 +242,7 @@
     <div class="section">
         <div style="display:flex; justify-content:space-between; align-items:center;">
             <h3>Emergency Drug</h3>
-            <button onclick="openAddDrugSheet()" style="background:none; border:1px solid var(--primary); color:var(--primary); border-radius:8px; padding:4px 10px; font-size:0.7rem;">+ TAMBAH</button>
+            <button onclick="openAddDrugSheet()" style="background:none; border:1px solid var(--primary); color:var(--primary); border-radius:8px; padding:6px 12px; font-size:0.75rem;">+ TAMBAH</button>
         </div>
         <input type="text" id="drug-search" placeholder="Cari ubat (Cth: Fentanyl)..." oninput="searchDrugs()" style="margin-top:10px;">
         <div id="drug-results" class="drug-list"></div>
@@ -362,17 +369,17 @@
                 const fullA = getFullAssign(d.a);
                 return `${d.s} ${fullA ? '@ '+fullA : ''}`;
             };
-            document.getElementById('summary-today').innerText = getS(now);
-            document.getElementById('summary-tomorrow').innerText = getS(tom);
+            const summaryToday = document.getElementById('summary-today');
+            const summaryTomorrow = document.getElementById('summary-tomorrow');
+            if(summaryToday) summaryToday.innerText = getS(now);
+            if(summaryTomorrow) summaryTomorrow.innerText = getS(tom);
         }
 
-        /* --- DRUG FUNCTIONS (PERBAIKAN UTAMA) --- */
         function searchDrugs() {
             const q = document.getElementById('drug-search').value.toLowerCase();
             const results = document.getElementById('drug-results');
             results.innerHTML = '';
             if(!q) return;
-
             const filtered = store.drugs.filter(d => d.name.toLowerCase().includes(q));
             filtered.forEach((d) => {
                 const realIdx = store.drugs.indexOf(d);
@@ -383,8 +390,8 @@
                     <div class="drug-prep-label">PREPARATION:</div>
                     <div class="drug-prep-val">${d.prep}</div>
                     <div style="margin-top:10px; display:flex; gap:10px;">
-                        <button onclick="event.stopPropagation(); openEditDrugSheet(${realIdx})" style="background:none; color:var(--success); border:none; font-size:0.7rem; cursor:pointer;">EDIT</button>
-                        <button onclick="event.stopPropagation(); deleteDrug(${realIdx})" style="background:none; color:var(--danger); border:none; font-size:0.7rem; cursor:pointer;">PADAM</button>
+                        <button onclick="event.stopPropagation(); openEditDrugSheet(${realIdx})" style="background:none; color:var(--success); border:none; font-size:0.75rem; cursor:pointer;">EDIT</button>
+                        <button onclick="event.stopPropagation(); deleteDrug(${realIdx})" style="background:none; color:var(--danger); border:none; font-size:0.75rem; cursor:pointer;">PADAM</button>
                     </div>
                 `;
                 results.appendChild(div);
@@ -407,31 +414,15 @@
         }
 
         function saveDrug() {
-            // Menggunakan selector yang lebih spesifik untuk mengelakkan ralat null
             const nameVal = document.querySelector('#drug-name-in').value.trim();
             const prepVal = document.querySelector('#drug-prep-in').value.trim();
-
             if(nameVal && prepVal) {
-                store.drugs.push({
-                    name: nameVal,
-                    prep: prepVal
-                });
-                
-                // Simpan ke LocalStorage
+                store.drugs.push({ name: nameVal, prep: prepVal });
                 localStorage.setItem('roster_ultimate_v3', JSON.stringify(store));
-                
-                // Tutup modal
                 closeSheet();
-                
-                // Paparkan ubat yang baru disimpan dalam carian
                 document.getElementById('drug-search').value = nameVal;
                 searchDrugs();
-                
-                // Makluman visual (optional)
-                console.log("Drug saved successfully");
-            } else {
-                alert("Sila isi semua ruangan (Nama & Cara Preparation).");
-            }
+            } else { alert("Sila isi semua ruangan."); }
         }
 
         function openEditDrugSheet(idx) {
@@ -447,23 +438,12 @@
         }
 
         function updateDrug(idx) {
-            const name = document.getElementById('edit-name').value.trim();
-            const prep = document.getElementById('edit-prep').value.trim();
-            if(name && prep) {
-                store.drugs[idx].name = name;
-                store.drugs[idx].prep = prep;
-                saveData(); closeSheet(); searchDrugs();
-            }
+            const name = document.getElementById('edit-name').value.trim(), prep = document.getElementById('edit-prep').value.trim();
+            if(name && prep) { store.drugs[idx].name = name; store.drugs[idx].prep = prep; saveData(); closeSheet(); searchDrugs(); }
         }
 
-        function deleteDrug(idx) {
-            if(confirm("Padam ubat ini dari rekod?")) {
-                store.drugs.splice(idx, 1);
-                saveData(); searchDrugs();
-            }
-        }
+        function deleteDrug(idx) { if(confirm("Padam ubat ini?")) { store.drugs.splice(idx, 1); saveData(); searchDrugs(); } }
 
-        /* --- OTHER CORE FUNCTIONS --- */
         function openShiftPicker(key) {
             const content = document.getElementById('sheet-content');
             document.getElementById('sheet-title').innerText = "Pilih Shift";
@@ -479,11 +459,10 @@
         function customShiftPrompt(key) { const val = prompt("Masukkan kod shift anda:"); if(val) handleShift(key, val.toUpperCase()); }
 
         function handleShift(key, s) {
-            const hasAssign = ["M", "E", "N", "SD"];
             const doubleShift = ["M/E", "M/N"];
+            // Semua shift kini mempunyai pilihan tugasan
             if(doubleShift.includes(s)) openAssignPicker(key, s, 1);
-            else if(hasAssign.includes(s)) openAssignPicker(key, s);
-            else { store.calendar[key] = {s, a:''}; saveData(); generateCalendar(); closeSheet(); }
+            else openAssignPicker(key, s);
         }
 
         function openAssignPicker(key, s, step = 0, firstA = '') {
@@ -491,15 +470,28 @@
             const title = step > 0 ? `Tugasan ${step} (${s})` : `Tugasan (${s})`;
             document.getElementById('sheet-title').innerText = title;
             let html = '<div class="selection-grid">';
-            ["Ambulance", "Triage", "Team Leader", "Skip"].forEach(a => {
-                const displayA = a === 'Skip' ? '' : a;
-                if(step === 1) html += `<div class="select-btn" onclick="openAssignPicker('${key}', '${s}', 2, '${displayA}')">${a}</div>`;
-                else if(step === 2) {
-                    const combinedA = (firstA && displayA) ? `${firstA} / ${displayA}` : (firstA || displayA);
-                    html += `<div class="select-btn" onclick="finalizeShift('${key}','${s}','${combinedA}')">${a}</div>`;
-                } else html += `<div class="select-btn" onclick="finalizeShift('${key}','${s}','${displayA}')">${a}</div>`;
+            ["Ambulance", "Triage", "Team Leader", "Lain-lain", "Skip"].forEach(a => {
+                if(a === 'Lain-lain') {
+                    html += `<div class="select-btn" style="background:#333" onclick="customAssignPrompt('${key}', '${s}', ${step}, '${firstA}')">Lain-lain</div>`;
+                } else {
+                    const displayA = a === 'Skip' ? '' : a;
+                    if(step === 1) html += `<div class="select-btn" onclick="openAssignPicker('${key}', '${s}', 2, '${displayA}')">${a}</div>`;
+                    else if(step === 2) {
+                        const combinedA = (firstA && displayA) ? `${firstA} / ${displayA}` : (firstA || displayA);
+                        html += `<div class="select-btn" onclick="finalizeShift('${key}','${s}','${combinedA}')">${a}</div>`;
+                    } else html += `<div class="select-btn" onclick="finalizeShift('${key}','${s}','${displayA}')">${a}</div>`;
+                }
             });
             content.innerHTML = html + '</div>';
+        }
+
+        function customAssignPrompt(key, s, step, firstA) {
+            const val = prompt("Masukkan Tugasan:");
+            if(val) {
+                if(step === 1) openAssignPicker(key, s, 2, val);
+                else if(step === 2) finalizeShift(key, s, (firstA ? firstA + ' / ' + val : val));
+                else finalizeShift(key, s, val);
+            }
         }
 
         function finalizeShift(key, s, a) {
@@ -526,6 +518,7 @@
 
         function renderTodos() {
             const list = document.getElementById('todo-list');
+            if(!list) return;
             list.innerHTML = '';
             store.todos.forEach((todo, i) => {
                 list.innerHTML += `<div class="todo-item"><input type="checkbox" style="width:20px; height:20px;" ${todo.done ? 'checked' : ''} onchange="store.todos[${i}].done=!store.todos[${i}].done; saveData(); renderTodos();"><div class="todo-text"><span class="${todo.done ? 'done' : ''}">${todo.t}</span>${todo.date ? `<br><small style="color:#666">Due: ${toMY(todo.date)}</small>` : ''}</div><button class="todo-del" onclick="store.todos.splice(${i},1); saveData(); renderTodos();">×</button></div>`;
@@ -568,20 +561,8 @@
                 <label>Tarikh PH</label><input type="date" id="in-d1" readonly style="opacity:0.6">
                 <label id="label-rpl">Tarikh Ganti (RPL)</label><input type="date" id="in-d2" onclick="triggerDatePicker('in-d2')">`;
             } else if(type === 'CPD') {
-                store.cpd.records.forEach((r, i) => html += `
-                    <div class="record-card">
-                        <div style="flex:1">
-                            <b style="color:var(--primary)">${r.t}</b><br>
-                            <small>📅 ${toMY(r.d)} | 🕒 ${r.t1} - ${r.t2}</small>
-                        </div>
-                        <div style="font-weight:bold; margin-right:10px; color:var(--success);">${r.p} Pts</div>
-                        <button class="btn-delete" onclick="store.cpd.records.splice(${i},1); saveData(); renderRecords('CPD')">×</button>
-                    </div>`);
-                html += `
-                <label>Nama Kursus</label><input type="text" id="in-t">
-                <label>Tarikh</label><input type="date" id="in-d" onclick="triggerDatePicker('in-d')">
-                <div class="time-row"><div style="flex:1"><label>Mula</label><input type="time" id="in-t1"></div><div style="flex:1"><label>Tamat</label><input type="time" id="in-t2"></div></div>
-                <label>Mata</label><input type="number" id="in-p">`;
+                store.cpd.records.forEach((r, i) => html += `<div class="record-card"><div style="flex:1"><b style="color:var(--primary)">${r.t}</b><br><small>📅 ${toMY(r.d)} | 🕒 ${r.t1} - ${r.t2}</small></div><div style="font-weight:bold; margin-right:10px; color:var(--success);">${r.p} Pts</div><button class="btn-delete" onclick="store.cpd.records.splice(${i},1); saveData(); renderRecords('CPD')">×</button></div>`);
+                html += `<label>Nama Kursus</label><input type="text" id="in-t"><label>Tarikh</label><input type="date" id="in-d" onclick="triggerDatePicker('in-d')"><div class="time-row"><div style="flex:1"><label>Mula</label><input type="time" id="in-t1"></div><div style="flex:1"><label>Tamat</label><input type="time" id="in-t2"></div></div><label>Mata</label><input type="number" id="in-p">`;
             }
             html += `</div><button onclick="addRec('${type}')" style="width:100%; margin-top:15px; background:var(--primary); padding:15px; border-radius:12px; border:none; font-weight:bold; color:black; cursor:pointer;">SIMPAN</button>`;
             content.innerHTML = html;
@@ -589,7 +570,7 @@
 
         function addRec(type) {
             if(type==='AL') { const d=document.getElementById('in-d').value; if(d) store.al.taken.push(d); }
-            else if(type==='RPL') { 
+            else if(type==='RPL') {
                 const sel=document.getElementById('in-ph-select'), t=sel.options[sel.selectedIndex].text, d1=document.getElementById('in-d1').value, d2=document.getElementById('in-d2').value, isPaid=sel.options[sel.selectedIndex].getAttribute('data-paid')==='true';
                 if(t && d1 && (isPaid || d2)) store.rpl.records.push({t, d1, d2, isPaid}); 
             }
