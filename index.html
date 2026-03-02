@@ -26,6 +26,9 @@
             -webkit-tap-highlight-color: transparent;
         }
 
+        /* --- GLOBAL TITLES (KECIL) --- */
+        h3 { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: var(--primary); margin-bottom: 12px; }
+
         /* --- GOLD GLOW EFFECTS --- */
         .stat-card, .shift-summary-card, .drug-item {
             box-shadow: var(--gold-shadow);
@@ -42,17 +45,10 @@
 
         /* --- PROFILE HEADER --- */
         .profile-header {
-            display: flex; 
-            align-items: center; 
-            justify-content: space-between; 
-            background: var(--card-bg);
-            padding: 20px; 
-            border-radius: 24px; 
-            border: 1px solid #222; 
-            margin-bottom: 12px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: var(--gold-shadow);
+            display: flex; align-items: center; justify-content: space-between; 
+            background: var(--card-bg); padding: 20px; border-radius: 24px; 
+            border: 1px solid #222; margin-bottom: 12px; position: relative;
+            overflow: hidden; box-shadow: var(--gold-shadow);
         }
 
         .profile-left { display: flex; align-items: center; gap: 15px; }
@@ -63,79 +59,67 @@
         }
 
         .profile-info h2 { 
-            margin: 0; font-size: 1.05rem; color: #fff; 
+            margin: 0; font-size: 1rem; color: #fff; 
             text-transform: uppercase; letter-spacing: 0.5px;
         }
 
-        .staff-id { font-size: 0.8rem; color: var(--text-dim); margin-bottom: 2px; }
-        #live-clock { font-size: 0.85rem; color: var(--primary); font-weight: bold; }
+        .staff-id { font-size: 0.75rem; color: var(--text-dim); margin-bottom: 2px; }
+        #live-clock { font-size: 0.8rem; color: var(--primary); font-weight: bold; }
 
-        .roster-title-box {
-            text-align: right; border-left: 1px solid #333; padding-left: 15px;
-        }
-
+        .roster-title-box { text-align: right; border-left: 1px solid #333; padding-left: 15px; }
         .roster-title-box .main {
-            font-size: 1.5rem; font-weight: 900; display: block; line-height: 1;
-            text-transform: uppercase; letter-spacing: 1px;
-            background: linear-gradient(to bottom, #fcf6ba 0%, #d4af37 40%, #aa771c 100%);
+            font-size: 1.4rem; font-weight: 900; display: block; line-height: 1;
+            text-transform: uppercase; background: linear-gradient(to bottom, #fcf6ba 0%, #d4af37 40%, #aa771c 100%);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 8px var(--primary-glow);
-            animation: shine 3s infinite linear;
+            text-shadow: 0 0 8px var(--primary-glow); animation: shine 3s infinite linear;
         }
 
-        .roster-title-box .sub {
-            font-size: 0.55rem; color: #fff; letter-spacing: 2px;
-            text-transform: uppercase; display: block; margin-top: 3px; opacity: 0.7;
-        }
+        .roster-title-box .sub { font-size: 0.5rem; color: #fff; letter-spacing: 2px; text-transform: uppercase; display: block; margin-top: 3px; opacity: 0.7; }
 
-        @keyframes shine {
-            0% { filter: brightness(1); }
-            50% { filter: brightness(1.4); }
-            100% { filter: brightness(1); }
-        }
+        @keyframes shine { 0% { filter: brightness(1); } 50% { filter: brightness(1.4); } 100% { filter: brightness(1); } }
 
         .shift-summary-card {
             background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
-            padding: 20px; border-radius: 24px; border: 1px solid #333;
-            margin-bottom: 20px; display: flex; flex-direction: column; gap: 8px;
+            padding: 15px; border-radius: 24px; border: 1px solid #333;
+            margin-bottom: 15px; display: flex; flex-direction: column; gap: 6px;
         }
         .summary-item { display: flex; justify-content: space-between; align-items: center; }
-        .summary-label { font-size: 0.8rem; color: var(--text-dim); text-transform: uppercase; font-weight: bold; }
-        .summary-val { font-size: 1rem; font-weight: bold; color: var(--primary); }
+        .summary-label { font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase; font-weight: bold; }
+        .summary-val { font-size: 0.9rem; font-weight: bold; color: var(--primary); }
         .summary-val.today { color: var(--success); }
 
-        .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 12px; }
-        .stat-card { background: var(--card-bg); padding: 15px 5px; border-radius: 18px; text-align: center; border: 1px solid #222; cursor: pointer; text-decoration: none; color: inherit; }
-        .stat-card .val { font-size: 1.15rem; font-weight: 800; margin: 3px 0; }
-        .stat-card small { font-size: 0.65rem; color: var(--text-dim); font-weight: bold; }
-        .progress-container { width: 80%; height: 3px; background: #222; border-radius: 10px; overflow: hidden; margin: 0 auto; }
+        .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 10px; }
+        .stat-card { background: var(--card-bg); padding: 12px 4px; border-radius: 18px; text-align: center; border: 1px solid #222; cursor: pointer; text-decoration: none; color: inherit; }
+        .stat-card .val { font-size: 1rem; font-weight: 800; margin: 2px 0; }
+        .stat-card small { font-size: 0.6rem; color: var(--text-dim); font-weight: bold; }
+        .progress-container { width: 80%; height: 2px; background: #222; border-radius: 10px; overflow: hidden; margin: 0 auto; }
         .progress-bar { height: 100%; background: var(--primary); transition: width 0.5s; }
 
-        /* Row 2 Stats for N-Counter & iLogin */
-        .stats-row-sub { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 25px; }
+        .stats-row-sub { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 20px; }
 
-        .section { background: var(--card-bg); padding: 20px; border-radius: 24px; border: 1px solid #222; margin-bottom: 20px; box-shadow: var(--gold-shadow); }
-        .cal-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .nav-btn { background: #222; border: none; color: var(--primary); padding: 10px 18px; border-radius: 10px; font-weight: bold; }
-        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
-        .day-label { text-align: center; font-size: 0.75rem; font-weight: 800; color: #444; margin-bottom: 5px; }
+        .section { background: var(--card-bg); padding: 15px; border-radius: 20px; border: 1px solid #222; margin-bottom: 15px; box-shadow: var(--gold-shadow); }
+        .cal-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .nav-btn { background: #222; border: none; color: var(--primary); padding: 8px 15px; border-radius: 10px; font-weight: bold; font-size: 0.8rem; }
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; }
+        .day-label { text-align: center; font-size: 0.65rem; font-weight: 800; color: #444; margin-bottom: 5px; }
         
         .day-box {
-            aspect-ratio: 1; background: #111; border-radius: 12px; display: flex; flex-direction: column;
+            aspect-ratio: 1; background: #111; border-radius: 10px; display: flex; flex-direction: column;
             align-items: center; justify-content: center; border: 1px solid #1a1a1a; position: relative; cursor: pointer;
         }
-        .day-box.today { border: 2px solid var(--primary); box-shadow: 0 0 10px var(--primary); }
-        .day-box .date-num { position: absolute; top: 4px; left: 6px; font-size: 0.7rem; color: #777; }
-        .day-box .shift-text { font-size: 1.15rem; font-weight: 900; }
-        .day-box .assign-text { font-size: 0.45rem; color: var(--primary); font-weight: bold; text-align: center; width: 95%; overflow: hidden; white-space: nowrap; }
+        .day-box.today { border: 1.5px solid var(--primary); box-shadow: 0 0 10px var(--primary); }
+        .day-box .date-num { position: absolute; top: 3px; left: 5px; font-size: 0.6rem; color: #777; }
+        .day-box .shift-text { font-size: 1rem; font-weight: 900; }
+        .day-box .assign-text { font-size: 0.4rem; color: var(--primary); font-weight: bold; text-align: center; width: 95%; overflow: hidden; white-space: nowrap; }
 
-        input, select, textarea { 
-            background: #252525; border: 1px solid #333; color: white; padding: 14px; 
-            border-radius: 12px; width: 100%; box-sizing: border-box; margin-bottom: 10px; 
-            font-family: inherit; font-size: 1rem; 
+        /* --- KECILKAN INPUT & TEKS --- */
+        input, select { background: #252525; border: 1px solid #333; color: white; padding: 10px; border-radius: 10px; width: 100%; font-size: 0.85rem; margin-bottom: 8px; }
+        textarea { 
+            background: #252525; border: 1px solid #333; color: white; padding: 12px; 
+            border-radius: 12px; width: 100%; box-sizing: border-box; 
+            font-family: inherit; font-size: 0.8rem; height: 120px; resize: none; line-height: 1.4;
         }
-        textarea { resize: none; height: 100px; }
-        label { font-size: 0.75rem; color: var(--primary); display: block; margin-top: 5px; font-weight: bold; text-transform: uppercase; }
+        label { font-size: 0.65rem; color: var(--primary); display: block; margin-top: 4px; font-weight: bold; text-transform: uppercase; }
 
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; }
         .bottom-sheet { 
@@ -145,28 +129,22 @@
         }
         .bottom-sheet.active { bottom: 0; }
 
-        .record-card, .todo-item { background: #222; padding: 15px; border-radius: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border-left: 3px solid var(--primary); }
-        .todo-text { flex: 1; font-size: 0.95rem; margin-left: 10px; color: #eee; }
+        .record-card { background: #222; padding: 12px; border-radius: 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; border-left: 3px solid var(--primary); font-size: 0.8rem; }
+        
+        /* --- KECILKAN TULISAN TODO --- */
+        .todo-item { background: #222; padding: 10px; border-radius: 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; border-left: 3px solid var(--primary); }
+        .todo-text { flex: 1; font-size: 0.85rem; margin-left: 10px; color: #eee; line-height: 1.3; }
         .todo-text span.done { text-decoration: line-through; color: #555 !important; }
-        .btn-delete, .todo-del { color: var(--danger); background: none; border: none; font-size: 1.4rem; cursor: pointer; padding: 5px; }
+        .todo-del { color: var(--danger); background: none; border: none; font-size: 1.2rem; cursor: pointer; padding: 0 5px; }
         
         .selection-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 15px; }
-        .select-btn { background: #252525; padding: 18px 5px; border-radius: 15px; text-align: center; font-weight: bold; border: 1px solid #333; color: white; font-size: 0.9rem; }
-        .btn-clear { background: var(--danger) !important; color: white !important; }
+        .select-btn { background: #252525; padding: 15px 5px; border-radius: 15px; text-align: center; font-weight: bold; border: 1px solid #333; color: white; font-size: 0.85rem; }
 
-        .paid-alert {
-            background: rgba(46, 204, 113, 0.1); color: var(--success); padding: 10px; border-radius: 8px; font-size: 0.8rem; margin-bottom: 10px; text-align: center; border: 1px solid var(--success); display: none;
-        }
-        .time-row { display: flex; gap: 10px; }
-
-        .drug-list { margin-top: 10px; }
-        .drug-item { 
-            background: #222; padding: 15px; border-radius: 15px; margin-bottom: 8px; 
-            border: 1px solid #333; cursor: pointer; transition: 0.2s;
-        }
-        .drug-name { font-weight: bold; color: var(--primary); font-size: 1rem; }
-        .drug-prep-label { font-size: 0.7rem; color: #777; text-transform: uppercase; margin-top: 5px; }
-        .drug-prep-val { font-size: 0.9rem; color: #fff; }
+        /* --- KECILKAN TULISAN DRUG --- */
+        .drug-item { background: #222; padding: 12px; border-radius: 15px; margin-bottom: 8px; border: 1px solid #333; cursor: pointer; }
+        .drug-name { font-weight: bold; color: var(--primary); font-size: 0.85rem; margin-bottom: 4px; }
+        .drug-prep-label { font-size: 0.6rem; color: #777; text-transform: uppercase; }
+        .drug-prep-val { font-size: 0.8rem; color: #fff; white-space: pre-wrap; line-height: 1.4; }
     </style>
 </head>
 <body>
@@ -176,7 +154,7 @@
             <img id="profile-pic" src="https://ui-avatars.com/api/?name=Ahmad+Zilalul&background=d4af37&color=000" class="profile-img" onclick="document.getElementById('upload').click()">
             <input type="file" id="upload" hidden onchange="loadImg(event)">
             <div class="profile-info">
-                <h2>AHMAD ZILALUL HILMI BIN ADNAN</h2>
+                <h2>AHMAD ZILALUL HILMI ADNAN</h2>
                 <div class="staff-id">Staff No: 0656</div>
                 <div id="live-clock">--/--/---- | --:--:--</div>
             </div>
@@ -204,7 +182,7 @@
         </div>
         <div class="stat-card" style="cursor:default;">
             <small>Shift Malam</small><div class="val" id="text-night-count" style="color:var(--danger)">0</div>
-            <div style="font-size:0.5rem; color:#555;">BULAN INI</div>
+            <div style="font-size:0.45rem; color:#555;">BULAN INI</div>
         </div>
         <div class="stat-card" onclick="openRecordSheet('CPD')">
             <small>CPD Pts</small><div class="val" id="text-cpd">0/20</div>
@@ -213,13 +191,13 @@
     </div>
 
     <div class="stats-row-sub">
-        <a href="https://www.iloginhr.com/" target="_blank" class="stat-card" style="display:flex; align-items:center; justify-content:center; gap:10px; padding:10px;">
-            <div style="font-size: 1.2rem;">🌐</div>
-            <div style="text-align:left;"><small style="display:block">i-LoginHR</small><b style="color:#3498db; font-size:0.7rem;">BUKA PORTAL</b></div>
+        <a href="https://www.iloginhr.com/" target="_blank" class="stat-card" style="display:flex; align-items:center; justify-content:center; gap:8px; padding:8px;">
+            <div style="font-size: 1rem;">🌐</div>
+            <div style="text-align:left;"><small style="display:block">i-LoginHR</small><b style="color:#3498db; font-size:0.6rem;">BUKA PORTAL</b></div>
         </a>
-        <div class="stat-card" onclick="backupData()" style="display:flex; align-items:center; justify-content:center; gap:10px; padding:10px;">
-            <div style="font-size: 1.2rem;">💾</div>
-            <div style="text-align:left;"><small style="display:block">Backup</small><b style="color:var(--success); font-size:0.7rem;">SIMPAN DATA</b></div>
+        <div class="stat-card" onclick="backupData()" style="display:flex; align-items:center; justify-content:center; gap:8px; padding:8px;">
+            <div style="font-size: 1rem;">💾</div>
+            <div style="text-align:left;"><small style="display:block">Backup</small><b style="color:var(--success); font-size:0.6rem;">SIMPAN DATA</b></div>
         </div>
     </div>
 
@@ -237,36 +215,33 @@
     </div>
 
     <div class="section">
-        <div style="display:flex; justify-content:space-between; align-items:center; gap: 8px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; gap: 8px; margin-bottom:10px;">
             <h3>Emergency Drug</h3>
-            <div style="display:flex; gap: 8px;">
+            <div style="display:flex; gap: 5px;">
                 <input type="file" id="pdf-upload" accept="application/pdf" hidden onchange="savePDF(event)">
                 <button id="btn-pdf" onclick="openStoredPDF()" oncontextmenu="triggerPDFUpload(event)"
-                        style="background: #3498db; border:none; color:white; border-radius:8px; padding:6px 12px; font-size:0.75rem; font-weight:bold; display:none; align-items:center; gap:5px;">
-                        📖 NOTA PDF
+                        style="background: #3498db; border:none; color:white; border-radius:6px; padding:4px 8px; font-size:0.65rem; font-weight:bold; display:none;">
+                        📖 PDF
                 </button>
-                <button id="btn-upload-pdf" onclick="triggerPDFUpload(event)"
-                        style="background: #444; border:none; color:white; border-radius:8px; padding:6px 12px; font-size:0.75rem;">
-                        📁 UPLOAD PDF
-                </button>
-                <button onclick="openAddDrugSheet()" 
-                        style="background:none; border:1px solid var(--primary); color:var(--primary); border-radius:8px; padding:6px 12px; font-size:0.75rem;">
+                <button onclick="openAddDrugSheet()" style="background:none; border:1px solid var(--primary); color:var(--primary); border-radius:6px; padding:4px 8px; font-size:0.65rem;">
                         + TAMBAH
                 </button>
             </div>
         </div>
-        <input type="text" id="drug-search" placeholder="Cari ubat (Cth: Fentanyl)..." oninput="searchDrugs()" style="margin-top:10px;">
+        <input type="text" id="drug-search" placeholder="Cari ubat..." oninput="searchDrugs()" style="padding:8px; font-size:0.8rem;">
         <div id="drug-results" class="drug-list"></div>
     </div>
 
     <div class="section">
         <h3>To-Do List</h3>
-        <div style="display:flex; gap:10px;">
-            <input type="text" id="todo-input" placeholder="Tulis tugasan..." style="margin-bottom:0; flex:1;">
-            <button onclick="openTodoPopup()" style="background:var(--primary); border:none; padding:0 20px; border-radius:12px; font-weight:bold; color:black;">+</button>
+        <div style="display:flex; gap:8px;">
+            <input type="text" id="todo-input" placeholder="Tulis tugasan..." style="margin-bottom:0; flex:1; padding:8px; font-size:0.8rem;">
+            <button onclick="openTodoPopup()" style="background:var(--primary); border:none; padding:0 15px; border-radius:10px; font-weight:bold; color:black;">+</button>
         </div>
-        <div id="todo-list" style="margin-top:15px;"></div>
-        <hr style="border: 0; border-top: 1px solid #333; margin: 20px 0;">
+        <div id="todo-list" style="margin-top:12px;"></div>
+    </div>
+
+    <div class="section">
         <h3>Nota Ringkas</h3>
         <textarea id="personal-notes" placeholder="Tulis nota di sini..." oninput="saveNotes()"></textarea>
     </div>
@@ -335,11 +310,7 @@
         }
         function checkPDFStatus() {
             const btnPdf = document.getElementById('btn-pdf');
-            const btnUpload = document.getElementById('btn-upload-pdf');
-            if (store.pdfData) {
-                btnPdf.style.display = 'flex';
-                btnUpload.innerText = "🔄 TUKAR PDF"; btnUpload.style.background = "#222"; btnUpload.style.fontSize = "0.6rem";
-            }
+            if (store.pdfData) btnPdf.style.display = 'flex';
         }
 
         function toMY(d) { if(!d) return ''; const p = d.split('-'); return p.length === 3 ? `${p[2]}/${p[1]}/${p[0]}` : d; }
@@ -395,14 +366,14 @@
             store.drugs.forEach((d, idx) => {
                 if(d.name.toLowerCase().includes(q)) {
                     const div = document.createElement('div'); div.className = 'drug-item';
-                    div.innerHTML = `<div class="drug-name">${d.name}</div><div class="drug-prep-label">PREP:</div><div class="drug-prep-val">${d.prep}</div><div style="margin-top:10px; display:flex; gap:10px;"><button onclick="event.stopPropagation(); openEditDrugSheet(${idx})" style="background:none; color:var(--success); border:none; font-size:0.75rem;">EDIT</button><button onclick="event.stopPropagation(); deleteDrug(${idx})" style="background:none; color:var(--danger); border:none; font-size:0.75rem;">PADAM</button></div>`;
+                    div.innerHTML = `<div class="drug-name">${d.name}</div><div class="drug-prep-label">PREP:</div><div class="drug-prep-val">${d.prep}</div><div style="margin-top:10px; display:flex; gap:10px;"><button onclick="event.stopPropagation(); openEditDrugSheet(${idx})" style="background:none; color:var(--success); border:none; font-size:0.7rem;">EDIT</button><button onclick="event.stopPropagation(); deleteDrug(${idx})" style="background:none; color:var(--danger); border:none; font-size:0.7rem;">PADAM</button></div>`;
                     results.appendChild(div);
                 }
             });
         }
         function openAddDrugSheet() {
             document.getElementById('sheet-title').innerText = "Tambah Ubat";
-            document.getElementById('sheet-content').innerHTML = `<label>Nama Ubat</label><input type="text" id="drug-name-in"><label>Prep</label><textarea id="drug-prep-in"></textarea><button onclick="saveDrug()" style="width:100%; background:var(--primary); padding:15px; border-radius:12px; border:none; font-weight:bold; color:black;">SIMPAN</button>`;
+            document.getElementById('sheet-content').innerHTML = `<label>Nama Ubat</label><input type="text" id="drug-name-in"><label>Prep</label><textarea id="drug-prep-in" style="height:100px;"></textarea><button onclick="saveDrug()" style="width:100%; background:var(--primary); padding:15px; border-radius:12px; border:none; font-weight:bold; color:black;">SIMPAN</button>`;
             openSheet();
         }
         function saveDrug() {
@@ -411,7 +382,7 @@
         }
         function openEditDrugSheet(idx) {
             const d = store.drugs[idx]; document.getElementById('sheet-title').innerText = "Edit Ubat";
-            document.getElementById('sheet-content').innerHTML = `<label>Nama Ubat</label><input type="text" id="edit-name" value="${d.name}"><label>Prep</label><textarea id="edit-prep">${d.prep}</textarea><button onclick="updateDrug(${idx})" style="width:100%; background:var(--primary); padding:15px; border-radius:12px; border:none; font-weight:bold; color:black;">KEMASKINI</button>`;
+            document.getElementById('sheet-content').innerHTML = `<label>Nama Ubat</label><input type="text" id="edit-name" value="${d.name}"><label>Prep</label><textarea id="edit-prep" style="height:100px;">${d.prep}</textarea><button onclick="updateDrug(${idx})" style="width:100%; background:var(--primary); padding:15px; border-radius:12px; border:none; font-weight:bold; color:black;">KEMASKINI</button>`;
             openSheet();
         }
         function updateDrug(idx) {
@@ -467,7 +438,7 @@
                 store.rpl.records.forEach((r, i) => html += `<div class="record-card"><div><b>${r.t}</b><br><small>${toMY(r.d1)} ➔ ${r.isPaid ? 'PAID' : toMY(r.d2)}</small></div><button class="btn-delete" onclick="store.rpl.records.splice(${i},1); saveData(); renderRecords('RPL')">×</button></div>`);
                 const recordedDates = store.rpl.records.map(r => r.d1);
                 const avPH = ph2026.filter(p => !recordedDates.includes(p.d));
-                html += `<div id="paid-alert" class="paid-alert">STATUS: PH DIBAYAR</div><label>Pilih PH</label><select id="in-ph-select" onchange="document.getElementById('in-d1').value=this.value; checkPaidPH();"><option value="">-- Pilih --</option>${avPH.map(p => `<option value="${p.d}" data-paid="${p.paid}">${p.n}</option>`).join('')}</select><input type="date" id="in-d1" hidden><label id="label-rpl">Tarikh Ganti</label><input type="date" id="in-d2" onclick="triggerDatePicker('in-d2')">`;
+                html += `<div id="paid-alert" class="paid-alert"></div><label>Pilih PH</label><select id="in-ph-select" onchange="document.getElementById('in-d1').value=this.value; checkPaidPH();"><option value="">-- Pilih --</option>${avPH.map(p => `<option value="${p.d}" data-paid="${p.paid}">${p.n}</option>`).join('')}</select><input type="date" id="in-d1" hidden><label id="label-rpl">Tarikh Ganti</label><input type="date" id="in-d2" onclick="triggerDatePicker('in-d2')">`;
             } else if(type === 'CPD') {
                 store.cpd.records.forEach((r, i) => html += `<div class="record-card"><div style="flex:1"><b style="color:var(--primary)">${r.t}</b><br><small>📅 ${toMY(r.d)} | 🕒 ${r.t1} - ${r.t2}</small></div><div style="font-weight:bold; margin-right:10px; color:var(--success);">${r.p} Pts</div><button class="btn-delete" onclick="store.cpd.records.splice(${i},1); saveData(); renderRecords('CPD')">×</button></div>`);
                 html += `<label>Nama Kursus</label><input type="text" id="in-t"><label>Tarikh</label><input type="date" id="in-d" onclick="triggerDatePicker('in-d')"><div class="time-row"><div style="flex:1"><label>Mula</label><input type="time" id="in-t1"></div><div style="flex:1"><label>Tamat</label><input type="time" id="in-t2"></div></div><label>Mata</label><input type="number" id="in-p">`;
@@ -491,7 +462,7 @@
         function openTodoPopup() {
             const v = document.getElementById('todo-input').value; if(!v.trim()) return;
             document.getElementById('sheet-title').innerText = "Set Tarikh Akhir";
-            document.getElementById('sheet-content').innerHTML = `<p>Tugasan: <b>${v}</b></p><label>Tarikh</label><input type="date" id="pop-due" onclick="triggerDatePicker('pop-due')"><button onclick="saveTodoFinal()" style="width:100%; background:var(--primary); padding:15px; border-radius:12px; border:none; font-weight:bold; color:black;">SIMPAN</button>`;
+            document.getElementById('sheet-content').innerHTML = `<p style="font-size:0.85rem;">Tugasan: <b>${v}</b></p><label>Tarikh</label><input type="date" id="pop-due" onclick="triggerDatePicker('pop-due')"><button onclick="saveTodoFinal()" style="width:100%; background:var(--primary); padding:15px; border-radius:12px; border:none; font-weight:bold; color:black;">SIMPAN</button>`;
             openSheet();
         }
         function saveTodoFinal() {
@@ -502,7 +473,7 @@
         function renderTodos() {
             const list = document.getElementById('todo-list'); if(!list) return; list.innerHTML = '';
             store.todos.forEach((todo, i) => {
-                list.innerHTML += `<div class="todo-item"><input type="checkbox" style="width:20px; height:20px;" ${todo.done ? 'checked' : ''} onchange="store.todos[${i}].done=!store.todos[${i}].done; saveData(); renderTodos();"><div class="todo-text"><span class="${todo.done ? 'done' : ''}">${todo.t}</span>${todo.date ? `<br><small style="color:#666">Due: ${toMY(todo.date)}</small>` : ''}</div><button class="todo-del" onclick="store.todos.splice(${i},1); saveData(); renderTodos();">×</button></div>`;
+                list.innerHTML += `<div class="todo-item"><input type="checkbox" style="width:18px; height:18px;" ${todo.done ? 'checked' : ''} onchange="store.todos[${i}].done=!store.todos[${i}].done; saveData(); renderTodos();"><div class="todo-text"><span class="${todo.done ? 'done' : ''}">${todo.t}</span>${todo.date ? `<br><small style="color:#666; font-size:0.65rem;">Due: ${toMY(todo.date)}</small>` : ''}</div><button class="todo-del" onclick="store.todos.splice(${i},1); saveData(); renderTodos();">×</button></div>`;
             });
         }
 
@@ -513,7 +484,6 @@
             document.getElementById('text-cpd').innerText = `${pts}/20`;
             document.getElementById('bar-cpd').style.width = Math.min((pts/20*100), 100)+'%';
             
-            // --- NIGHT SHIFT COUNTER LOGIC ---
             const month = currentCalDate.getMonth() + 1;
             const year = currentCalDate.getFullYear();
             let n_count = 0;
@@ -522,7 +492,6 @@
                 if(y === year && m === month && store.calendar[key].s === 'N') n_count++;
             });
             document.getElementById('text-night-count').innerText = n_count;
-            
             renderTodos();
         }
 
