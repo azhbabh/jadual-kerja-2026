@@ -6,16 +6,32 @@
     <title>Roster Premium - Ahmad Zilalul</title>
     <style>
         :root {
-            --primary: #d4af37;
-            --primary-glow: rgba(212, 175, 55, 0.4);
+            --primary: #50c878;
+            --primary-glow: rgba(80, 200, 120, 0.4);
             --bg: #0a0a0a;
             --card-bg: #161616;
             --text: #ffffff;
             --text-dim: #999;
             --danger: #ff4d4d;
             --success: #2ecc71;
-            --gold-shadow: 0 0 15px var(--primary-glow);
         }
+
+        /* Theme toggle dots */
+        .theme-bar {
+            display: flex; gap: 8px; align-items: center; justify-content: flex-end;
+            padding: 0 4px 10px 4px;
+        }
+        .theme-dot {
+            width: 22px; height: 22px; border-radius: 50%; cursor: pointer;
+            border: 2px solid transparent; transition: transform 0.15s, border-color 0.15s;
+            flex-shrink: 0;
+        }
+        .theme-dot:active { transform: scale(0.85); }
+        .theme-dot.active { border-color: #fff; transform: scale(1.15); }
+        .theme-dot.emerald { background: #50c878; }
+        .theme-dot.scarlet { background: #e8362a; }
+        .theme-dot.blue    { background: #4169e1; }
+        .theme-dot.gold    { background: #d4af37; }
 
         body {
             font-family: 'Franklin Gothic Medium Cond', 'Arial Narrow', sans-serif;
@@ -29,8 +45,7 @@
         h3 { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: var(--primary); margin-bottom: 12px; }
 
         .stat-card, .shift-summary-card, .drug-item {
-            box-shadow: var(--gold-shadow);
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: transform 0.2s;
         }
 
         .stat-card:active, .day-box:active, .select-btn:active, .nav-btn:active, button:active {
@@ -38,21 +53,19 @@
             color: black !important;
             transform: scale(0.95);
             transition: 0.1s;
-            box-shadow: 0 0 25px var(--primary);
         }
 
         .profile-header {
             display: flex; align-items: center; justify-content: space-between; 
             background: var(--card-bg); padding: 20px; border-radius: 24px; 
             border: 1px solid #222; margin-bottom: 12px; position: relative;
-            overflow: hidden; box-shadow: var(--gold-shadow);
+            overflow: hidden;
         }
 
         .profile-left { display: flex; align-items: center; gap: 15px; }
         .profile-img { 
             width: 65px; height: 65px; border-radius: 50%; 
             border: 2px solid var(--primary); object-fit: cover; 
-            box-shadow: 0 0 10px var(--primary-glow);
         }
 
         .profile-info h2 { 
@@ -66,9 +79,8 @@
         .roster-title-box { text-align: right; border-left: 1px solid #333; padding-left: 15px; }
         .roster-title-box .main {
             font-size: 1.4rem; font-weight: 900; display: block; line-height: 1;
-            text-transform: uppercase; background: linear-gradient(to bottom, #fcf6ba 0%, #d4af37 40%, #aa771c 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 8px var(--primary-glow); animation: shine 3s infinite linear;
+            text-transform: uppercase; color: var(--primary);
+            animation: shine 3s infinite linear;
         }
 
         .roster-title-box .sub { font-size: 0.5rem; color: #fff; letter-spacing: 2px; text-transform: uppercase; display: block; margin-top: 3px; opacity: 0.7; }
@@ -76,7 +88,7 @@
         @keyframes shine { 0% { filter: brightness(1); } 50% { filter: brightness(1.4); } 100% { filter: brightness(1); } }
 
         .shift-summary-card {
-            background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
+            background: #1a1a1a;
             padding: 15px; border-radius: 24px; border: 1px solid #333;
             margin-bottom: 15px; display: flex; flex-direction: column; gap: 6px;
         }
@@ -94,7 +106,7 @@
 
         .stats-row-sub { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 20px; }
 
-        .section { background: var(--card-bg); padding: 15px; border-radius: 20px; border: 1px solid #222; margin-bottom: 15px; box-shadow: var(--gold-shadow); }
+        .section { background: var(--card-bg); padding: 15px; border-radius: 20px; border: 1px solid #222; margin-bottom: 15px; }
         .cal-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
         .nav-btn { background: #222; border: none; color: var(--primary); padding: 8px 15px; border-radius: 10px; font-weight: bold; font-size: 0.8rem; }
         .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; }
@@ -104,7 +116,7 @@
             aspect-ratio: 1; background: #111; border-radius: 10px; display: flex; flex-direction: column;
             align-items: center; justify-content: center; border: 1px solid #1a1a1a; position: relative; cursor: pointer;
         }
-        .day-box.today { border: 1.5px solid var(--primary); box-shadow: 0 0 10px var(--primary); }
+        .day-box.today { border: 1.5px solid var(--primary); }
         .day-box .date-num { position: absolute; top: 3px; left: 5px; font-size: 0.6rem; color: #777; }
         .day-box .shift-text { font-size: 1rem; font-weight: 900; }
         .day-box .assign-text { font-size: 0.4rem; color: var(--primary); font-weight: bold; text-align: center; width: 95%; overflow: hidden; white-space: nowrap; }
@@ -125,11 +137,12 @@
         }
         .bottom-sheet.active { bottom: 0; }
 
-        .todo-container { border-top: 1px solid #222; margin-top: 5px; }
+        .todo-container { margin-top: 5px; }
         .todo-item { 
-            background: #1a1a1a; padding: 8px 0; border-bottom: 1px solid #222; 
+            background: transparent; padding: 8px 4px; border-bottom: 1px solid #1e1e1e; 
             display: flex; justify-content: space-between; align-items: center; 
         }
+        .todo-item:last-child { border-bottom: none; }
         .todo-text { flex: 1; font-size: 0.8rem; margin-left: 10px; color: #eee; }
         .todo-text span.done { text-decoration: line-through; color: #444 !important; }
         .todo-del { color: var(--danger); background: none; border: none; font-size: 1rem; cursor: pointer; padding: 0 5px; opacity: 0.6; }
@@ -137,7 +150,6 @@
         .selection-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 15px; }
         .select-btn { background: #252525; padding: 15px 5px; border-radius: 15px; text-align: center; font-weight: bold; border: 1px solid #333; color: white; font-size: 0.85rem; }
 
-        /* Drug Item Styles Updated */
         .drug-item { background: #1e1e1e; padding: 15px; border-radius: 15px; margin-bottom: 10px; border: 1px solid #333; }
         .drug-name { font-weight: bold; color: var(--primary); font-size: 0.9rem; margin-bottom: 2px; }
         .drug-prep-val { font-weight: bold; color: #fff; font-size: 0.9rem; }
@@ -145,14 +157,21 @@
         .record-card { background: #222; padding: 12px; border-radius: 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; border-left: 3px solid var(--primary); font-size: 0.8rem; }
         .btn-delete { background:none; color:var(--danger); border:none; font-size:1.2rem; cursor:pointer; }
         .paid-alert { background: #2ecc7122; color: #2ecc71; padding: 8px; border-radius: 8px; font-size: 0.7rem; margin-bottom: 10px; display: none; text-align: center; border: 1px solid #2ecc71; }
-        .btn-rsi { background: #8e44ad; border:none; color:white; border-radius:6px; padding:4px 8px; font-size:0.65rem; font-weight:bold; display:flex; align-items:center; gap:4px; }
+        .btn-rsi { background: #2e7d52; border:none; color:white; border-radius:6px; padding:4px 8px; font-size:0.65rem; font-weight:bold; display:flex; align-items:center; gap:4px; }
     </style>
 </head>
 <body>
 
+    <div class="theme-bar">
+        <span style="font-size:0.6rem; color:#555; letter-spacing:0.08em; text-transform:uppercase; margin-right:2px;">Tema</span>
+        <div class="theme-dot emerald active" onclick="setTheme('emerald')" title="Emerald Green"></div>
+        <div class="theme-dot scarlet" onclick="setTheme('scarlet')" title="Scarlet Red"></div>
+        <div class="theme-dot blue" onclick="setTheme('blue')" title="Royal Blue"></div>
+        <div class="theme-dot gold" onclick="setTheme('gold')" title="Gold"></div>
+    </div>
     <div class="profile-header">
         <div class="profile-left">
-            <img id="profile-pic" src="https://ui-avatars.com/api/?name=Ahmad+Zilalul&background=d4af37&color=000" class="profile-img" onclick="document.getElementById('upload').click()">
+            <img id="profile-pic" src="https://ui-avatars.com/api/?name=Ahmad+Zilalul&background=50c878&color=000" class="profile-img" onclick="document.getElementById('upload').click()">
             <input type="file" id="upload" hidden onchange="loadImg(event)">
             <div class="profile-info">
                 <h2>AHMAD ZILALUL HILMI BIN ADNAN</h2>
@@ -170,6 +189,7 @@
         <div class="summary-item"><span class="summary-label">Shift Hari Ini</span><span class="summary-val today" id="summary-today">Tiada Data</span></div>
         <div style="height: 1px; background: #333; margin: 2px 0;"></div>
         <div class="summary-item"><span class="summary-label">Shift Esok</span><span class="summary-val" id="summary-tomorrow">Tiada Data</span></div>
+        <div id="summary-reminders" style="display:none; margin-top:6px; padding-top:6px; border-top:1px solid #2a2a2a;"></div>
     </div>
 
     <div class="stats-row">
@@ -192,15 +212,16 @@
     </div>
 
     <div class="stats-row-sub">
-        <a href="https://www.iloginhr.com/" target="_blank" class="stat-card" style="display:flex; align-items:center; justify-content:center; gap:8px; padding:8px;">
-            <div style="font-size: 1rem;">🌐</div>
-            <div style="text-align:left;"><small style="display:block">i-LoginHR</small><b style="color:#3498db; font-size:0.6rem;">BUKA PORTAL</b></div>
-        </a>
         <div class="stat-card" onclick="backupData()" style="display:flex; align-items:center; justify-content:center; gap:8px; padding:8px;">
             <div style="font-size: 1rem;">💾</div>
             <div style="text-align:left;"><small style="display:block">Backup</small><b style="color:var(--success); font-size:0.6rem;">SIMPAN DATA</b></div>
         </div>
+        <div class="stat-card" onclick="restoreData()" style="display:flex; align-items:center; justify-content:center; gap:8px; padding:8px;">
+            <div style="font-size: 1rem;">📂</div>
+            <div style="text-align:left;"><small style="display:block">Restore</small><b style="color:#e67e22; font-size:0.6rem;">PULIHKAN DATA</b></div>
+        </div>
     </div>
+    <input type="file" id="restore-upload" accept="application/json" hidden onchange="processRestore(event)">
 
     <div class="section">
         <div class="cal-nav">
@@ -208,6 +229,9 @@
             <h3 id="cal-title">--</h3>
             <button class="nav-btn" onclick="changeMonth(1)">❯</button>
         </div>
+        <button onclick="openImportSheet()" style="width:100%; background:#1a2e22; border:1px solid var(--primary); color:var(--primary); border-radius:10px; padding:9px; font-size:0.75rem; font-weight:bold; letter-spacing:0.05em; margin-bottom:10px;">
+            📋 IMPORT DARI EXCEL
+        </button>
         <div class="calendar-grid">
             <div class="day-label">AH</div><div class="day-label">IS</div><div class="day-label">SE</div>
             <div class="day-label">RA</div><div class="day-label">KH</div><div class="day-label">JU</div><div class="day-label">SA</div>
@@ -215,12 +239,22 @@
         <div id="calendar-body" class="calendar-grid"></div>
     </div>
 
+    <div class="section" id="claim-section">
+        <div style="display:flex; justify-content:space-between; align-items:center; cursor:pointer;" onclick="toggleClaim()">
+            <h3 style="margin-bottom:0;">Kiraan Claim</h3>
+            <div style="display:flex;align-items:center;gap:8px;">
+                <span id="claim-month-label" style="font-size:0.65rem; color:var(--text-dim); font-weight:bold;"></span>
+                <span id="claim-toggle-icon" style="font-size:0.8rem; color:var(--text-dim);">▼</span>
+            </div>
+        </div>
+        <div id="claim-body" style="display:none; margin-top:12px;"></div>
+    </div>
+
     <div class="section">
         <div style="display:flex; justify-content:space-between; align-items:center; gap: 8px; margin-bottom:10px;">
             <h3>Emergency Drug</h3>
             <div style="display:flex; gap: 5px; align-items: center;">
-                <input type="file" id="rsi-upload" accept="image/png" hidden onchange="saveRSIImage(event)">
-                <button class="btn-rsi" onclick="handleRSIClick()" oncontextmenu="triggerRSIUpload(event)">💉 Pre-Med RSI</button>
+                <button class="btn-rsi" onclick="handleRSIClick()">💉 Pre-Med RSI</button>
                 <input type="file" id="pdf-upload" accept="application/pdf" hidden onchange="savePDF(event)">
                 <button id="btn-pdf" onclick="openStoredPDF()" oncontextmenu="triggerPDFUpload(event)"
                         style="background: #3498db; border:none; color:white; border-radius:6px; padding:4px 8px; font-size:0.65rem; font-weight:bold; display:none;">📖 PDF</button>
@@ -272,28 +306,105 @@
             calendar: {},
             todos: [],
             notes: "",
-            drugs: [{ name: "IV Fentanyl 0.1mg/2ml", prep: "Undiluted" }],
+            drugs: [
+                { name: "IV Fentanyl", ampule: "0.1mg/2ml (100mcg)", prep: "Undiluted" },
+                { name: "IV Lignocaine", ampule: "100mg/5mls", prep: "Undiluted" },
+                { name: "IV Midazolam", ampule: "5mg/ml", prep: "5mg in 5ml NS" },
+                { name: "IV Etomidate", ampule: "20mg/10ml = 2mg/ml", prep: "Undiluted" },
+                { name: "IV Ketamine", ampule: "200mg/20mls = 10mg/ml", prep: "Undiluted" },
+                { name: "IV Propofol", ampule: "200mg/20mls = 10mg/ml", prep: "Undiluted" },
+                { name: "IV Scoline (Suxamethonium)", ampule: "100mg/2mls = 50mg/ml", prep: "Undiluted" },
+                { name: "Rocuronium (Esmeron)", ampule: "50mg/5mls = 10mg/ml", prep: "Undiluted" },
+                { name: "IVI Midazolam", ampule: "5mg/ml", prep: "20mg in 20mls NS @ 3ml/Hr" },
+                { name: "IVI Fentanyl", ampule: "0.1mg/2ml (100mcg)", prep: "0.2mg (200mcg) in 20ml NS @ 3ml/Hr" },
+                { name: "IVI Morphine", ampule: "10mg/ml", prep: "20mg in 20mls NS @ 3ml/Hr" },
+                { name: "IVI Ketamine", ampule: "200mg/20mls = 10mg/ml", prep: "Undiluted 20mg (2ml)" },
+                { name: "IVI Noradrenaline", ampule: "4mg/4mls", prep: "D.S: 8mg in 50mls D5%" },
+                { name: "IVI Amiodarone (Arrhythmias)", ampule: "150mg/3ml", prep: "L.D: 300mg in 100mls D5% (bolus) @ 1Hr" },
+                { name: "IVI Amiodarone (VF, pVT)", ampule: "150mg/3ml", prep: "L.D: 300mg in 20mls D5% (bolus)" },
+                { name: "IVI Amiodarone (Maintenance)", ampule: "150mg/3ml", prep: "900mg in 500ml D5% @ 24Hr" },
+                { name: "IVI GTN", ampule: "50mg/10mls", prep: "10mg (2mls) in 50mls NS" },
+                { name: "IVI Adrenaline 1:1000", ampule: "1mg/ml", prep: "3mg (3mls) in 50mls NS @ 10mls/Hr. For cardiac arrest 1mg every 3-5min" },
+                { name: "IVI Adrenaline 1:10,000 (Paeds)", ampule: "1mg/ml", prep: "For cardiac arrest: dilute 1mg in 10mls NS (1:10,000) given 2.8mls every 3-5min for 28kg patient" },
+                { name: "IVI Atropine", ampule: "1mg/1ml", prep: "IV Bolus 0.6-3mg every 5 mins" },
+                { name: "IVI Dopamine", ampule: "200mg/5mls", prep: "D.S: 400mg in 50mls NS @ 10mls/Hr" },
+                { name: "IVI Dobutamine", ampule: "250mg/20mls", prep: "D.S: 500mg in 50mls NS @ 5mls/Hr" },
+                { name: "IVI Labetalol", ampule: "25mg/5ml", prep: "100mg undiluted (4 amp) in 20ml syringe @ 0.5/min (6ml/Hr)" },
+                { name: "IVI Sodium Bicarb 8.4%", ampule: "10mmol/10ml = 1mEq/ml", prep: "100ml (10 amp) undiluted in chamber @ 1Hr / 50ml undiluted (5 ampule) in 50ml syringe x2 (@ 30min/syringe)" },
+                { name: "IV Pantoprazole", ampule: "40mg", prep: "80mg in 20mls NS bolus" },
+                { name: "IVI Pantoprazole", ampule: "40mg", prep: "40mg in 50mls NS @ 10mls/Hr" },
+                { name: "IV Morphine", ampule: "10mg/ml", prep: "10mg in 10mls NS" },
+                { name: "IV Adenosine (Adenocor)", ampule: "6mg/2mls", prep: "6mg, 12mg, 18mg" },
+                { name: "IV Propranolol", ampule: "1mg/ml", prep: "1mg/min (in 1cc syringe)" },
+                { name: "IV MgSO4", ampule: "2.46mg/amp", prep: "1 amp dilute in 20mls @ 20mls/1Hr" },
+                { name: "IV Potassium Chloride KCL (1Hr)", ampule: "1g/10mls", prep: "1g in 100mls NS @ 1Hr" },
+                { name: "IV Potassium Chloride KCL (Maintenance)", ampule: "1g/10mls", prep: "1g in 500mls NS @ 1Hr" },
+                { name: "IV Flumazenil", ampule: "0.5mg/5ml", prep: "Given undiluted through free-flowing IV solution over 15-30 sec" },
+                { name: "IV Lytic Cocktail", ampule: "—", prep: "Calcium Gluconate 10% 10mls 10min, D50% 50mls, Insulin 10u (0.1ml)" },
+                { name: "IV Rocephin", ampule: "1g/vial", prep: "2g in 20mls NS (slow bolus) / IV infusion 50-100mls @ 30 minutes" },
+                { name: "IV Phenytoin (Dilantin)", ampule: "250mg/5ml", prep: "Maximum dose 1.5g (6 ampule) in 100mls of NS @ 1Hr" },
+                { name: "IV Tranexamic Acid", ampule: "1gm/10ml", prep: "1gm in 100mls NS @ 10min" },
+                { name: "IV Tranexamic Acid (Maintenance)", ampule: "1gm/10ml", prep: "1gm in 500mls NS @ 8Hr" },
+                { name: "IV Bricanyl", ampule: "0.5mg/ml", prep: "3mg (6 amp) in 50mls NS @ 3mls/Hr" },
+                { name: "IV Valium (Diazepam)", ampule: "10mg/2ml", prep: "5mg/min (adults), 0.25mg/kg (children)" },
+            ],
             pdfData: null,
             rsiImage: null,
             profilePic: null
         };
 
-        // --- RSI Image Logic ---
+        // --- RSI Built-in Reference ---
+        const RSI_DATA = [
+            {
+                group: "ANALGESIC",
+                drugs: [
+                    { name: "IV Fentanyl",    ampule: "0.1mg/2ml (100mcg)",        prep: "Undiluted" },
+                    { name: "IV Lignocaine",  ampule: "100mg/5mls",                prep: "Undiluted" },
+                ]
+            },
+            {
+                group: "INDUCTION (SEDATION)",
+                drugs: [
+                    { name: "IV Midazolam",  ampule: "5mg/ml",                   prep: "5mg in 5ml NS" },
+                    { name: "IV Etomidate",  ampule: "20mg/10ml = 2mg/ml",        prep: "Undiluted" },
+                    { name: "IV Ketamine",   ampule: "200mg/20mls = 10mg/ml",     prep: "Undiluted" },
+                    { name: "IV Propofol",   ampule: "200mg/20mls = 10mg/ml",     prep: "Undiluted" },
+                ]
+            },
+            {
+                group: "PARALYSIS (MUSCLE RELAXANT)",
+                drugs: [
+                    { name: "IV Scoline (Suxamethonium)", ampule: "100mg/2mls = 50mg/ml",  prep: "Undiluted" },
+                    { name: "Rocuronium (Esmeron)",       ampule: "50mg/5mls = 10mg/ml",   prep: "Undiluted" },
+                ]
+            },
+            {
+                group: "IV INFUSION",
+                drugs: [
+                    { name: "IVI Midazolam", ampule: "5mg/ml",                    prep: "20mg in 20mls NS @ 3ml/Hr" },
+                    { name: "IVI Fentanyl",  ampule: "0.1mg/2ml (100mcg)",         prep: "0.2mg (200mcg) in 20ml NS @ 3ml/Hr" },
+                    { name: "IVI Morphine",  ampule: "10mg/ml",                    prep: "20mg in 20mls NS @ 3ml/Hr" },
+                    { name: "IVI Ketamine",  ampule: "200mg/20mls = 10mg/ml",      prep: "Undiluted 20mg (2ml)" },
+                ]
+            },
+        ];
+
         function handleRSIClick() {
-            if (store.rsiImage) {
-                document.getElementById('sheet-title').innerText = "Pre-Med RSI Guide";
-                document.getElementById('sheet-content').innerHTML = `<img src="${store.rsiImage}" style="width:100%; border-radius:12px; box-shadow:0 0 10px rgba(0,0,0,0.5);">`;
-                openSheet();
-            } else { triggerRSIUpload(new Event('click')); }
-        }
-        function triggerRSIUpload(e) { e.preventDefault(); document.getElementById('rsi-upload').click(); }
-        function saveRSIImage(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(event) { store.rsiImage = event.target.result; saveData(); alert("Gambar RSI berjaya disimpan!"); };
-                reader.readAsDataURL(file);
-            }
+            document.getElementById('sheet-title').innerText = "💉 Pre-Med RSI";
+            let html = '';
+            RSI_DATA.forEach(section => {
+                html += `<div style="background:var(--primary);color:#000;font-size:0.65rem;font-weight:900;letter-spacing:0.08em;text-transform:uppercase;padding:6px 10px;border-radius:7px;margin-bottom:6px;margin-top:10px;">${section.group}</div>`;
+                section.drugs.forEach(d => {
+                    html += `
+                    <div style="background:#1e1e1e;border:1px solid #2a2a2a;border-radius:10px;padding:10px 13px;margin-bottom:6px;">
+                        <div style="font-weight:800;font-size:0.8rem;color:#fff;margin-bottom:5px;">${d.name}</div>
+                        <div style="font-size:0.68rem;color:#888;margin-bottom:3px;">${d.ampule}</div>
+                        <div style="font-size:0.75rem;color:var(--primary);font-weight:700;line-height:1.4;">${d.prep}</div>
+                    </div>`;
+                });
+            });
+            document.getElementById('sheet-content').innerHTML = html;
+            openSheet();
         }
 
         // --- PDF Logic ---
@@ -348,6 +459,23 @@
 
         function changeMonth(dir) { currentCalDate.setMonth(currentCalDate.getMonth() + dir); generateCalendar(); renderStats(); }
 
+        function isoKey(year, month, day) {
+            return `${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+        }
+
+        function migrateCalendarKeys() {
+            const oldCal = store.calendar;
+            const newCal = {};
+            Object.keys(oldCal).forEach(k => {
+                const parts = k.split('-');
+                if(parts.length === 3) {
+                    const normalized = `${parts[0]}-${parts[1].padStart(2,'0')}-${parts[2].padStart(2,'0')}`;
+                    newCal[normalized] = oldCal[k];
+                } else { newCal[k] = oldCal[k]; }
+            });
+            store.calendar = newCal;
+        }
+
         function generateCalendar() {
             const body = document.getElementById('calendar-body');
             const title = document.getElementById('cal-title');
@@ -358,12 +486,13 @@
             const daysInMonth = new Date(year, month + 1, 0).getDate();
             for(let i=0; i<firstDay; i++) body.appendChild(document.createElement('div'));
             for(let d=1; d<=daysInMonth; d++) {
-                const key = `${year}-${month+1}-${d}`;
+                const key = isoKey(year, month, d);
                 const data = store.calendar[key] || {s: '-', a: ''};
                 const box = document.createElement('div'); box.className = 'day-box';
                 if(new Date().toDateString() === new Date(year, month, d).toDateString()) box.classList.add('today');
                 box.onclick = () => openShiftPicker(key);
-                box.innerHTML = `<div class="date-num">${d}</div><div class="shift-text">${data.s}</div><div class="assign-text">${data.a}</div>`;
+                const reminderDot = data.reminder ? `<div style="position:absolute;bottom:3px;right:4px;width:5px;height:5px;border-radius:50%;background:#8888ff;"></div>` : '';
+                box.innerHTML = `<div class="date-num">${d}</div><div class="shift-text">${data.s}</div><div class="assign-text">${data.a}</div>${reminderDot}`;
                 body.appendChild(box);
             }
             updateShiftSummary();
@@ -373,82 +502,262 @@
             const now = new Date(), tom = new Date(now); tom.setDate(now.getDate() + 1);
             const getFullAssign = (short) => { if (!short) return ''; return short.replace(/Amb/g, 'Ambulance').replace(/TL/g, 'Team Leader'); };
             const getS = (date) => {
-                const key = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`;
+                const key = isoKey(date.getFullYear(), date.getMonth(), date.getDate());
                 const d = store.calendar[key]; if (!d || d.s === '-') return "OFF";
                 return `${d.s} ${d.a ? '@ '+getFullAssign(d.a) : ''}`;
             };
             document.getElementById('summary-today').innerText = getS(now);
             document.getElementById('summary-tomorrow').innerText = getS(tom);
+
+            // Show reminders for next 7 days
+            const remDiv = document.getElementById('summary-reminders');
+            const reminders = [];
+            for(let i = 0; i <= 7; i++) {
+                const d = new Date(now); d.setDate(now.getDate() + i);
+                const key = isoKey(d.getFullYear(), d.getMonth(), d.getDate());
+                const entry = store.calendar[key];
+                if(entry && entry.reminder) {
+                    const dd = String(d.getDate()).padStart(2,'0');
+                    const mm = String(d.getMonth()+1).padStart(2,'0');
+                    const yyyy = String(d.getFullYear());
+                    const label = `${dd}/${mm}/${yyyy}`;
+                    reminders.push({ label, text: entry.reminder });
+                }
+            }
+            if(reminders.length > 0) {
+                remDiv.style.display = 'block';
+                remDiv.innerHTML = reminders.map(r =>
+                    `<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:4px;">
+                        <span style="font-size:0.75rem;color:#8888ff;font-weight:900;white-space:nowrap;">🔔 ${r.label}</span>
+                        <span style="font-size:0.72rem;color:#ccc;line-height:1.4;text-align:right;">${r.text}</span>
+                    </div>`
+                ).join('');
+            } else {
+                remDiv.style.display = 'none';
+                remDiv.innerHTML = '';
+            }
         }
 
-        // --- UPDATED Search Drugs Logic ---
+        // --- Search Drugs Logic ---
         function searchDrugs() {
             const q = document.getElementById('drug-search').value.toLowerCase();
             const results = document.getElementById('drug-results'); results.innerHTML = ''; if(!q) return;
-            store.drugs.forEach((d, idx) => {
-                if(d.name.toLowerCase().includes(q)) {
-                    const div = document.createElement('div'); div.className = 'drug-item';
-                    div.innerHTML = `
-                        <div class="drug-name">${d.name}</div>
-                        <div class="drug-prep-val">${d.prep}</div>
-                        <div style="margin-top:12px; display:flex; gap:15px; border-top:1px solid #333; padding-top:8px;">
-                            <button onclick="event.stopPropagation(); openEditDrugSheet(${idx})" style="background:none; color:var(--success); border:none; font-size:0.75rem; font-weight:bold; cursor:pointer;">EDIT</button>
-                            <button onclick="event.stopPropagation(); deleteDrug(${idx})" style="background:none; color:var(--danger); border:none; font-size:0.75rem; font-weight:bold; cursor:pointer;">PADAM</button>
-                        </div>`;
-                    results.appendChild(div);
-                }
+            const matched = store.drugs.map((d, idx) => ({d, idx})).filter(({d}) => d.name.toLowerCase().includes(q));
+            if(matched.length === 0) {
+                results.innerHTML = '<div style="font-size:0.75rem;color:#555;text-align:center;padding:12px;">Tiada ubat ditemui.</div>';
+                return;
+            }
+            matched.forEach(({d, idx}) => {
+                const div = document.createElement('div'); div.className = 'drug-item';
+                div.style.cssText = 'display:flex;justify-content:space-between;align-items:center;gap:8px;';
+                div.innerHTML = `
+                    <div style="flex:1;min-width:0;">
+                        <div style="font-weight:800;font-size:0.8rem;color:#fff;margin-bottom:5px;">${d.name}</div>
+                        <div style="font-size:0.68rem;color:#888;margin-bottom:3px;">${d.ampule || '—'}</div>
+                        <div style="font-size:0.75rem;color:var(--primary);font-weight:700;line-height:1.4;">${d.prep}</div>
+                    </div>
+                    <div style="display:flex;flex-direction:column;gap:4px;flex-shrink:0;margin-left:10px;">
+                        <button onclick="event.stopPropagation();openEditDrugSheet(${idx})" style="background:none;color:var(--success);border:none;font-size:0.65rem;font-weight:bold;cursor:pointer;padding:0;">EDIT</button>
+                        <button onclick="event.stopPropagation();deleteDrug(${idx})" style="background:none;color:var(--danger);border:none;font-size:0.65rem;font-weight:bold;cursor:pointer;padding:0;">PADAM</button>
+                    </div>`;
+                results.appendChild(div);
             });
         }
 
         function openAddDrugSheet() {
             document.getElementById('sheet-title').innerText = "Tambah Ubat";
-            document.getElementById('sheet-content').innerHTML = `<label>Nama Ubat</label><input type="text" id="drug-name-in" placeholder="cth: IV Fentanyl 0.1mg/2ml"><label>Cara Penyediaan</label><textarea id="drug-prep-in" style="height:100px;" placeholder="cth: Undiluted"></textarea><button onclick="saveDrug()" style="width:100%; background:var(--primary); padding:15px; border-radius:12px; border:none; font-weight:bold; color:black;">SIMPAN</button>`;
+            document.getElementById('sheet-content').innerHTML = `<label>Nama Ubat</label><input type="text" id="drug-name-in" placeholder="cth: IV Morphine"><label>Dose / Ampule</label><input type="text" id="drug-ampule-in" placeholder="cth: 10mg/ml"><label>Cara Penyediaan</label><textarea id="drug-prep-in" style="height:90px;" placeholder="cth: 10mg in 10mls NS"></textarea><button onclick="saveDrug()" style="width:100%; background:var(--primary); padding:15px; border-radius:12px; border:none; font-weight:bold; color:black;">SIMPAN</button>`;
             openSheet();
         }
         function saveDrug() {
-            const name = document.getElementById('drug-name-in').value.trim(), prep = document.getElementById('drug-prep-in').value.trim();
-            if(name && prep) { store.drugs.push({name, prep}); saveData(); closeSheet(); searchDrugs(); }
+            const name = document.getElementById('drug-name-in').value.trim();
+            const ampule = document.getElementById('drug-ampule-in').value.trim();
+            const prep = document.getElementById('drug-prep-in').value.trim();
+            if(name && prep) { store.drugs.push({name, ampule: ampule||'—', prep}); saveData(); closeSheet(); searchDrugs(); }
         }
         function openEditDrugSheet(idx) {
             const d = store.drugs[idx]; document.getElementById('sheet-title').innerText = "Edit Ubat";
-            document.getElementById('sheet-content').innerHTML = `<label>Nama Ubat</label><input type="text" id="edit-name" value="${d.name}"><label>Cara Penyediaan</label><textarea id="edit-prep" style="height:100px;">${d.prep}</textarea><button onclick="updateDrug(${idx})" style="width:100%; background:var(--primary); padding:15px; border-radius:12px; border:none; font-weight:bold; color:black;">KEMASKINI</button>`;
+            document.getElementById('sheet-content').innerHTML = `<label>Nama Ubat</label><input type="text" id="edit-name" value="${d.name}"><label>Dose / Ampule</label><input type="text" id="edit-ampule" value="${d.ampule||''}"><label>Cara Penyediaan</label><textarea id="edit-prep" style="height:90px;">${d.prep}</textarea><button onclick="updateDrug(${idx})" style="width:100%; background:var(--primary); padding:15px; border-radius:12px; border:none; font-weight:bold; color:black;">KEMASKINI</button>`;
             openSheet();
         }
         function updateDrug(idx) {
-            const n = document.getElementById('edit-name').value.trim(), p = document.getElementById('edit-prep').value.trim();
-            if(n && p) { store.drugs[idx].name = n; store.drugs[idx].prep = p; saveData(); closeSheet(); searchDrugs(); }
+            const n = document.getElementById('edit-name').value.trim();
+            const a = document.getElementById('edit-ampule').value.trim();
+            const p = document.getElementById('edit-prep').value.trim();
+            if(n && p) { store.drugs[idx].name = n; store.drugs[idx].ampule = a||'—'; store.drugs[idx].prep = p; saveData(); closeSheet(); searchDrugs(); }
         }
         function deleteDrug(idx) { if(confirm("Padam ubat ini?")) { store.drugs.splice(idx,1); saveData(); searchDrugs(); } }
 
         function openShiftPicker(key) {
-            document.getElementById('sheet-title').innerText = "Pilih Shift";
-            let h = '<div class="selection-grid">';
-            ["M", "E", "N", "M/E", "M/N", "SD", "DO", "AL", "PH", "RPL", "TD", "ST", "WP", "MC"].forEach(s => h += `<div class="select-btn" onclick="handleShift('${key}','${s}')">${s}</div>`);
-            h += `<div class="select-btn btn-clear" onclick="clearShift('${key}')">KOSONGKAN</div>`;
-            document.getElementById('sheet-content').innerHTML = h + '</div>';
+            const existing = store.calendar[key] || {};
+            const parts = key.split('-');
+            const dispDate = parts.length === 3 ? `${parts[2]}/${parts[1]}/${parts[0]}` : key;
+            document.getElementById('sheet-title').innerText = `Shift — ${dispDate}`;
+
+            const currentRaw = existing.s
+                ? (existing.s === 'RPL' && existing.a && existing.a.startsWith('PH:')
+                    ? existing.s
+                    : existing.s + (existing.a ? '' : ''))
+                : '';
+
+            document.getElementById('sheet-content').innerHTML = `
+
+                <label>Kod Shift</label>
+                <input type="text" id="shift-input" placeholder="cth: N# atau M/E*"
+                    value="${currentRaw}"
+                    style="font-size:1.1rem; font-weight:bold; text-align:center; letter-spacing:0.05em; text-transform:uppercase;"
+                    oninput="this.value=this.value.toUpperCase()"
+                    onkeydown="if(event.key==='Enter') applyTypedShift('${key}')">
+                <div id="shift-parse-preview" style="min-height:32px; margin-top:4px;"></div>
+                <button onclick="applyTypedShift('${key}')"
+                    style="width:100%; background:var(--primary); border:none; color:black; padding:14px; border-radius:12px; font-weight:bold; font-size:0.9rem; margin-top:8px;">
+                    SIMPAN SHIFT
+                </button>
+                <button onclick="openReminderSheet('${key}')" style="width:100%; background:#1a1a2e; border:1px solid #4444aa; color:#8888ff; padding:11px; border-radius:12px; font-weight:bold; font-size:0.8rem; margin-top:8px;">
+                    🔔 REMINDER${existing.reminder ? ': ' + existing.reminder.substring(0,20) + (existing.reminder.length > 20 ? '...' : '') : ''}
+                </button>
+                ${existing.s ? `<button onclick="clearShift('${key}')" style="width:100%; background:none; border:1px solid var(--danger); color:var(--danger); padding:11px; border-radius:12px; font-weight:bold; font-size:0.8rem; margin-top:8px;">KOSONGKAN</button>` : ''}
+                ${existing.s === 'RPL' ? `<button onclick="openRPLLinkSheet('${key}')" style="width:100%; background:#1a2e22; border:1px solid var(--primary); color:var(--primary); padding:11px; border-radius:12px; font-weight:bold; font-size:0.8rem; margin-top:8px;">🔗 PAUT REKOD RPL</button>` : ''}
+            `;
             openSheet();
+            setTimeout(() => {
+                const inp = document.getElementById('shift-input');
+                if(inp) { inp.focus(); inp.select(); inp.addEventListener('input', () => livePreviewShift(inp.value)); }
+            }, 350);
+        }
+
+        function livePreviewShift(val) {
+            const prev = document.getElementById('shift-parse-preview');
+            if(!prev) return;
+            if(!val.trim()) { prev.innerHTML = ''; return; }
+            const parsed = parseShiftCell(val);
+            if(parsed) {
+                const assign = parsed.a ? ` <span style="color:var(--primary)">@ ${parsed.a}</span>` : '';
+                prev.innerHTML = `<div style="font-size:0.75rem; color:#aaa; padding:6px 10px; background:#1a1a1a; border-radius:8px; border:1px solid #333;">
+                    → Shift: <b style="color:white">${parsed.s}</b>${assign}
+                </div>`;
+            } else {
+                prev.innerHTML = `<div style="font-size:0.7rem; color:var(--danger); padding:6px 10px; background:#1a0000; border-radius:8px; border:1px solid var(--danger);">⚠️ Format tidak dikenali</div>`;
+            }
+        }
+
+        function applyTypedShift(key) {
+            const val = (document.getElementById('shift-input').value || '').trim();
+            if(!val) return;
+            const parsed = parseShiftCell(val);
+            if(!parsed) { alert('Format shift tidak dikenali. Cuba semula.'); return; }
+            // Preserve rplLinked if shift stays RPL
+            const prevLinked = (store.calendar[key] && store.calendar[key].rplLinked) || null;
+            store.calendar[key] = { s: parsed.s, a: parsed.a };
+            if(parsed.s === 'RPL' && prevLinked) store.calendar[key].rplLinked = prevLinked;
+            saveData(); generateCalendar(); closeSheet();
+            // If RPL with no link yet, auto-open RPL link sheet
+            if(parsed.s === 'RPL' && !prevLinked && store.rpl.records.length > 0) {
+                setTimeout(() => openRPLLinkSheet(key), 350);
+            }
         }
         function clearShift(key) { if(store.calendar[key]) { delete store.calendar[key]; saveData(); generateCalendar(); closeSheet(); } }
-        function handleShift(key, s) { if(["M/E", "M/N"].includes(s)) openAssignPicker(key, s, 1); else openAssignPicker(key, s); }
-        function openAssignPicker(key, s, step = 0, firstA = '') {
-            document.getElementById('sheet-title').innerText = `Tugasan (${s})`;
-            let h = '<div class="selection-grid">';
-            ["Ambulance", "Triage", "Team Leader", "Lain-lain", "Skip"].forEach(a => {
-                if(a === 'Lain-lain') h += `<div class="select-btn" style="background:#333" onclick="customAssignPrompt('${key}','${s}',${step},'${firstA}')">Lain-lain</div>`;
-                else {
-                    const disp = a === 'Skip' ? '' : a;
-                    if(step === 1) h += `<div class="select-btn" onclick="openAssignPicker('${key}','${s}',2,'${disp}')">${a}</div>`;
-                    else if(step === 2) h += `<div class="select-btn" onclick="finalizeShift('${key}','${s}','${(firstA && disp ? firstA + ' / ' + disp : firstA || disp)}')">${a}</div>`;
-                    else h += `<div class="select-btn" onclick="finalizeShift('${key}','${s}','${disp}')">${a}</div>`;
-                }
-            });
-            document.getElementById('sheet-content').innerHTML = h + '</div>';
-        }
-        function customAssignPrompt(k, s, st, f) {
-            const v = prompt("Tugasan:");
-            if(v) { if(st === 1) openAssignPicker(k, s, 2, v); else if(st === 2) finalizeShift(k, s, (f ? f + ' / ' + v : v)); else finalizeShift(k, s, v); }
-        }
         function finalizeShift(k, s, a) { store.calendar[k] = {s, a: a.replace(/Ambulance/g, "Amb").replace(/Team Leader/g, "TL")}; saveData(); generateCalendar(); closeSheet(); }
+
+        function openReminderSheet(key) {
+            const parts = key.split('-');
+            const dispDate = parts.length === 3 ? `${parts[2]}/${parts[1]}/${parts[0]}` : key;
+            const existing = store.calendar[key] || {};
+            document.getElementById('sheet-title').innerText = `🔔 Reminder — ${dispDate}`;
+            document.getElementById('sheet-content').innerHTML = `
+                <label>Nota Reminder</label>
+                <textarea id="reminder-input" style="height:110px;" placeholder="cth: AUDIT MSQH, Mesyuarat Jabatan, Kursus BLS...">${existing.reminder || ''}</textarea>
+                <button onclick="saveReminder('${key}')" style="width:100%; background:var(--primary); border:none; color:black; padding:14px; border-radius:12px; font-weight:bold; margin-top:6px;">SIMPAN REMINDER</button>
+                ${existing.reminder ? `<button onclick="deleteReminder('${key}')" style="width:100%; background:none; border:1px solid var(--danger); color:var(--danger); padding:11px; border-radius:12px; font-weight:bold; font-size:0.8rem; margin-top:8px;">BUANG REMINDER</button>` : ''}
+            `;
+            openSheet();
+            setTimeout(() => { const el = document.getElementById('reminder-input'); if(el) el.focus(); }, 350);
+        }
+
+        function saveReminder(key) {
+            const val = (document.getElementById('reminder-input').value || '').trim();
+            if(!store.calendar[key]) store.calendar[key] = { s: '-', a: '' };
+            store.calendar[key].reminder = val;
+            saveData(); generateCalendar(); closeSheet();
+        }
+
+        function deleteReminder(key) {
+            if(store.calendar[key]) { delete store.calendar[key].reminder; saveData(); generateCalendar(); closeSheet(); }
+        }
+
+        function openRPLLinkSheet(key) {
+            const parts = key.split('-');
+            const dispDate = parts.length === 3 ? `${parts[2]}/${parts[1]}/${parts[0]}` : key;
+            document.getElementById('sheet-title').innerText = `RPL — ${dispDate}`;
+
+            // Build list of RPL records that are NOT yet linked to a calendar date
+            const linkedDates = Object.keys(store.calendar)
+                .filter(k => store.calendar[k].s === 'RPL' && store.calendar[k].rplLinked && k !== key)
+                .map(k => store.calendar[k].rplLinked);
+
+            // Available PH records from store.rpl.records
+            const available = store.rpl.records.filter(r => !linkedDates.includes(r.d1));
+
+            let html = ``;
+
+            if(available.length === 0) {
+                html += `<div style="font-size:0.75rem; color:#666; padding:10px; text-align:center; border:1px solid #333; border-radius:8px; margin-bottom:12px;">
+                    Tiada rekod RPL. Tambah rekod RPL dalam <b>Rekod RPL</b> dahulu.
+                </div>`;
+            } else {
+                html += `<div style="display:flex; flex-direction:column; gap:8px; margin-bottom:12px;">`;
+                available.forEach((r, i) => {
+                    const isLinked = store.calendar[key] && store.calendar[key].rplLinked === r.d1;
+                    const phParts = r.d1.split('-');
+                    const dispPH = phParts.length === 3 ? `${phParts[2]}/${phParts[1]}/${phParts[0]}` : r.d1;
+                    const replParts = r.d2 ? r.d2.split('-') : null;
+                    const dispRepl = replParts && replParts.length === 3 ? `${replParts[2]}/${replParts[1]}/${replParts[0]}` : (r.isPaid ? 'PAID' : '-');
+                    html += `<div onclick="linkRPL('${key}','${r.d1}')" style="background:${isLinked ? '#1a3020' : '#1e1e1e'}; border:1px solid ${isLinked ? 'var(--primary)' : '#333'}; border-radius:10px; padding:12px; cursor:pointer;">
+                        <div style="font-weight:bold; font-size:0.8rem; color:${isLinked ? 'var(--primary)' : '#fff'}; margin-bottom:3px;">${r.t}</div>
+                        <div style="font-size:0.7rem; color:#888;">PH: ${dispPH} &nbsp;→&nbsp; Ganti: ${dispRepl}</div>
+                        ${isLinked ? '<div style="font-size:0.65rem; color:var(--primary); margin-top:4px;">✓ Sedang dipaut</div>' : ''}
+                    </div>`;
+                });
+                html += `</div>`;
+            }
+
+            // Option to unlink if currently linked
+            if(store.calendar[key] && store.calendar[key].rplLinked) {
+                html += `<button onclick="unlinkRPL('${key}')" style="width:100%; background:none; border:1px solid var(--danger); color:var(--danger); padding:10px; border-radius:10px; font-size:0.75rem; font-weight:bold; margin-bottom:8px;">✕ Buang Pautan RPL</button>`;
+            }
+
+            html += `<button onclick="openShiftEditor('${key}')" style="width:100%; background:#222; border:1px solid #444; color:#aaa; padding:10px; border-radius:10px; font-size:0.75rem; font-weight:bold;">✏️ Tukar Shift Lain</button>`;
+
+            document.getElementById('sheet-content').innerHTML = html;
+            openSheet();
+        }
+
+        function linkRPL(calKey, rplD1) {
+            if(!store.calendar[calKey]) store.calendar[calKey] = { s: 'RPL', a: '' };
+            store.calendar[calKey].rplLinked = rplD1;
+            // Also update assign label to show the PH date for reference on calendar
+            const phParts = rplD1.split('-');
+            const dispPH = phParts.length === 3 ? `${phParts[2]}/${phParts[1]}` : rplD1;
+            store.calendar[calKey].a = `PH:${dispPH}`;
+            saveData();
+            generateCalendar();
+            closeSheet();
+        }
+
+        function unlinkRPL(calKey) {
+            if(store.calendar[calKey]) {
+                delete store.calendar[calKey].rplLinked;
+                store.calendar[calKey].a = '';
+            }
+            saveData();
+            generateCalendar();
+            closeSheet();
+        }
+
+        function openShiftEditor(key) {
+            // Re-use openShiftPicker — same typed input UI
+            openShiftPicker(key);
+        }
 
         function openRecordSheet(type) { document.getElementById('sheet-title').innerText = type; renderRecords(type); openSheet(); }
         
@@ -515,19 +824,135 @@
             const pts = store.cpd.records.reduce((s, r) => s + Number(r.p), 0);
             document.getElementById('text-cpd').innerText = `${pts}/20`;
             document.getElementById('bar-cpd').style.width = Math.min((pts/20*100), 100)+'%';
-            const month = currentCalDate.getMonth() + 1, year = currentCalDate.getFullYear();
+            const month = currentCalDate.getMonth(), year = currentCalDate.getFullYear();
             let n_count = 0;
             Object.keys(store.calendar).forEach(key => {
-                const [y, m, d] = key.split('-').map(Number);
-                if(y === year && m === month && store.calendar[key].s === 'N') n_count++;
+                // ISO key: YYYY-MM-DD
+                const parts = key.split('-');
+                if(parts.length === 3) {
+                    const y = parseInt(parts[0]), m = parseInt(parts[1])-1, s = store.calendar[key].s;
+                    if(y === year && m === month && s === 'N') n_count++;
+                }
             });
             document.getElementById('text-night-count').innerText = n_count;
             renderTodos();
+            renderClaim();
+        }
+
+        function toggleClaim() {
+            const body = document.getElementById('claim-body');
+            const icon = document.getElementById('claim-toggle-icon');
+            if(!body) return;
+            const isHidden = body.style.display === 'none';
+            body.style.display = isHidden ? 'block' : 'none';
+            if(icon) icon.innerText = isHidden ? '▲' : '▼';
+        }
+
+        function renderClaim() {
+            const year = currentCalDate.getFullYear(), month = currentCalDate.getMonth();
+            const months = ["Januari","Februari","Mac","April","Mei","Jun","Julai","Ogos","September","Oktober","November","Disember"];
+            const label = document.getElementById('claim-month-label');
+            const body = document.getElementById('claim-body');
+            if(!body) return;
+            if(label) label.innerText = `${months[month]} ${year}`;
+
+            // Collect all entries for this month
+            const malam = [], locum = [], phBayar = [];
+
+            Object.keys(store.calendar).forEach(key => {
+                const parts = key.split('-');
+                if(parts.length !== 3) return;
+                const y = parseInt(parts[0]), m = parseInt(parts[1]) - 1, d = parseInt(parts[2]);
+                if(y !== year || m !== month) return;
+
+                const entry = store.calendar[key];
+                const s = entry.s || '';
+                const dd = String(d).padStart(2,'0');
+                const mm = String(month+1).padStart(2,'0');
+                const dateStr = `${dd}/${mm}/${year}`;
+
+                // Night shift
+                if(s === 'N') malam.push({ date: dateStr, shift: s });
+
+                // Double/Locum shift
+                if(s === 'M/E' || s === 'M/N' || s === 'E/N') {
+                    const assign = entry.a ? ` (${entry.a})` : '';
+                    locum.push({ date: dateStr, shift: s + assign });
+                }
+
+                // Paid PH — check against ph2026 list
+                if(s === 'PH') {
+                    const isoDate = key; // YYYY-MM-DD
+                    const phEntry = ph2026.find(p => p.d === isoDate);
+                    if(phEntry && phEntry.paid) phBayar.push({ date: dateStr, name: phEntry.n });
+                }
+            });
+
+            // Sort by date
+            const sortFn = (a, b) => a.date.localeCompare(b.date);
+            malam.sort(sortFn); locum.sort(sortFn); phBayar.sort(sortFn);
+
+            function buildRows(items, emptyMsg, renderFn) {
+                if(items.length === 0) return `<div style="font-size:0.7rem;color:#444;padding:4px 0;">${emptyMsg}</div>`;
+                return items.map(renderFn).join('');
+            }
+
+            function row(left, right) {
+                return `<div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid #1e1e1e;">
+                    <span style="font-size:0.78rem;color:#ccc;font-weight:700;">${left}</span>
+                    <span style="font-size:0.72rem;color:var(--primary);">${right}</span>
+                </div>`;
+            }
+
+            function categoryBlock(icon, title, count, rowsHtml) {
+                return `<div style="margin-bottom:14px;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                        <span style="font-size:0.7rem;font-weight:900;letter-spacing:0.08em;text-transform:uppercase;color:#888;">${icon} ${title}</span>
+                        <span style="font-size:0.65rem;background:var(--primary);color:#000;font-weight:900;padding:2px 8px;border-radius:20px;">${count}</span>
+                    </div>
+                    ${rowsHtml}
+                </div>`;
+            }
+
+            const malamRows = buildRows(malam, 'Tiada shift malam bulan ini.', i => row(i.date, i.shift));
+            const locumRows = buildRows(locum, 'Tiada double shift bulan ini.', i => row(i.date, i.shift));
+            const phRows = buildRows(phBayar, 'Tiada PH berbayar bulan ini.', i => row(i.date, i.name));
+
+            body.innerHTML =
+                categoryBlock('🌙', 'Shift Malam', malam.length, malamRows) +
+                `<div style="height:1px;background:#222;margin-bottom:14px;"></div>` +
+                categoryBlock('🔄', 'Locum / Double Shift', locum.length, locumRows) +
+                `<div style="height:1px;background:#222;margin-bottom:14px;"></div>` +
+                categoryBlock('📅', 'PH Berbayar', phBayar.length, phRows);
         }
 
         function openSheet() { document.getElementById('overlay').style.display='block'; setTimeout(()=>document.getElementById('sheet').classList.add('active'), 10); }
         function closeSheet() { document.getElementById('sheet').classList.remove('active'); setTimeout(()=>document.getElementById('overlay').style.display='none', 300); }
         function loadImg(e) { const r = new FileReader(); r.onload=()=>{ document.getElementById('profile-pic').src=r.result; store.profilePic = r.result; saveData(); }; r.readAsDataURL(e.target.files[0]); }
+        function restoreData() { document.getElementById('restore-upload').click(); }
+        function processRestore(e) {
+            const file = e.target.files[0]; if(!file) return;
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                try {
+                    const parsed = JSON.parse(ev.target.result);
+                    // Validate it looks like our data
+                    if(typeof parsed !== 'object' || !parsed.calendar) { alert("Fail tidak sah. Sila gunakan fail backup yang betul."); return; }
+                    if(!confirm("Data semasa akan digantikan dengan data dari fail backup. Teruskan?")) return;
+                    store = parsed;
+                    migrateCalendarKeys(); // normalize any old keys in restored data
+                    saveData();
+                    generateCalendar();
+                    renderStats();
+                    loadNotes();
+                    checkPDFStatus();
+                    alert("✅ Data berjaya dipulihkan!");
+                } catch(err) { alert("Ralat: Fail tidak dapat dibaca. Pastikan ia adalah fail backup JSON yang sah."); }
+            };
+            reader.readAsText(file);
+            e.target.value = ''; // reset so same file can be re-selected
+        }
+
         function backupData() {
             const data = JSON.stringify(store);
             const blob = new Blob([data], {type: "application/json"});
@@ -536,8 +961,290 @@
             alert("Data berjaya dieksport!");
         }
 
+        // ============================================================
+        // IMPORT DARI EXCEL — PARSER
+        // ============================================================
+        function openImportSheet() {
+            document.getElementById('sheet-title').innerText = "📋 Import Jadual Excel";
+            document.getElementById('sheet-content').innerHTML = `
+                <div style="font-size:0.72rem; color:#888; margin-bottom:10px; line-height:1.6;">
+                    <b style="color:var(--primary)">Cara import:</b><br>
+                    1. Buka Excel, <b>select baris DATE</b> (baris nombor hari) dan <b>baris shift anda</b> sahaja (2 baris)<br>
+                    2. Copy (Ctrl+C)<br>
+                    3. Paste dalam kotak di bawah<br><br>
+                    <b style="color:#aaa">Format shift yang dikenali:</b><br>
+                    Single: <code style="color:var(--primary)">M* E(T) N# SD DO AL PH MC RPL</code><br>
+                    Double: <code style="color:var(--primary)">(T)M/E# *M/N#</code>
+                </div>
+                <label>Bulan & Tahun (untuk jadual ini)</label>
+                <input type="month" id="import-month" style="margin-bottom:10px;">
+                <label>Paste data dari Excel di sini</label>
+                <textarea id="import-paste" style="height:130px; font-family:monospace; font-size:0.7rem;" placeholder="Paste di sini... (2 baris: baris DATE dan baris shift anda)"></textarea>
+                <div id="import-preview" style="margin-top:8px;"></div>
+                <button onclick="previewImport()" style="width:100%; background:#1a2e22; border:1px solid var(--primary); color:var(--primary); padding:12px; border-radius:10px; font-weight:bold; margin-top:6px;">
+                    🔍 PREVIEW
+                </button>
+                <button id="btn-confirm-import" onclick="confirmImport()" style="width:100%; background:var(--primary); border:none; color:black; padding:13px; border-radius:10px; font-weight:bold; margin-top:8px; display:none;">
+                    ✅ SIMPAN KE CALENDAR
+                </button>`;
+            // Auto-fill current month
+            const y = currentCalDate.getFullYear(), m = String(currentCalDate.getMonth()+1).padStart(2,'0');
+            document.getElementById('import-month').value = `${y}-${m}`;
+            openSheet();
+        }
+
+        // Parse symbol before/after shift letter into assignment label
+        function parseAssign(sym) {
+            if(!sym) return '';
+            sym = sym.trim();
+            if(sym === '*') return 'TL';
+            if(sym === '#') return 'Amb';
+            if(sym === '(T)') return 'Triage';
+            return sym; // fallback: keep as-is
+        }
+
+        // Extract prefix symbol (before shift letters)
+        function extractPrefix(cell) {
+            const m = cell.match(/^(\*|\(T\)|#)/);
+            return m ? m[1] : '';
+        }
+
+        // Extract suffix symbol (after shift letters)
+        function extractSuffix(cell) {
+            const m = cell.match(/(\*|\(T\)|#)$/);
+            return m ? m[1] : '';
+        }
+
+        // Core parser: given a raw cell string, return {s, a}
+        function parseShiftCell(raw) {
+            if(!raw) return null;
+            const cell = raw.trim().toUpperCase()
+                .replace(/\(t\)/gi, '(T)')  // normalize case for (T)
+                .replace(/\*/g, '*');
+
+            // Known non-shift codes (no assignment needed)
+            const plain = ['SD','DO','AL','PH','MC','RPL','TD','ST','WP','OFF','-'];
+            if(plain.includes(cell.replace(/[^A-Z]/g,''))) return { s: cell.replace(/[^A-Z\/]/g,''), a: '' };
+
+            // Double shift: contains /  e.g. M/E, M/N, (T)M/E#, *M/N#
+            if(cell.includes('/')) {
+                // Strip prefix/suffix symbols
+                const prefix = extractPrefix(cell);
+                const suffix = extractSuffix(cell);
+                // Get core: e.g. M/E, M/N
+                const core = cell.replace(/^(\*|\(T\)|#)/, '').replace(/(\*|\(T\)|#)$/, '');
+                const parts = core.split('/');
+                if(parts.length === 2) {
+                    const shift = `${parts[0]}/${parts[1]}`;
+                    const a1 = parseAssign(prefix);
+                    const a2 = parseAssign(suffix);
+                    const assign = (a1 && a2) ? `${a1} / ${a2}` : (a1 || a2);
+                    return { s: shift, a: assign };
+                }
+            }
+
+            // Single shift: M, E, N with optional prefix/suffix symbol
+            const singleMatch = cell.match(/^(\*|\(T\)|#)?([MEN])(\*|\(T\)|#)?$/);
+            if(singleMatch) {
+                const sym = singleMatch[1] || singleMatch[3] || '';
+                return { s: singleMatch[2], a: parseAssign(sym) };
+            }
+
+            // Catch-all: just use the text as shift, no assign
+            const shiftOnly = cell.replace(/[^A-Z\/]/g, '');
+            if(shiftOnly) return { s: shiftOnly, a: '' };
+            return null;
+        }
+
+        let _importParsed = []; // store parsed results for confirm step
+
+        function previewImport() {
+            const raw = document.getElementById('import-paste').value;
+            const monthVal = document.getElementById('import-month').value;
+            const preview = document.getElementById('import-preview');
+            _importParsed = [];
+
+            if(!monthVal) { preview.innerHTML = '<p style="color:var(--danger);font-size:0.75rem;">⚠️ Sila pilih bulan & tahun.</p>'; return; }
+            if(!raw.trim()) { preview.innerHTML = '<p style="color:var(--danger);font-size:0.75rem;">⚠️ Tiada data untuk diparse.</p>'; return; }
+
+            const [impYear, impMonth] = monthVal.split('-').map(Number);
+
+            // Split pasted text into rows (tab-separated columns)
+            const rows = raw.trim().split('\n').map(r => r.split('\t').map(c => c.trim()));
+
+            // Find DATE row (row that has mostly numeric values 1-31)
+            let dateRow = null, shiftRow = null;
+            for(let i = 0; i < rows.length; i++) {
+                const numericCount = rows[i].filter(c => /^\d{1,2}(\(PH\))?$/.test(c.replace(/\s/g,''))).length;
+                if(numericCount >= 5) { dateRow = rows[i]; shiftRow = rows[i+1] || null; break; }
+            }
+
+            if(!dateRow || !shiftRow) {
+                preview.innerHTML = '<p style="color:var(--danger);font-size:0.75rem;">⚠️ Format tidak dikenali. Pastikan anda copy 2 baris: baris DATE dan baris shift.</p>';
+                return;
+            }
+
+            // Map date columns to shift values
+            let previewHTML = '<div style="font-size:0.7rem; margin-top:6px; border:1px solid #333; border-radius:8px; overflow:hidden;">';
+            previewHTML += '<div style="background:#222; padding:6px 10px; font-size:0.65rem; color:#888; font-weight:bold;">PREVIEW — semak sebelum simpan</div>';
+
+            let count = 0;
+            for(let col = 0; col < dateRow.length; col++) {
+                // Parse day — strip "(PH)" suffix e.g. "4(PH)" → 4
+                const dayRaw = dateRow[col].replace(/\(PH\)/i,'').trim();
+                const day = parseInt(dayRaw);
+                if(isNaN(day) || day < 1 || day > 31) continue;
+
+                const cellRaw = shiftRow[col] || '';
+                if(!cellRaw) continue;
+
+                const parsed = parseShiftCell(cellRaw);
+                if(!parsed) continue;
+
+                const key = `${impYear}-${String(impMonth).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+                _importParsed.push({ key, ...parsed });
+
+                const assignLabel = parsed.a ? `<span style="color:var(--primary)"> @ ${parsed.a}</span>` : '';
+                previewHTML += `<div style="display:flex; justify-content:space-between; padding:5px 10px; border-bottom:1px solid #1a1a1a; align-items:center;">
+                    <span style="color:#777; min-width:28px;">${String(day).padStart(2,'0')}/${String(impMonth).padStart(2,'0')}</span>
+                    <span style="font-weight:bold; color:#fff;">${parsed.s}${assignLabel}</span>
+                    <span style="font-size:0.6rem; color:#555;">${cellRaw}</span>
+                </div>`;
+                count++;
+            }
+
+            previewHTML += '</div>';
+
+            if(count === 0) {
+                preview.innerHTML = '<p style="color:var(--danger);font-size:0.75rem;">⚠️ Tiada shift yang dapat dikenali. Semak semula format paste.</p>';
+                document.getElementById('btn-confirm-import').style.display = 'none';
+                return;
+            }
+
+            previewHTML += `<p style="font-size:0.7rem; color:#888; margin-top:6px;">✅ ${count} hari berjaya diparse. Tekan <b style="color:var(--primary)">SIMPAN</b> untuk masukkan ke calendar.</p>`;
+            preview.innerHTML = previewHTML;
+            document.getElementById('btn-confirm-import').style.display = 'block';
+        }
+
+        function confirmImport() {
+            if(_importParsed.length === 0) return;
+            _importParsed.forEach(entry => {
+                store.calendar[entry.key] = { s: entry.s, a: entry.a };
+            });
+            saveData();
+            generateCalendar();
+            closeSheet();
+            _importParsed = [];
+            alert(`✅ ${_importParsed.length || 'Semua'} shift berjaya dimasukkan ke calendar!`);
+        }
+        // ============================================================
+
+        // ============================================================
+        // DEFAULT DRUGS MIGRATION
+        // ============================================================
+        const DEFAULT_DRUGS = [
+            { name: "IV Fentanyl", ampule: "0.1mg/2ml (100mcg)", prep: "Undiluted" },
+            { name: "IV Lignocaine", ampule: "100mg/5mls", prep: "Undiluted" },
+            { name: "IV Midazolam", ampule: "5mg/ml", prep: "5mg in 5ml NS" },
+            { name: "IV Etomidate", ampule: "20mg/10ml = 2mg/ml", prep: "Undiluted" },
+            { name: "IV Ketamine", ampule: "200mg/20mls = 10mg/ml", prep: "Undiluted" },
+            { name: "IV Propofol", ampule: "200mg/20mls = 10mg/ml", prep: "Undiluted" },
+            { name: "IV Scoline (Suxamethonium)", ampule: "100mg/2mls = 50mg/ml", prep: "Undiluted" },
+            { name: "Rocuronium (Esmeron)", ampule: "50mg/5mls = 10mg/ml", prep: "Undiluted" },
+            { name: "IVI Midazolam", ampule: "5mg/ml", prep: "20mg in 20mls NS @ 3ml/Hr" },
+            { name: "IVI Fentanyl", ampule: "0.1mg/2ml (100mcg)", prep: "0.2mg (200mcg) in 20ml NS @ 3ml/Hr" },
+            { name: "IVI Morphine", ampule: "10mg/ml", prep: "20mg in 20mls NS @ 3ml/Hr" },
+            { name: "IVI Ketamine", ampule: "200mg/20mls = 10mg/ml", prep: "Undiluted 20mg (2ml)" },
+            { name: "IVI Noradrenaline", ampule: "4mg/4mls", prep: "D.S: 8mg in 50mls D5%" },
+            { name: "IVI Amiodarone (Arrhythmias)", ampule: "150mg/3ml", prep: "L.D: 300mg in 100mls D5% (bolus) @ 1Hr" },
+            { name: "IVI Amiodarone (VF, pVT)", ampule: "150mg/3ml", prep: "L.D: 300mg in 20mls D5% (bolus)" },
+            { name: "IVI Amiodarone (Maintenance)", ampule: "150mg/3ml", prep: "900mg in 500ml D5% @ 24Hr" },
+            { name: "IVI GTN", ampule: "50mg/10mls", prep: "10mg (2mls) in 50mls NS" },
+            { name: "IVI Adrenaline 1:1000", ampule: "1mg/ml", prep: "3mg (3mls) in 50mls NS @ 10mls/Hr. For cardiac arrest 1mg every 3-5min" },
+            { name: "IVI Adrenaline 1:10,000 (Paeds)", ampule: "1mg/ml", prep: "For cardiac arrest: dilute 1mg in 10mls NS (1:10,000) given 2.8mls every 3-5min for 28kg patient" },
+            { name: "IVI Atropine", ampule: "1mg/1ml", prep: "IV Bolus 0.6-3mg every 5 mins" },
+            { name: "IVI Dopamine", ampule: "200mg/5mls", prep: "D.S: 400mg in 50mls NS @ 10mls/Hr" },
+            { name: "IVI Dobutamine", ampule: "250mg/20mls", prep: "D.S: 500mg in 50mls NS @ 5mls/Hr" },
+            { name: "IVI Labetalol", ampule: "25mg/5ml", prep: "100mg undiluted (4 amp) in 20ml syringe @ 0.5/min (6ml/Hr)" },
+            { name: "IVI Sodium Bicarb 8.4%", ampule: "10mmol/10ml = 1mEq/ml", prep: "100ml (10 amp) undiluted in chamber @ 1Hr / 50ml undiluted (5 ampule) in 50ml syringe x2 (@ 30min/syringe)" },
+            { name: "IV Pantoprazole", ampule: "40mg", prep: "80mg in 20mls NS bolus" },
+            { name: "IVI Pantoprazole", ampule: "40mg", prep: "40mg in 50mls NS @ 10mls/Hr" },
+            { name: "IV Morphine", ampule: "10mg/ml", prep: "10mg in 10mls NS" },
+            { name: "IV Adenosine (Adenocor)", ampule: "6mg/2mls", prep: "6mg, 12mg, 18mg" },
+            { name: "IV Propranolol", ampule: "1mg/ml", prep: "1mg/min (in 1cc syringe)" },
+            { name: "IV MgSO4", ampule: "2.46mg/amp", prep: "1 amp dilute in 20mls @ 20mls/1Hr" },
+            { name: "IV Potassium Chloride KCL (1Hr)", ampule: "1g/10mls", prep: "1g in 100mls NS @ 1Hr" },
+            { name: "IV Potassium Chloride KCL (Maintenance)", ampule: "1g/10mls", prep: "1g in 500mls NS @ 1Hr" },
+            { name: "IV Flumazenil", ampule: "0.5mg/5ml", prep: "Given undiluted through free-flowing IV solution over 15-30 sec" },
+            { name: "IV Lytic Cocktail", ampule: "—", prep: "Calcium Gluconate 10% 10mls 10min, D50% 50mls, Insulin 10u (0.1ml)" },
+            { name: "IV Rocephin", ampule: "1g/vial", prep: "2g in 20mls NS (slow bolus) / IV infusion 50-100mls @ 30 minutes" },
+            { name: "IV Phenytoin (Dilantin)", ampule: "250mg/5ml", prep: "Maximum dose 1.5g (6 ampule) in 100mls of NS @ 1Hr" },
+            { name: "IV Tranexamic Acid", ampule: "1gm/10ml", prep: "1gm in 100mls NS @ 10min" },
+            { name: "IV Tranexamic Acid (Maintenance)", ampule: "1gm/10ml", prep: "1gm in 500mls NS @ 8Hr" },
+            { name: "IV Bricanyl", ampule: "0.5mg/ml", prep: "3mg (6 amp) in 50mls NS @ 3mls/Hr" },
+            { name: "IV Valium (Diazepam)", ampule: "10mg/2ml", prep: "5mg/min (adults), 0.25mg/kg (children)" },
+        ];
+
+        function migrateDefaultDrugs() {
+            const existingNames = store.drugs.map(d => d.name.toLowerCase());
+            let added = 0;
+            DEFAULT_DRUGS.forEach(def => {
+                if(!existingNames.includes(def.name.toLowerCase())) {
+                    store.drugs.push(def);
+                    added++;
+                }
+            });
+            // Also fix any old drugs missing ampule field
+            store.drugs = store.drugs.map(d => ({
+                name: d.name,
+                ampule: d.ampule || d.prep || '—',
+                prep: d.prep || ''
+            }));
+            if(added > 0) { localStorage.setItem('roster_ultimate_v3', JSON.stringify(store)); }
+        }
+        // ============================================================
+
+        // ============================================================
+        // THEME SWITCHER
+        // ============================================================
+        const themes = {
+            emerald: { primary: '#50c878', glow: 'rgba(80,200,120,0.4)',  rsiBtn: '#2e7d52' },
+            scarlet: { primary: '#e8362a', glow: 'rgba(232,54,42,0.4)',   rsiBtn: '#8b1a14' },
+            blue:    { primary: '#4169e1', glow: 'rgba(65,105,225,0.4)',  rsiBtn: '#1a3580' },
+            gold:    { primary: '#d4af37', glow: 'rgba(212,175,55,0.4)',  rsiBtn: '#7a6010' },
+        };
+
+        function setTheme(name) {
+            const t = themes[name]; if(!t) return;
+            const root = document.documentElement;
+            root.style.setProperty('--primary', t.primary);
+            root.style.setProperty('--primary-glow', t.glow);
+            // Update RSI button colour
+            const rsiBtn = document.querySelector('.btn-rsi');
+            if(rsiBtn) rsiBtn.style.background = t.rsiBtn;
+            // Update active dot
+            document.querySelectorAll('.theme-dot').forEach(d => {
+                d.classList.toggle('active', d.classList.contains(name));
+            });
+            // Update avatar bg colour for default avatar
+            const pic = document.getElementById('profile-pic');
+            if(pic && pic.src.includes('ui-avatars')) {
+                pic.src = `https://ui-avatars.com/api/?name=Ahmad+Zilalul&background=${t.primary.replace('#','')}&color=000`;
+            }
+            // Persist
+            localStorage.setItem('roster_theme', name);
+        }
+
+        function loadTheme() {
+            const saved = localStorage.getItem('roster_theme') || 'emerald';
+            setTheme(saved);
+        }
+        // ============================================================
+
         window.addEventListener('load', checkPDFStatus);
-        setInterval(updateTime, 1000); updateTime(); generateCalendar(); renderStats(); loadNotes();
+        migrateCalendarKeys();
+        migrateDefaultDrugs();
+        setInterval(updateTime, 1000); updateTime(); generateCalendar(); renderStats(); loadNotes(); loadTheme();
     </script>
 </body>
 </html>
