@@ -40,7 +40,6 @@
             overflow-x: hidden;
         }
 
-        /* ── NOISE TEXTURE OVERLAY ── */
         body::before {
             content: '';
             position: fixed;
@@ -51,33 +50,173 @@
             opacity: 0.4;
         }
 
-        /* ── AMBIENT GLOW ── */
         .ambient-glow {
             position: fixed;
-            width: 500px;
-            height: 500px;
+            width: 500px; height: 500px;
             border-radius: 50%;
             background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%);
-            top: -200px;
-            right: -150px;
+            top: -200px; right: -150px;
             pointer-events: none;
-            z-index: 0;
-            opacity: 0.3;
+            z-index: 0; opacity: 0.3;
             animation: driftGlow 8s ease-in-out infinite alternate;
         }
+        @keyframes driftGlow { from{transform:translate(0,0) scale(1);} to{transform:translate(-30px,40px) scale(1.1);} }
 
-        @keyframes driftGlow {
-            from { transform: translate(0, 0) scale(1); }
-            to   { transform: translate(-30px, 40px) scale(1.1); }
+        .page {
+            position: relative; z-index: 1;
+            padding: 0 14px;
+            max-width: 480px; margin: 0 auto;
         }
 
-        /* ── PAGE WRAPPER ── */
-        .page {
+        /* ── PRAYER TIME WIDGET ── */
+        .prayer-widget {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 14px 16px;
+            margin-top: 14px;
+            margin-bottom: 0;
             position: relative;
-            z-index: 1;
-            padding: 0 14px;
-            max-width: 480px;
-            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .prayer-widget::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(80,200,120,0.05) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .prayer-widget-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .prayer-widget-title {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .prayer-widget-title span {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.58rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--primary);
+        }
+
+        .prayer-location {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.55rem;
+            color: var(--text-muted);
+            letter-spacing: 0.08em;
+        }
+
+        .prayer-next-banner {
+            background: var(--primary-dim);
+            border: 1px solid rgba(80,200,120,0.2);
+            border-radius: var(--radius-xs);
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .prayer-next-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.55rem;
+            color: var(--primary);
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .prayer-next-name {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .prayer-next-time {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.6rem;
+            letter-spacing: 0.05em;
+            color: var(--primary);
+            filter: drop-shadow(0 0 8px var(--primary-glow));
+        }
+
+        .prayer-countdown {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.6rem;
+            color: var(--text-dim);
+            text-align: right;
+        }
+
+        .prayer-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 4px;
+        }
+
+        .prayer-slot {
+            text-align: center;
+            padding: 7px 2px;
+            border-radius: var(--radius-xs);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .prayer-slot.active {
+            border-color: var(--primary);
+            background: var(--primary-dim);
+        }
+
+        .prayer-slot.passed {
+            opacity: 0.45;
+        }
+
+        .prayer-slot-name {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.48rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 3px;
+        }
+
+        .prayer-slot.active .prayer-slot-name { color: var(--primary); }
+
+        .prayer-slot-time {
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: var(--text-dim);
+        }
+
+        .prayer-slot.active .prayer-slot-time { color: var(--text); }
+
+        .prayer-loading {
+            text-align: center;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            padding: 16px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .prayer-error {
+            text-align: center;
+            font-size: 0.65rem;
+            color: var(--danger);
+            padding: 8px;
+            font-family: 'JetBrains Mono', monospace;
         }
 
         /* ── THEME BAR ── */
@@ -85,7 +224,7 @@
             display: flex;
             align-items: center;
             justify-content: flex-end;
-            padding: 16px 4px 10px;
+            padding: 12px 4px 10px;
         }
         .theme-toggle-btn {
             display: flex; align-items: center; gap: 7px;
@@ -112,15 +251,12 @@
             justify-content: space-between;
             gap: 12px;
         }
-
         .profile-header::before {
             content: '';
-            position: absolute;
-            inset: 0;
+            position: absolute; inset: 0;
             background: linear-gradient(135deg, var(--primary-dim) 0%, transparent 60%);
             pointer-events: none;
         }
-
         .profile-header::after {
             content: '';
             position: absolute;
@@ -132,14 +268,10 @@
 
         .profile-left { display: flex; align-items: center; gap: 14px; position: relative; z-index: 1; flex: 1; min-width: 0; }
 
-        .avatar-ring {
-            position: relative;
-            flex-shrink: 0;
-        }
+        .avatar-ring { position: relative; flex-shrink: 0; }
         .avatar-ring::before {
             content: '';
-            position: absolute;
-            inset: -3px;
+            position: absolute; inset: -3px;
             border-radius: 50%;
             background: conic-gradient(var(--primary), transparent 60%, var(--primary));
             animation: spinRing 6s linear infinite;
@@ -150,55 +282,33 @@
             width: 60px; height: 60px; border-radius: 50%;
             border: 2px solid var(--bg);
             object-fit: cover;
-            position: relative;
-            z-index: 1;
-            cursor: pointer;
-            display: block;
+            position: relative; z-index: 1;
+            cursor: pointer; display: block;
         }
 
         .profile-info { min-width: 0; }
         .profile-name {
             font-family: 'DM Sans', sans-serif;
-            font-weight: 700;
-            font-size: 0.78rem;
+            font-weight: 700; font-size: 0.78rem;
             color: var(--text);
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            line-height: 1.2;
-            margin-bottom: 4px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            text-transform: uppercase; letter-spacing: 0.04em;
+            line-height: 1.2; margin-bottom: 4px;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
             max-width: 160px;
         }
-        .staff-id {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.62rem;
-            color: var(--text-dim);
-            margin-bottom: 4px;
-        }
-        #live-clock {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.7rem;
-            color: var(--primary);
-            font-weight: 700;
-        }
+        .staff-id { font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; color: var(--text-dim); margin-bottom: 4px; }
+        #live-clock { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--primary); font-weight: 700; }
 
         .roster-badge {
-            position: relative;
-            z-index: 1;
-            text-align: right;
-            flex-shrink: 0;
+            position: relative; z-index: 1;
+            text-align: right; flex-shrink: 0;
             padding-left: 16px;
             border-left: 1px solid var(--border-bright);
         }
         .roster-badge .main {
             font-family: 'Bebas Neue', sans-serif;
-            font-size: 2.2rem;
-            letter-spacing: 0.08em;
-            color: var(--primary);
-            display: block;
-            line-height: 1;
+            font-size: 2.2rem; letter-spacing: 0.08em;
+            color: var(--primary); display: block; line-height: 1;
             filter: drop-shadow(0 0 12px var(--primary-glow));
             animation: pulseText 4s ease-in-out infinite;
         }
@@ -206,690 +316,617 @@
             0%,100% { filter: drop-shadow(0 0 8px var(--primary-glow)); }
             50% { filter: drop-shadow(0 0 20px var(--primary-glow)); }
         }
-        .roster-badge .dept {
-            font-size: 0.45rem;
-            color: var(--text-dim);
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            display: block;
-            margin-top: 2px;
-        }
+        .roster-badge .dept { font-size: 0.45rem; color: var(--text-dim); letter-spacing: 0.2em; text-transform: uppercase; display: block; margin-top: 2px; }
 
         /* ── SHIFT SUMMARY ── */
         .shift-summary {
             background: var(--card);
             border: 1px solid var(--border);
             border-radius: var(--radius);
-            padding: 16px;
-            margin-bottom: 12px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0;
-            position: relative;
-            overflow: hidden;
+            padding: 16px; margin-bottom: 12px;
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 0; position: relative; overflow: hidden;
         }
-
-        .shift-summary::before {
-            content: '';
-            position: absolute;
-            bottom: 0; left: 0; right: 0;
-            height: 1px;
-            background: var(--border);
-        }
-
-        .summary-pill {
-            padding: 12px 14px;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
+        .shift-summary::before { content:''; position:absolute; bottom:0; left:0; right:0; height:1px; background:var(--border); }
+        .summary-pill { padding: 12px 14px; display:flex; flex-direction:column; gap:4px; }
         .summary-pill:first-child { border-right: 1px solid var(--border); }
-
-        .summary-pill-label {
-            font-size: 0.55rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.15em;
-            color: var(--text-dim);
-        }
-        .summary-pill-val {
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--text-dim);
-            line-height: 1.2;
-        }
-        .summary-pill-val.today-val {
-            font-size: 1.05rem;
-            font-weight: 800;
-            color: var(--text);
-        }
-
-        #summary-reminders {
-            grid-column: 1 / -1;
-            border-top: 1px solid var(--border);
-            padding: 10px 14px 4px;
-            display: none;
-        }
+        .summary-pill-label { font-size:0.55rem; font-weight:700; text-transform:uppercase; letter-spacing:0.15em; color:var(--text-dim); }
+        .summary-pill-val { font-size:0.9rem; font-weight:600; color:var(--text-dim); line-height:1.2; }
+        .summary-pill-val.today-val { font-size:1.05rem; font-weight:800; color:var(--text); }
+        #summary-reminders { grid-column:1/-1; border-top:1px solid var(--border); padding:10px 14px 4px; display:none; }
 
         /* ── STATS ROW ── */
-        .stats-row {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
-            margin-bottom: 10px;
-        }
-
+        .stats-row { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:10px; }
         .stat-card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            padding: 14px 6px 10px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.34,1.56,0.64,1);
-            position: relative;
-            overflow: hidden;
+            background:var(--card); border:1px solid var(--border); border-radius:var(--radius-sm);
+            padding:14px 6px 10px; text-align:center; cursor:pointer;
+            transition:all 0.2s cubic-bezier(0.34,1.56,0.64,1);
+            position:relative; overflow:hidden;
         }
-
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: var(--primary-dim);
-            opacity: 0;
-            transition: opacity 0.2s;
-        }
-
-        .stat-card:hover::before, .stat-card:active::before { opacity: 1; }
-        .stat-card:active { transform: scale(0.95); }
-
-        .stat-card .stat-val {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 1.6rem;
-            letter-spacing: 0.02em;
-            color: var(--text);
-            line-height: 1;
-            margin: 2px 0 6px;
-        }
-        .stat-card .stat-val.danger { color: var(--danger); }
-        .stat-card small {
-            font-size: 0.52rem;
-            font-weight: 700;
-            color: var(--text-dim);
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            display: block;
-        }
-
-        .progress-track {
-            width: 75%;
-            height: 2px;
-            background: var(--border);
-            border-radius: 10px;
-            overflow: hidden;
-            margin: 4px auto 0;
-        }
-        .progress-fill {
-            height: 100%;
-            background: var(--primary);
-            border-radius: 10px;
-            transition: width 0.6s cubic-bezier(0.34,1.56,0.64,1);
-        }
+        .stat-card::before { content:''; position:absolute; inset:0; background:var(--primary-dim); opacity:0; transition:opacity 0.2s; }
+        .stat-card:hover::before, .stat-card:active::before { opacity:1; }
+        .stat-card:active { transform:scale(0.95); }
+        .stat-card .stat-val { font-family:'Bebas Neue',sans-serif; font-size:1.6rem; letter-spacing:0.02em; color:var(--text); line-height:1; margin:2px 0 6px; }
+        .stat-card .stat-val.danger { color:var(--danger); }
+        .stat-card small { font-size:0.52rem; font-weight:700; color:var(--text-dim); letter-spacing:0.1em; text-transform:uppercase; display:block; }
+        .progress-track { width:75%; height:2px; background:var(--border); border-radius:10px; overflow:hidden; margin:4px auto 0; }
+        .progress-fill { height:100%; background:var(--primary); border-radius:10px; transition:width 0.6s cubic-bezier(0.34,1.56,0.64,1); }
 
         /* ── SUB STATS ROW ── */
-        .stats-row-sub {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-bottom: 16px;
-        }
-
+        .stats-row-sub { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:16px; }
         .action-card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            padding: 12px 14px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            transition: all 0.2s;
+            background:var(--card); border:1px solid var(--border); border-radius:var(--radius-sm);
+            padding:12px 14px; display:flex; align-items:center; gap:10px;
+            cursor:pointer; transition:all 0.2s;
         }
-        .action-card:active { transform: scale(0.96); background: var(--card-raised); }
-        .action-card .action-icon { font-size: 1.2rem; flex-shrink: 0; }
-        .action-card .action-label { font-size: 0.55rem; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1em; display: block; margin-bottom: 2px; }
-        .action-card .action-title { font-size: 0.72rem; font-weight: 700; }
-        .action-card .action-title.save { color: var(--success); }
-        .action-card .action-title.restore { color: var(--warning); }
+        .action-card:active { transform:scale(0.96); background:var(--card-raised); }
+        .action-card .action-icon { font-size:1.2rem; flex-shrink:0; }
+        .action-card .action-label { font-size:0.55rem; font-weight:700; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.1em; display:block; margin-bottom:2px; }
+        .action-card .action-title { font-size:0.72rem; font-weight:700; }
+        .action-card .action-title.save { color:var(--success); }
+        .action-card .action-title.restore { color:var(--warning); }
 
         /* ── SECTION ── */
         .section {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 18px 16px;
-            margin-bottom: 12px;
-            position: relative;
-            overflow: hidden;
+            background:var(--card); border:1px solid var(--border); border-radius:var(--radius);
+            padding:18px 16px; margin-bottom:12px;
+            position:relative; overflow:hidden;
         }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 14px;
-        }
-
-        h3 {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.65rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.18em;
-            color: var(--primary);
-        }
+        .section-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; }
+        h3 { font-family:'JetBrains Mono',monospace; font-size:0.65rem; font-weight:700; text-transform:uppercase; letter-spacing:0.18em; color:var(--primary); }
 
         /* ── CALENDAR ── */
-        .cal-nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 14px;
-        }
-        .cal-nav h3 { font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; letter-spacing: 0.1em; color: var(--text); }
-
+        .cal-nav { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; }
+        .cal-nav h3 { font-family:'Bebas Neue',sans-serif; font-size:1.2rem; letter-spacing:0.1em; color:var(--text); }
         .nav-btn {
-            background: var(--card-raised);
-            border: 1px solid var(--border-bright);
-            color: var(--primary);
-            width: 34px; height: 34px;
-            border-radius: var(--radius-xs);
-            font-size: 0.75rem;
-            font-weight: 900;
-            cursor: pointer;
-            transition: all 0.15s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background:var(--card-raised); border:1px solid var(--border-bright); color:var(--primary);
+            width:34px; height:34px; border-radius:var(--radius-xs); font-size:0.75rem;
+            font-weight:900; cursor:pointer; transition:all 0.15s;
+            display:flex; align-items:center; justify-content:center;
         }
-        .nav-btn:active { background: var(--primary); color: black; transform: scale(0.9); }
-
+        .nav-btn:active { background:var(--primary); color:black; transform:scale(0.9); }
         .import-btn {
-            width: 100%;
-            background: var(--primary-dim);
-            border: 1px solid rgba(80,200,120,0.25);
-            color: var(--primary);
-            border-radius: var(--radius-xs);
-            padding: 10px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            letter-spacing: 0.08em;
-            cursor: pointer;
-            margin-bottom: 12px;
-            transition: all 0.2s;
-            font-family: 'JetBrains Mono', monospace;
+            width:100%; background:var(--primary-dim); border:1px solid rgba(80,200,120,0.25);
+            color:var(--primary); border-radius:var(--radius-xs); padding:10px;
+            font-size:0.7rem; font-weight:700; letter-spacing:0.08em;
+            cursor:pointer; margin-bottom:12px; transition:all 0.2s;
+            font-family:'JetBrains Mono',monospace;
         }
-        .import-btn:active { background: var(--primary); color: black; }
-
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 4px;
-        }
-
-        .day-label {
-            text-align: center;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.55rem;
-            font-weight: 700;
-            color: var(--text-muted);
-            padding-bottom: 6px;
-            letter-spacing: 0.05em;
-        }
-
+        .import-btn:active { background:var(--primary); color:black; }
+        .calendar-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:4px; }
+        .day-label { text-align:center; font-family:'JetBrains Mono',monospace; font-size:0.55rem; font-weight:700; color:var(--text-muted); padding-bottom:6px; letter-spacing:0.05em; }
         .day-box {
-            aspect-ratio: 1;
-            background: var(--surface);
-            border-radius: var(--radius-xs);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid var(--border);
-            position: relative;
-            cursor: pointer;
-            transition: all 0.15s cubic-bezier(0.34,1.56,0.64,1);
+            aspect-ratio:1; background:var(--surface); border-radius:var(--radius-xs);
+            display:flex; flex-direction:column; align-items:center; justify-content:center;
+            border:1px solid var(--border); position:relative; cursor:pointer;
+            transition:all 0.15s cubic-bezier(0.34,1.56,0.64,1);
         }
+        .day-box:active { transform:scale(0.88); background:var(--primary-dim); border-color:var(--primary); }
+        .day-box.today { border-color:var(--primary); background:var(--primary-dim); box-shadow:0 0 0 1px var(--primary-glow) inset; }
+        .day-box .date-num { position:absolute; top:2px; left:4px; font-family:'JetBrains Mono',monospace; font-size:0.5rem; color:var(--text-dim); font-weight:700; }
+        .day-box.today .date-num { color:var(--primary); }
+        .day-box .shift-text { font-family:'Bebas Neue',sans-serif; font-size:1.05rem; letter-spacing:0.03em; line-height:1; }
+        .day-box .assign-text { font-size:0.38rem; color:var(--primary); font-weight:700; text-align:center; width:95%; overflow:hidden; white-space:nowrap; letter-spacing:0.03em; text-transform:uppercase; }
 
-        .day-box:active { transform: scale(0.88); background: var(--primary-dim); border-color: var(--primary); }
+        /* ── CLAIM ── */
+        .claim-toggle { display:flex; justify-content:space-between; align-items:center; cursor:pointer; user-select:none; }
 
-        .day-box.today {
-            border-color: var(--primary);
-            background: var(--primary-dim);
-            box-shadow: 0 0 0 1px var(--primary-glow) inset;
-        }
-
-        .day-box .date-num {
-            position: absolute;
-            top: 2px; left: 4px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.5rem;
-            color: var(--text-dim);
-            font-weight: 700;
-        }
-        .day-box.today .date-num { color: var(--primary); }
-        .day-box .shift-text {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 1.05rem;
-            letter-spacing: 0.03em;
-            line-height: 1;
-        }
-        .day-box .assign-text {
-            font-size: 0.38rem;
-            color: var(--primary);
-            font-weight: 700;
-            text-align: center;
-            width: 95%;
-            overflow: hidden;
-            white-space: nowrap;
-            letter-spacing: 0.03em;
-            text-transform: uppercase;
-        }
-
-        /* ── CLAIM SECTION ── */
-        .claim-toggle {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            user-select: none;
-        }
-
-        /* ── DRUG SECTION ── */
-        .drug-toolbar {
-            display: flex;
-            gap: 6px;
-            align-items: center;
-        }
-
+        /* ── DRUG ── */
+        .drug-toolbar { display:flex; gap:6px; align-items:center; }
         .btn-rsi {
-            background: var(--primary-dim);
-            border: 1px solid rgba(80,200,120,0.35);
-            color: var(--primary);
-            border-radius: var(--radius-xs);
-            padding: 5px 10px;
-            font-size: 0.6rem;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            cursor: pointer;
-            font-family: 'JetBrains Mono', monospace;
-            transition: all 0.15s;
+            background:var(--primary-dim); border:1px solid rgba(80,200,120,0.35); color:var(--primary);
+            border-radius:var(--radius-xs); padding:5px 10px; font-size:0.6rem; font-weight:700;
+            display:flex; align-items:center; gap:4px; cursor:pointer;
+            font-family:'JetBrains Mono',monospace; transition:all 0.15s;
         }
-        .btn-rsi:active { background: var(--primary); color: black; }
-
-        #btn-pdf {
-            background: #1a2e45;
-            border: 1px solid rgba(65,105,225,0.4);
-            color: #7ab3ff;
-            border-radius: var(--radius-xs);
-            padding: 5px 9px;
-            font-size: 0.6rem;
-            font-weight: 700;
-            cursor: pointer;
-            display: none;
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        .btn-add-drug {
-            background: none;
-            border: 1px solid var(--border-bright);
-            color: var(--primary);
-            border-radius: var(--radius-xs);
-            width: 28px; height: 28px;
-            font-size: 1rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.15s;
-        }
-        .btn-add-drug:active { background: var(--primary); color: black; }
+        .btn-rsi:active { background:var(--primary); color:black; }
+        #btn-pdf { background:#1a2e45; border:1px solid rgba(65,105,225,0.4); color:#7ab3ff; border-radius:var(--radius-xs); padding:5px 9px; font-size:0.6rem; font-weight:700; cursor:pointer; display:none; font-family:'JetBrains Mono',monospace; }
+        .btn-add-drug { background:none; border:1px solid var(--border-bright); color:var(--primary); border-radius:var(--radius-xs); width:28px; height:28px; font-size:1rem; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.15s; }
+        .btn-add-drug:active { background:var(--primary); color:black; }
 
         /* ── INPUTS ── */
         input[type="text"], input[type="number"], input[type="date"], input[type="month"], input[type="time"], select {
-            background: var(--surface);
-            border: 1px solid var(--border-bright);
-            color: var(--text);
-            padding: 11px 14px;
-            border-radius: var(--radius-xs);
-            width: 100%;
-            font-size: 0.82rem;
-            margin-bottom: 8px;
-            font-family: 'DM Sans', sans-serif;
-            transition: border-color 0.15s;
-            -webkit-appearance: none;
+            background:var(--surface); border:1px solid var(--border-bright); color:var(--text);
+            padding:11px 14px; border-radius:var(--radius-xs); width:100%;
+            font-size:0.82rem; margin-bottom:8px; font-family:'DM Sans',sans-serif;
+            transition:border-color 0.15s; -webkit-appearance:none;
         }
-        input:focus, select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 2px var(--primary-dim); }
-
+        input:focus, select:focus { outline:none; border-color:var(--primary); box-shadow:0 0 0 2px var(--primary-dim); }
         textarea {
-            background: var(--surface);
-            border: 1px solid var(--border-bright);
-            color: var(--text);
-            padding: 12px 14px;
-            border-radius: var(--radius-xs);
-            width: 100%;
-            font-family: 'DM Sans', sans-serif;
-            font-size: 0.8rem;
-            height: 120px;
-            resize: none;
-            line-height: 1.5;
-            transition: border-color 0.15s;
+            background:var(--surface); border:1px solid var(--border-bright); color:var(--text);
+            padding:12px 14px; border-radius:var(--radius-xs); width:100%;
+            font-family:'DM Sans',sans-serif; font-size:0.8rem; height:120px;
+            resize:none; line-height:1.5; transition:border-color 0.15s;
         }
-        textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 2px var(--primary-dim); }
-
-        label {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.58rem;
-            color: var(--primary);
-            display: block;
-            margin-bottom: 4px;
-            margin-top: 6px;
-            font-weight: 700;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-        }
-
-        /* ── DRUG SEARCH INPUT ── */
-        #drug-search {
-            padding: 10px 14px;
-            font-size: 0.8rem;
-            background: var(--surface);
-        }
+        textarea:focus { outline:none; border-color:var(--primary); box-shadow:0 0 0 2px var(--primary-dim); }
+        label { font-family:'JetBrains Mono',monospace; font-size:0.58rem; color:var(--primary); display:block; margin-bottom:4px; margin-top:6px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; }
+        #drug-search { padding:10px 14px; font-size:0.8rem; background:var(--surface); }
 
         /* ── DRUG ITEM ── */
-        .drug-item {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            padding: 12px 14px;
-            margin-bottom: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 8px;
-            transition: border-color 0.2s;
-        }
-        .drug-item:hover { border-color: var(--border-bright); }
-        .drug-name { font-weight: 700; font-size: 0.82rem; color: var(--text); margin-bottom: 3px; }
-        .drug-ampule { font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; color: var(--text-dim); margin-bottom: 4px; }
-        .drug-prep { font-size: 0.72rem; color: var(--primary); font-weight: 600; line-height: 1.4; }
+        .drug-item { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 14px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:flex-start; gap:8px; transition:border-color 0.2s; }
+        .drug-item:hover { border-color:var(--border-bright); }
+        .drug-name { font-weight:700; font-size:0.82rem; color:var(--text); margin-bottom:3px; }
+        .drug-ampule { font-family:'JetBrains Mono',monospace; font-size:0.62rem; color:var(--text-dim); margin-bottom:4px; }
+        .drug-prep { font-size:0.72rem; color:var(--primary); font-weight:600; line-height:1.4; }
 
         /* ── TODO ── */
-        .todo-item {
-            display: flex;
-            align-items: center;
-            padding: 9px 4px;
-            border-bottom: 1px solid var(--border);
-            gap: 10px;
-        }
-        .todo-item:last-child { border-bottom: none; }
-        .todo-text { flex: 1; font-size: 0.8rem; color: var(--text); }
-        .todo-text.done { text-decoration: line-through; color: var(--text-muted); }
-        .todo-del { color: var(--danger); background: none; border: none; font-size: 1rem; cursor: pointer; padding: 0 4px; opacity: 0.5; transition: opacity 0.15s; }
-        .todo-del:hover { opacity: 1; }
+        .todo-item { display:flex; align-items:center; padding:9px 4px; border-bottom:1px solid var(--border); gap:10px; }
+        .todo-item:last-child { border-bottom:none; }
+        .todo-text { flex:1; font-size:0.8rem; color:var(--text); }
+        .todo-text.done { text-decoration:line-through; color:var(--text-muted); }
+        .todo-del { color:var(--danger); background:none; border:none; font-size:1rem; cursor:pointer; padding:0 4px; opacity:0.5; transition:opacity 0.15s; }
+        .todo-del:hover { opacity:1; }
 
         /* ── RECORD CARD ── */
-        .record-card {
+        .record-card { background:var(--surface); border:1px solid var(--border); border-left:3px solid var(--primary); border-radius:var(--radius-sm); padding:10px 14px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center; font-size:0.78rem; }
+        .btn-delete { background:none; color:var(--danger); border:none; font-size:1.3rem; cursor:pointer; opacity:0.6; }
+        .btn-delete:hover { opacity:1; }
+
+        .paid-alert { background:rgba(46,204,113,0.1); color:var(--success); border:1px solid rgba(46,204,113,0.25); padding:8px 12px; border-radius:var(--radius-xs); font-size:0.7rem; margin-bottom:8px; display:none; }
+
+        /* ── MODAL ── */
+        .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); backdrop-filter:blur(4px); z-index:1000; }
+
+        /* ── BOTTOM SHEET ── */
+        .bottom-sheet {
+            position:fixed; bottom:-100%; left:0; width:100%;
+            background:var(--card); border-radius:28px 28px 0 0; padding:0;
+            box-sizing:border-box; transition:bottom 0.35s cubic-bezier(0.4,0,0.2,1);
+            z-index:1001; max-height:88vh; overflow:hidden;
+            display:flex; flex-direction:column;
+            border-top:1px solid var(--border-bright);
+            box-shadow:0 -20px 60px rgba(0,0,0,0.6);
+        }
+        .bottom-sheet.active { bottom:0; }
+        .sheet-handle { text-align:center; padding:14px 0 4px; flex-shrink:0; }
+        .sheet-handle::before { content:''; display:inline-block; width:36px; height:3px; background:var(--border-bright); border-radius:10px; }
+        .sheet-title-bar { display:flex; align-items:center; gap:10px; padding:8px 24px 14px; border-bottom:1px solid var(--border); flex-shrink:0; }
+        .sheet-title-bar .sheet-accent { width:3px; height:18px; background:var(--primary); border-radius:10px; flex-shrink:0; }
+        #sheet-title { font-family:'Bebas Neue',sans-serif; font-size:1.1rem; letter-spacing:0.08em; color:var(--text); }
+        #sheet-content-wrap { flex:1; overflow-y:auto; padding:16px 24px 40px; -webkit-overflow-scrolling:touch; }
+
+        /* ── BUTTONS ── */
+        .btn-primary { width:100%; background:var(--primary); border:none; color:#000; padding:15px; border-radius:var(--radius-sm); font-weight:700; font-size:0.85rem; cursor:pointer; letter-spacing:0.05em; text-transform:uppercase; font-family:'DM Sans',sans-serif; transition:all 0.15s; margin-top:10px; }
+        .btn-primary:active { opacity:0.85; transform:scale(0.98); }
+        .btn-secondary { width:100%; background:none; border:1px solid var(--border-bright); color:var(--text-dim); padding:12px; border-radius:var(--radius-sm); font-weight:700; font-size:0.78rem; cursor:pointer; letter-spacing:0.05em; font-family:'DM Sans',sans-serif; margin-top:8px; transition:all 0.15s; }
+        .btn-secondary:active { background:var(--card-raised); }
+        .btn-danger { width:100%; background:none; border:1px solid rgba(255,82,82,0.35); color:var(--danger); padding:12px; border-radius:var(--radius-sm); font-weight:700; font-size:0.78rem; cursor:pointer; font-family:'DM Sans',sans-serif; margin-top:8px; transition:all 0.15s; }
+        .btn-danger:active { background:rgba(255,82,82,0.1); }
+
+        #shift-parse-preview { min-height:36px; margin-top:4px; }
+        .preview-ok { font-size:0.75rem; color:#aaa; padding:8px 12px; background:var(--surface); border-radius:var(--radius-xs); border:1px solid var(--border); font-family:'JetBrains Mono',monospace; }
+        .preview-err { font-size:0.7rem; color:var(--danger); padding:8px 12px; background:rgba(255,82,82,0.05); border-radius:var(--radius-xs); border:1px solid rgba(255,82,82,0.25); }
+
+        .rsi-group-header { background:linear-gradient(90deg, var(--primary-dim), transparent); color:var(--primary); border:1px solid rgba(80,200,120,0.18); font-size:0.6rem; font-weight:900; letter-spacing:0.12em; text-transform:uppercase; padding:6px 10px; border-radius:var(--radius-xs); margin-bottom:6px; margin-top:12px; font-family:'JetBrains Mono',monospace; }
+
+        .claim-row { display:flex; justify-content:space-between; align-items:center; padding:6px 0; border-bottom:1px solid var(--border); }
+        .claim-row:last-child { border-bottom:none; }
+        .claim-cat-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+        .claim-badge { font-size:0.62rem; background:var(--primary); color:#000; font-weight:900; padding:2px 8px; border-radius:20px; }
+        .claim-divider { height:1px; background:var(--border); margin:12px 0; }
+
+        .selection-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:12px; }
+        .select-btn { background:var(--surface); padding:14px 4px; border-radius:var(--radius-sm); text-align:center; font-weight:700; border:1px solid var(--border); color:var(--text); font-size:0.85rem; cursor:pointer; transition:all 0.15s; }
+        .select-btn:active { background:var(--primary); color:black; border-color:var(--primary); }
+
+        /* ── MINI TOOLS ── */
+        .mini-tools-section {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+
+        .mini-tools-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 16px;
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.15s;
+        }
+        .mini-tools-header:active { background: var(--card-raised); }
+
+        .mini-tools-header-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .mini-tools-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.45rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            background: var(--primary-dim);
+            border: 1px solid rgba(80,200,120,0.2);
+            color: var(--primary);
+            padding: 2px 7px;
+            border-radius: 20px;
+        }
+
+        .mini-tools-body {
+            display: none;
+            border-top: 1px solid var(--border);
+        }
+
+        .mini-tools-body.open { display: block; }
+
+        /* Tools tab bar */
+        .tools-tabbar {
+            display: flex;
+            overflow-x: auto;
+            border-bottom: 1px solid var(--border);
+            padding: 0 4px;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .tools-tabbar::-webkit-scrollbar { display: none; }
+
+        .tool-tab {
+            flex-shrink: 0;
+            padding: 10px 14px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.58rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.15s;
+        }
+        .tool-tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+        .tool-tab:active { color: var(--primary); }
+
+        .tool-panel { display: none; padding: 16px; }
+        .tool-panel.active { display: block; }
+
+        /* Nursing note tool */
+        .nursing-meta {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+
+        .nursing-note-list { margin-top: 8px; }
+
+        .nursing-note-card {
             background: var(--surface);
             border: 1px solid var(--border);
             border-left: 3px solid var(--primary);
             border-radius: var(--radius-sm);
-            padding: 10px 14px;
+            padding: 10px 12px;
             margin-bottom: 8px;
+            position: relative;
+        }
+
+        .nursing-note-card-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .nursing-note-meta {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.58rem;
+            color: var(--text-dim);
+        }
+
+        .nursing-note-text {
             font-size: 0.78rem;
-        }
-        .btn-delete { background: none; color: var(--danger); border: none; font-size: 1.3rem; cursor: pointer; opacity: 0.6; }
-        .btn-delete:hover { opacity: 1; }
-
-        /* ── PAID ALERT ── */
-        .paid-alert {
-            background: rgba(46,204,113,0.1);
-            color: var(--success);
-            border: 1px solid rgba(46,204,113,0.25);
-            padding: 8px 12px;
-            border-radius: var(--radius-xs);
-            font-size: 0.7rem;
-            margin-bottom: 8px;
-            display: none;
+            line-height: 1.5;
+            color: var(--text);
+            white-space: pre-wrap;
         }
 
-        /* ── MODAL ── */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(4px);
-            z-index: 1000;
-        }
-
-        /* ── BOTTOM SHEET ── */
-        .bottom-sheet {
-            position: fixed;
-            bottom: -100%;
-            left: 0;
-            width: 100%;
-            background: var(--card);
-            border-radius: 28px 28px 0 0;
-            padding: 0;
-            box-sizing: border-box;
-            transition: bottom 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 1001;
-            max-height: 88vh;
-            overflow: hidden;
+        .nursing-note-tags {
+            margin-top: 6px;
             display: flex;
-            flex-direction: column;
-            border-top: 1px solid var(--border-bright);
-            box-shadow: 0 -20px 60px rgba(0,0,0,0.6);
+            flex-wrap: wrap;
+            gap: 4px;
         }
 
-        .bottom-sheet.active { bottom: 0; }
+        .nursing-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.5rem;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 20px;
+            border: 1px solid;
+        }
 
-        .sheet-handle {
+        .nursing-tag.assessment { color: #7ab3ff; border-color: rgba(122,179,255,0.3); background: rgba(122,179,255,0.08); }
+        .nursing-tag.intervention { color: #ffb347; border-color: rgba(255,179,71,0.3); background: rgba(255,179,71,0.08); }
+        .nursing-tag.evaluation { color: #50c878; border-color: rgba(80,200,120,0.3); background: rgba(80,200,120,0.08); }
+        .nursing-tag.education { color: #c678dd; border-color: rgba(198,120,221,0.3); background: rgba(198,120,221,0.08); }
+        .nursing-tag.other { color: var(--text-dim); border-color: var(--border-bright); background: var(--surface); }
+
+        .nursing-search {
+            padding: 10px 14px !important;
+            font-size: 0.78rem !important;
+            margin-bottom: 10px !important;
+        }
+
+        .nursing-empty {
             text-align: center;
-            padding: 14px 0 4px;
-            flex-shrink: 0;
-        }
-        .sheet-handle::before {
-            content: '';
-            display: inline-block;
-            width: 36px; height: 3px;
-            background: var(--border-bright);
-            border-radius: 10px;
+            padding: 20px;
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
         }
 
-        .sheet-title-bar {
+        /* ── SCROLLBAR ── */
+        ::-webkit-scrollbar { width:4px; }
+        ::-webkit-scrollbar-track { background:transparent; }
+        ::-webkit-scrollbar-thumb { background:var(--border-bright); border-radius:10px; }
+
+        /* ── RSI PANEL ── */
+        .rsi-panel { padding: 2px 0 4px; }
+
+        .rsi-panel-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.05rem;
+            letter-spacing: 0.08em;
+            color: var(--primary);
+            margin-bottom: 12px;
+            filter: drop-shadow(0 0 6px var(--primary-glow));
+        }
+
+        .rsi-step {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            margin-bottom: 8px;
+            overflow: hidden;
+        }
+
+        .rsi-step-header {
             display: flex;
             align-items: center;
             gap: 10px;
-            padding: 8px 24px 14px;
+            padding: 10px 12px;
+            background: linear-gradient(90deg, var(--primary-dim), transparent);
             border-bottom: 1px solid var(--border);
-            flex-shrink: 0;
         }
 
-        .sheet-title-bar .sheet-accent {
-            width: 3px;
-            height: 18px;
-            background: var(--primary);
-            border-radius: 10px;
-            flex-shrink: 0;
-        }
-
-        #sheet-title {
+        .rsi-step-num {
             font-family: 'Bebas Neue', sans-serif;
             font-size: 1.1rem;
-            letter-spacing: 0.08em;
+            color: var(--primary);
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            border: 1.5px solid var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            line-height: 1;
+            padding-top: 1px;
+        }
+
+        .rsi-step-name {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            font-weight: 700;
             color: var(--text);
-        }
-
-        #sheet-content-wrap {
-            flex: 1;
-            overflow-y: auto;
-            padding: 16px 24px 40px;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        /* ── PRIMARY BUTTON ── */
-        .btn-primary {
-            width: 100%;
-            background: var(--primary);
-            border: none;
-            color: #000;
-            padding: 15px;
-            border-radius: var(--radius-sm);
-            font-weight: 700;
-            font-size: 0.85rem;
-            cursor: pointer;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.06em;
             text-transform: uppercase;
-            font-family: 'DM Sans', sans-serif;
-            transition: all 0.15s;
-            margin-top: 10px;
         }
-        .btn-primary:active { opacity: 0.85; transform: scale(0.98); }
 
-        .btn-secondary {
-            width: 100%;
-            background: none;
-            border: 1px solid var(--border-bright);
+        .rsi-step-body { padding: 10px 12px; }
+
+        .rsi-subblock { margin-bottom: 10px; }
+        .rsi-subblock:last-child { margin-bottom: 0; }
+
+        .rsi-sub-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.58rem;
+            font-weight: 700;
             color: var(--text-dim);
-            padding: 12px;
-            border-radius: var(--radius-sm);
-            font-weight: 700;
-            font-size: 0.78rem;
-            cursor: pointer;
-            letter-spacing: 0.05em;
-            font-family: 'DM Sans', sans-serif;
-            margin-top: 8px;
-            transition: all 0.15s;
-        }
-        .btn-secondary:active { background: var(--card-raised); }
-
-        .btn-danger {
-            width: 100%;
-            background: none;
-            border: 1px solid rgba(255,82,82,0.35);
-            color: var(--danger);
-            padding: 12px;
-            border-radius: var(--radius-sm);
-            font-weight: 700;
-            font-size: 0.78rem;
-            cursor: pointer;
-            font-family: 'DM Sans', sans-serif;
-            margin-top: 8px;
-            transition: all 0.15s;
-        }
-        .btn-danger:active { background: rgba(255,82,82,0.1); }
-
-        /* ── SHIFT INPUT PREVIEW ── */
-        #shift-parse-preview { min-height: 36px; margin-top: 4px; }
-
-        .preview-ok {
-            font-size: 0.75rem;
-            color: #aaa;
-            padding: 8px 12px;
-            background: var(--surface);
-            border-radius: var(--radius-xs);
-            border: 1px solid var(--border);
-            font-family: 'JetBrains Mono', monospace;
-        }
-        .preview-err {
-            font-size: 0.7rem;
-            color: var(--danger);
-            padding: 8px 12px;
-            background: rgba(255,82,82,0.05);
-            border-radius: var(--radius-xs);
-            border: 1px solid rgba(255,82,82,0.25);
-        }
-
-        /* ── RSI GROUP HEADER ── */
-        .rsi-group-header {
-            background: var(--primary);
-            color: #000;
-            font-size: 0.6rem;
-            font-weight: 900;
-            letter-spacing: 0.12em;
+            letter-spacing: 0.08em;
             text-transform: uppercase;
-            padding: 6px 10px;
-            border-radius: var(--radius-xs);
-            margin-bottom: 6px;
-            margin-top: 12px;
-            font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 4px;
         }
 
-        /* ── CLAIM ROWS ── */
-        .claim-row {
+        .rsi-sub-content {
+            font-size: 0.78rem;
+            color: var(--text);
+            line-height: 1.5;
+        }
+
+        .rsi-badge {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 0.85rem;
+            letter-spacing: 0.08em;
+            padding: 1px 8px;
+            border-radius: 20px;
+            border: 1px solid;
+            display: inline-block;
+        }
+
+        .rsi-males-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin-top: 6px;
+        }
+
+        .rsi-males-item {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+        }
+
+        .rsi-males-letter {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1rem;
+            color: var(--primary);
+            width: 14px;
+            flex-shrink: 0;
+            line-height: 1;
+        }
+
+        .rsi-males-desc {
+            font-size: 0.75rem;
+            color: var(--text);
+            line-height: 1.4;
+        }
+
+        .rsi-quote {
+            font-style: italic;
+            font-size: 0.75rem;
+            color: var(--primary);
+            background: var(--primary-dim);
+            border-left: 2px solid var(--primary);
+            padding: 6px 10px;
+            border-radius: 0 var(--radius-xs) var(--radius-xs) 0;
+            margin-top: 8px;
+            line-height: 1.5;
+        }
+
+        .rsi-drug-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 6px 0;
+            padding: 5px 0;
             border-bottom: 1px solid var(--border);
         }
-        .claim-row:last-child { border-bottom: none; }
-        .claim-cat-header {
+        .rsi-drug-row:last-child { border-bottom: none; }
+
+        .rsi-drug-name {
+            font-size: 0.78rem;
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .rsi-drug-dose {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--primary);
+            font-weight: 700;
+            white-space: nowrap;
+            margin-left: 8px;
+        }
+
+        .rsi-checklist-item {
+            font-size: 0.75rem;
+            color: var(--text);
+            padding: 3px 0;
+            line-height: 1.4;
+        }
+
+        .rsi-auscult-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 4px;
+            margin-top: 4px;
+        }
+
+        .rsi-auscult-item {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xs);
+            padding: 6px 4px;
+            text-align: center;
+            font-size: 0.62rem;
+            font-weight: 700;
+            color: var(--text);
+            line-height: 1.3;
+        }
+
+        .rsi-auscult-item.danger {
+            border-color: rgba(255,82,82,0.35);
+            color: var(--danger);
+            background: rgba(255,82,82,0.05);
+        }
+
+        .rsi-etco2-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 8px;
-        }
-        .claim-badge {
-            font-size: 0.62rem;
-            background: var(--primary);
-            color: #000;
-            font-weight: 900;
-            padding: 2px 8px;
-            border-radius: 20px;
-        }
-        .claim-divider { height: 1px; background: var(--border); margin: 12px 0; }
-
-        /* ── SELECTION GRID ── */
-        .selection-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; }
-        .select-btn {
-            background: var(--surface);
-            padding: 14px 4px;
-            border-radius: var(--radius-sm);
-            text-align: center;
-            font-weight: 700;
+            background: var(--card);
             border: 1px solid var(--border);
-            color: var(--text);
-            font-size: 0.85rem;
+            border-radius: var(--radius-xs);
+            padding: 7px 12px;
+            margin-top: 4px;
+        }
+
+        .rsi-etco2-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.58rem;
+            color: var(--text-dim);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .rsi-etco2-val {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.1rem;
+            letter-spacing: 0.06em;
+            color: var(--success);
+            filter: drop-shadow(0 0 4px rgba(46,204,113,0.4));
+        }
+
+        .rsi-post-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .rsi-post-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.58rem;
+            font-weight: 700;
+            padding: 3px 9px;
+            border-radius: 20px;
+            border: 1px solid var(--border-bright);
+            color: var(--text-dim);
+            background: var(--card);
+            letter-spacing: 0.04em;
+        }
+
+        /* ── DRUG CALC DOSE BUTTONS ── */
+        .nora-dose-btn {
+            background: var(--surface);
+            border: 1px solid rgba(198,120,221,0.25);
+            color: var(--text-dim);
+            border-radius: var(--radius-xs);
+            padding: 5px 9px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            font-weight: 700;
             cursor: pointer;
             transition: all 0.15s;
         }
-        .select-btn:active { background: var(--primary); color: black; border-color: var(--primary); }
-
-        /* ── SCROLLBAR ── */
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: var(--border-bright); border-radius: 10px; }
+        .nora-dose-btn:active { transform: scale(0.93); }
+        .nora-dose-btn.selected {
+            background: rgba(198,120,221,0.18);
+            border-color: #c678dd;
+            color: #c678dd;
+        }
 
         /* ── SHIFT COLORS ── */
-        [data-shift="M"] { color: #7ab3ff; }
-        [data-shift="E"] { color: #ffb347; }
+        [data-shift="M"] { color: #ffb347; }
+        [data-shift="E"] { color: #7ab3ff; }
         [data-shift="N"] { color: #c678dd; }
         [data-shift="AL"] { color: #98c379; }
         [data-shift="MC"] { color: #ff7c7c; }
-        [data-shift="PH"] { color: #e5c07b; }
-        [data-shift="RPL"] { color: #56b6c2; }
+        [data-shift="PH"] { color: #5c6370; }
+        [data-shift="RPL"] { color: #5c6370; }
         [data-shift="DO"] { color: #5c6370; }
         [data-shift="SD"] { color: #5c6370; }
-        [data-shift="-"]  { color: #2e3a2f; }
+        [data-shift="-"] { color: #2e3a2f; }
     </style>
 </head>
 <body>
@@ -897,12 +934,35 @@
 <div class="ambient-glow"></div>
 
 <div class="page">
+
     <!-- THEME BAR -->
     <div class="theme-bar">
         <button class="theme-toggle-btn" onclick="toggleTheme()" id="theme-toggle-btn">
             <span id="theme-toggle-icon">☀️</span>
             <span id="theme-toggle-label">CERAH</span>
         </button>
+    </div>
+
+    <!-- PRAYER TIME WIDGET -->
+    <div class="prayer-widget" id="prayer-widget">
+        <div class="prayer-widget-top">
+            <div class="prayer-widget-title">
+                <span>🕌</span>
+                <span>Waktu Solat</span>
+            </div>
+            <span class="prayer-location">Kuala Terengganu, TRG</span>
+        </div>
+        <div id="prayer-next-banner" class="prayer-next-banner" style="display:none;">
+            <div>
+                <div class="prayer-next-label">Seterusnya</div>
+                <div class="prayer-next-name" id="prayer-next-name">—</div>
+                <div class="prayer-countdown" id="prayer-countdown">—</div>
+            </div>
+            <div class="prayer-next-time" id="prayer-next-time">--:--</div>
+        </div>
+        <div id="prayer-grid" class="prayer-grid">
+            <div class="prayer-loading" style="grid-column:1/-1;">Memuatkan waktu solat...</div>
+        </div>
     </div>
 
     <!-- PROFILE HEADER -->
@@ -952,7 +1012,7 @@
         <div class="stat-card" style="cursor:default;">
             <small>Malam</small>
             <div class="stat-val danger" id="text-night-count">0</div>
-            <div style="font-size:0.42rem; color:var(--text-muted); margin-top:2px; font-family:'JetBrains Mono',monospace;">BULAN INI</div>
+            <div style="font-size:0.42rem;color:var(--text-muted);margin-top:2px;font-family:'JetBrains Mono',monospace;">BULAN INI</div>
         </div>
         <div class="stat-card" onclick="openRecordSheet('CPD')">
             <small>CPD Pts</small>
@@ -1004,7 +1064,7 @@
                 <span id="claim-toggle-icon" style="font-size:0.75rem;color:var(--text-dim);">▼</span>
             </div>
         </div>
-        <div id="claim-body" style="display:none; margin-top:12px;"></div>
+        <div id="claim-body" style="display:none;margin-top:12px;"></div>
     </div>
 
     <!-- EMERGENCY DRUG -->
@@ -1026,7 +1086,7 @@
     <div class="section">
         <div class="section-header">
             <h3>To-Do List</h3>
-            <button onclick="openTodoPopup()" style="background:var(--primary); border:none; width:30px; height:30px; border-radius:50%; font-weight:900; color:black; font-size:1.1rem; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.15s; flex-shrink:0;">+</button>
+            <button onclick="openTodoPopup()" class="btn-add-drug">+</button>
         </div>
         <div id="todo-list"></div>
     </div>
@@ -1036,7 +1096,301 @@
         <h3 style="margin-bottom:10px;">Nota Ringkas</h3>
         <textarea id="personal-notes" placeholder="Tulis nota di sini..." oninput="saveNotes()"></textarea>
     </div>
-</div>
+
+    <!-- NURSING NOTE -->
+    <div class="section">
+        <div class="section-header">
+            <h3>Nursing Note</h3>
+            <button onclick="openAddNursingNote()" class="btn-add-drug">+</button>
+        </div>
+        <div class="tools-tabbar" id="tools-tabbar" style="margin: -4px -16px 12px; padding: 0 12px; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); border-radius: 0;">
+            <div class="tool-tab" onclick="switchTool('rsi')" data-tool="rsi" id="tab-rsi">💉 RSI 7P</div>
+            <div class="tool-tab" onclick="switchTool('lytic')" data-tool="lytic" id="tab-lytic">⚡ Lytic Cocktail</div>
+            <div class="tool-tab" onclick="switchTool('drugcalc')" data-tool="drugcalc" id="tab-drugcalc">🧮 Drug Calc</div>
+        </div>
+        <div id="tool-nursing" class="tool-panel active">
+            <input type="text" class="nursing-search" placeholder="🔍 Cari nota..." oninput="filterNursingNotes(this.value)" style="margin-bottom:10px;">
+            <div id="nursing-note-list"></div>
+        </div>
+        <div id="tool-rsi" class="tool-panel">
+
+                    <!-- Header -->
+                    <div class="rsi-panel-title">7P Rapid Sequence Intubation (RSI)</div>
+
+                    <!-- 1. Preparation -->
+                    <div class="rsi-step">
+                        <div class="rsi-step-header">
+                            <span class="rsi-step-num">1</span>
+                            <span class="rsi-step-name">Preparation</span>
+                        </div>
+                        <div class="rsi-step-body">
+                            <div class="rsi-subblock">
+                                <div class="rsi-sub-label">👤 Patient</div>
+                                <div class="rsi-sub-label" style="margin-bottom:6px;">Assess airway difficulty — <span class="rsi-badge" style="color:#7ab3ff;border-color:rgba(122,179,255,0.3);background:rgba(122,179,255,0.08);">LEMON</span></div>
+                            <div class="rsi-males-grid">
+                                <div class="rsi-males-item"><span class="rsi-males-letter" style="color:#7ab3ff;">L</span><span class="rsi-males-desc">Look Externally</span></div>
+                                <div class="rsi-males-item"><span class="rsi-males-letter" style="color:#7ab3ff;">E</span><span class="rsi-males-desc">Evaluate (3-3-2 Rule)</span></div>
+                                <div class="rsi-males-item"><span class="rsi-males-letter" style="color:#7ab3ff;">M</span><span class="rsi-males-desc">Mallampati Score</span></div>
+                                <div class="rsi-males-item"><span class="rsi-males-letter" style="color:#7ab3ff;">O</span><span class="rsi-males-desc">Obstruction</span></div>
+                                <div class="rsi-males-item"><span class="rsi-males-letter" style="color:#7ab3ff;">N</span><span class="rsi-males-desc">Neck Mobility</span></div>
+                            </div>
+                            </div>
+                            <div class="rsi-subblock">
+                                <div class="rsi-sub-label">🛡️ Staff</div>
+                                <div class="rsi-sub-content">Full PPE</div>
+                            </div>
+                            <div class="rsi-subblock">
+                                <div class="rsi-sub-label">🎒 Equipment — <span class="rsi-badge" style="color:#ffb347;border-color:rgba(255,179,71,0.3);background:rgba(255,179,71,0.08);">MALES</span></div>
+                                <div class="rsi-males-grid">
+                                    <div class="rsi-males-item"><span class="rsi-males-letter">M</span><span class="rsi-males-desc">Magill forceps, Mask (BVM)</span></div>
+                                    <div class="rsi-males-item"><span class="rsi-males-letter">A</span><span class="rsi-males-desc">Airway (OPA, NPA)</span></div>
+                                    <div class="rsi-males-item"><span class="rsi-males-letter">L</span><span class="rsi-males-desc">Laryngoscope, LMA, Lubricant</span></div>
+                                    <div class="rsi-males-item"><span class="rsi-males-letter">E</span><span class="rsi-males-desc">ETT — ♂ 7–8mm · ♀ 6.5–7mm</span></div>
+                                    <div class="rsi-males-item"><span class="rsi-males-letter">S</span><span class="rsi-males-desc">Stylet, Syringe, Suction, Stethoscope, Secure tape</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. Preoxygenation -->
+                    <div class="rsi-step">
+                        <div class="rsi-step-header">
+                            <span class="rsi-step-num">2</span>
+                            <span class="rsi-step-name">Preoxygenation</span>
+                        </div>
+                        <div class="rsi-step-body">
+                            <div class="rsi-sub-content">3–5 minit 100% O₂ via BVM untuk mencegah hipoksia.</div>
+                            <div class="rsi-quote">"Nitrogen washout, Oxygen wash in"</div>
+                        </div>
+                    </div>
+
+                    <!-- 3. Pretreatment -->
+                    <div class="rsi-step">
+                        <div class="rsi-step-header">
+                            <span class="rsi-step-num">3</span>
+                            <span class="rsi-step-name">Pretreatment <span style="font-size:0.6rem;font-weight:400;opacity:0.6;">(Analgesic)</span></span>
+                        </div>
+                        <div class="rsi-step-body">
+                            <div class="rsi-drug-row"><span class="rsi-drug-name">IV Fentanyl</span><span class="rsi-drug-dose">1–2 mcg/kg</span></div>
+                            <div class="rsi-drug-row"><span class="rsi-drug-name">IV Lignocaine</span><span class="rsi-drug-dose">1–2 mg/kg</span></div>
+                        </div>
+                    </div>
+
+                    <!-- 4. Paralysis with Induction -->
+                    <div class="rsi-step">
+                        <div class="rsi-step-header">
+                            <span class="rsi-step-num">4</span>
+                            <span class="rsi-step-name">Paralysis with Induction</span>
+                        </div>
+                        <div class="rsi-step-body">
+                            <div class="rsi-sub-label" style="margin-bottom:6px;">💊 Induction (Sedation)</div>
+                            <div class="rsi-drug-row"><span class="rsi-drug-name">IV Midazolam</span><span class="rsi-drug-dose">0.1–0.2 mg/kg</span></div>
+                            <div class="rsi-drug-row"><span class="rsi-drug-name">IV Etomidate</span><span class="rsi-drug-dose">0.3 mg/kg</span></div>
+                            <div class="rsi-drug-row"><span class="rsi-drug-name">IV Ketamine</span><span class="rsi-drug-dose">1–2 mg/kg</span></div>
+                            <div class="rsi-drug-row" style="margin-bottom:12px;"><span class="rsi-drug-name">IV Propofol</span><span class="rsi-drug-dose">1–2 mg/kg</span></div>
+                            <div class="rsi-sub-label" style="margin-bottom:6px;">⚡ Paralysis (Muscle Relaxant)</div>
+                            <div class="rsi-drug-row"><span class="rsi-drug-name">IV Suxamethonium <span style="opacity:0.6;font-size:0.7rem;">(Scoline)</span></span><span class="rsi-drug-dose">1–2 mg/kg</span></div>
+                            <div class="rsi-drug-row"><span class="rsi-drug-name">IV Rocuronium <span style="opacity:0.6;font-size:0.7rem;">(Esmeron)</span></span><span class="rsi-drug-dose">0.6–1 mg/kg</span></div>
+                        </div>
+                    </div>
+
+                    <!-- 5. Positioning -->
+                    <div class="rsi-step">
+                        <div class="rsi-step-header">
+                            <span class="rsi-step-num">5</span>
+                            <span class="rsi-step-name">Positioning</span>
+                        </div>
+                        <div class="rsi-step-body">
+                            <div class="rsi-quote" style="margin:0;">"Sniffing" position — flexion lower cervical spine + extension atlanto-occipital joint</div>
+                        </div>
+                    </div>
+
+                    <!-- 6. Placement with Proof -->
+                    <div class="rsi-step">
+                        <div class="rsi-step-header">
+                            <span class="rsi-step-num">6</span>
+                            <span class="rsi-step-name">Placement with Proof</span>
+                        </div>
+                        <div class="rsi-step-body">
+                            <div class="rsi-checklist-item">✅ Direct visualization</div>
+                            <div class="rsi-checklist-item">✅ Vapour in tube</div>
+                            <div class="rsi-checklist-item">✅ Visible chest rise</div>
+                            <div class="rsi-sub-label" style="margin:8px 0 6px;">🩺 5-Point Auscultation</div>
+                            <div class="rsi-auscult-grid">
+                                <div class="rsi-auscult-item danger">Epigastrium<br><span style="font-size:0.55rem;opacity:0.7;">Rule out esophageal</span></div>
+                                <div class="rsi-auscult-item">R Upper<br><span style="font-size:0.55rem;opacity:0.7;">Lung</span></div>
+                                <div class="rsi-auscult-item">L Upper<br><span style="font-size:0.55rem;opacity:0.7;">Lung</span></div>
+                                <div class="rsi-auscult-item">R Lower<br><span style="font-size:0.55rem;opacity:0.7;">Lung</span></div>
+                                <div class="rsi-auscult-item">L Lower<br><span style="font-size:0.55rem;opacity:0.7;">Lung</span></div>
+                            </div>
+                            <div class="rsi-sub-label" style="margin:10px 0 4px;">📊 EtCO₂ (Waveform Capnography)</div>
+                            <div class="rsi-etco2-bar">
+                                <span class="rsi-etco2-label">Normal Range</span>
+                                <span class="rsi-etco2-val">35–45 mmHg</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 7. Post intubation care -->
+                    <div class="rsi-step" style="margin-bottom:0;">
+                        <div class="rsi-step-header">
+                            <span class="rsi-step-num">7</span>
+                            <span class="rsi-step-name">Post-Intubation Care</span>
+                        </div>
+                        <div class="rsi-step-body">
+                            <div class="rsi-sub-label" style="margin-bottom:6px;">💊 IVI Sedation</div>
+                            <div class="rsi-post-tags">
+                                <span class="rsi-post-tag" style="color:#c678dd;border-color:rgba(198,120,221,0.3);background:rgba(198,120,221,0.08);">IVI Midazolam</span>
+                                <span class="rsi-post-tag" style="color:#7ab3ff;border-color:rgba(122,179,255,0.3);background:rgba(122,179,255,0.08);">IVI Fentanyl</span>
+                                <span class="rsi-post-tag" style="color:#56b6c2;border-color:rgba(86,182,194,0.3);background:rgba(86,182,194,0.08);">IVI Morphine</span>
+                                <span class="rsi-post-tag" style="color:#ffb347;border-color:rgba(255,179,71,0.3);background:rgba(255,179,71,0.08);">IVI Ketamine</span>
+                            </div>
+                            <div class="rsi-sub-label" style="margin:10px 0 6px;">🏥 Cares</div>
+                            <div class="rsi-post-tags">
+                                <span class="rsi-post-tag">Eye Pad</span>
+                                <span class="rsi-post-tag">Ryle's Tube</span>
+                                <span class="rsi-post-tag">CXR</span>
+                                <span class="rsi-post-tag">Cardiac Monitor</span>
+                                <span class="rsi-post-tag">PPI (Pantoprazole)</span>
+                                <span class="rsi-post-tag">CBD</span>
+                                <span class="rsi-post-tag">Warm Blanket</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- LYTIC COCKTAIL -->
+                </div>
+            </div>
+        </div>
+        <div id="tool-lytic" class="tool-panel">
+            <div class="rsi-panel">
+                <div class="rsi-panel-title" style="color:#f39c12;filter:drop-shadow(0 0 6px rgba(243,156,18,0.4));">⚡ Lytic Cocktail</div>
+                <div style="font-size:0.68rem;color:var(--text-dim);margin-bottom:12px;font-family:'JetBrains Mono',monospace;letter-spacing:0.06em;text-transform:uppercase;">Correction for Hyperkalaemia</div>
+                <div class="rsi-step" style="border-color:rgba(243,156,18,0.2);">
+                    <div class="rsi-step-body">
+                        <div class="rsi-drug-row">
+                            <div style="flex:1;">
+                                <div class="rsi-drug-name">IV Calcium Gluconate 10%</div>
+                                <div style="font-size:0.7rem;color:var(--text-dim);margin-top:3px;line-height:1.5;">Slow bolus 10mls over 2–5 min<br>Cardiac monitoring — bradycardia, hypotension, arrhythmias</div>
+                            </div>
+                            <span class="rsi-drug-dose" style="align-self:flex-start;">10 mls</span>
+                        </div>
+                        <div class="rsi-drug-row">
+                            <div style="flex:1;">
+                                <div class="rsi-drug-name">IV Dextrose 50%</div>
+                                <div style="font-size:0.7rem;color:var(--text-dim);margin-top:3px;line-height:1.5;">Bolus 50mls<br><span style="color:rgba(255,82,82,0.8);">✗ Not required for Hyperglycemia / DKA</span></div>
+                            </div>
+                            <span class="rsi-drug-dose" style="align-self:flex-start;">50 mls</span>
+                        </div>
+                        <div class="rsi-drug-row" style="border-bottom:none;">
+                            <div style="flex:1;">
+                                <div class="rsi-drug-name">IV Insulin</div>
+                                <div style="font-size:0.7rem;color:var(--text-dim);margin-top:3px;">Bolus 10 unit</div>
+                            </div>
+                            <span class="rsi-drug-dose" style="align-self:flex-start;">10 unit</span>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top:10px;background:rgba(243,156,18,0.08);border:1px solid rgba(243,156,18,0.25);border-radius:var(--radius-xs);padding:7px 10px;font-size:0.72rem;color:#f39c12;font-weight:700;">
+                    ⚠️ Repeat BUSE after 1 hour
+                </div>
+            </div>
+        </div>
+
+        <!-- DRUG CALCULATION PANEL -->
+        <div id="tool-drugcalc" class="tool-panel">
+            <div class="rsi-panel">
+                <div class="rsi-panel-title" style="color:#c678dd;filter:drop-shadow(0 0 6px rgba(198,120,221,0.4));">🧮 Drug Calculation</div>
+                <div style="font-size:0.68rem;color:var(--text-dim);margin-bottom:14px;font-family:'JetBrains Mono',monospace;letter-spacing:0.06em;text-transform:uppercase;">IV Infusion Protocol</div>
+
+                <!-- NORADRENALINE -->
+                <div class="rsi-step" style="border-color:rgba(198,120,221,0.2);margin-bottom:0;">
+                    <div class="rsi-step-header" style="background:linear-gradient(90deg,rgba(198,120,221,0.1),transparent);border-bottom-color:rgba(198,120,221,0.2);">
+                        <span style="font-size:0.9rem;">💊</span>
+                        <div>
+                            <div class="rsi-step-name">Noradrenaline / Lovophed</div>
+                            <div style="font-family:'JetBrains Mono',monospace;font-size:0.55rem;color:var(--text-dim);margin-top:2px;">4mg/4mls — 1 amp</div>
+                        </div>
+                    </div>
+                    <div class="rsi-step-body">
+
+                        <!-- Strength -->
+                        <div class="rsi-sub-label" style="margin-bottom:6px;">Preparation</div>
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px;">
+                            <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-xs);padding:8px 10px;">
+                                <div style="font-family:'JetBrains Mono',monospace;font-size:0.5rem;color:var(--text-muted);font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:3px;">Single Strength</div>
+                                <div style="font-size:0.72rem;color:var(--text);font-weight:600;">1 amp in 50ml D5%</div>
+                                <div style="font-family:'JetBrains Mono',monospace;font-size:0.62rem;color:#c678dd;margin-top:2px;">= 0.08 mg/ml</div>
+                            </div>
+                            <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-xs);padding:8px 10px;">
+                                <div style="font-family:'JetBrains Mono',monospace;font-size:0.5rem;color:var(--text-muted);font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:3px;">Double Strength</div>
+                                <div style="font-size:0.72rem;color:var(--text);font-weight:600;">2 amp in 50ml D5%</div>
+                                <div style="font-family:'JetBrains Mono',monospace;font-size:0.62rem;color:#c678dd;margin-top:2px;">= 0.16 mg/ml</div>
+                            </div>
+                        </div>
+
+                        <!-- Formula -->
+                        <div class="rsi-sub-label" style="margin-bottom:6px;">Formula</div>
+                        <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-xs);padding:10px 12px;margin-bottom:12px;">
+                            <div style="text-align:center;">
+                                <div style="font-size:0.72rem;color:var(--text);margin-bottom:4px;">mg/hr = Dose (mcg/kg/min) × BW (kg) × 60</div>
+                                <div style="height:1px;background:var(--border-bright);margin:4px 24px;"></div>
+                                <div style="font-size:0.65rem;color:var(--text-dim);">1000 mcg/mg</div>
+                            </div>
+                            <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);text-align:center;">
+                                <div style="font-size:0.72rem;color:var(--text);margin-bottom:4px;">Rate (ml/hr) = Dose (mg/hr)</div>
+                                <div style="height:1px;background:var(--border-bright);margin:4px 40px;"></div>
+                                <div style="font-size:0.65rem;color:var(--text-dim);">Concentration (mg/ml)</div>
+                            </div>
+                        </div>
+
+                        <!-- Interactive Calculator -->
+                        <div class="rsi-sub-label" style="margin-bottom:8px;">Calculator</div>
+                        <div style="background:rgba(198,120,221,0.06);border:1px solid rgba(198,120,221,0.2);border-radius:var(--radius-xs);padding:12px;">
+                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
+                                <div>
+                                    <div style="font-family:'JetBrains Mono',monospace;font-size:0.52rem;color:var(--text-dim);font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px;">Dose (mcg/kg/min)</div>
+                                    <input type="number" id="nora-dose" placeholder="0.05" step="0.01" min="0.05" max="0.15"
+                                        oninput="calcNora()"
+                                        style="background:var(--surface);border:1px solid rgba(198,120,221,0.3);color:var(--text);padding:9px 10px;border-radius:var(--radius-xs);width:100%;font-size:0.82rem;font-family:'JetBrains Mono',monospace;margin-bottom:0;">
+                                </div>
+                                <div>
+                                    <div style="font-family:'JetBrains Mono',monospace;font-size:0.52rem;color:var(--text-dim);font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px;">Berat (kg)</div>
+                                    <input type="number" id="nora-weight" placeholder="cth: 70" step="0.1" min="0"
+                                        oninput="calcNora()"
+                                        style="background:var(--surface);border:1px solid rgba(198,120,221,0.3);color:var(--text);padding:9px 10px;border-radius:var(--radius-xs);width:100%;font-size:0.82rem;font-family:'JetBrains Mono',monospace;margin-bottom:0;">
+                                </div>
+                            </div>
+                            <div id="nora-result" style="display:none;">
+                                <div style="height:1px;background:rgba(198,120,221,0.2);margin-bottom:10px;"></div>
+                                <div style="font-family:'JetBrains Mono',monospace;font-size:0.6rem;color:var(--text-dim);margin-bottom:6px;">
+                                    mg/hr = <span id="nora-dose-show">—</span> × <span id="nora-wt-show">—</span> × 60 ÷ 1000 = <span id="nora-mghr" style="color:#c678dd;font-weight:700;">—</span>
+                                </div>
+                                <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px;">
+                                    <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-xs);padding:8px 10px;text-align:center;">
+                                        <div style="font-family:'JetBrains Mono',monospace;font-size:0.48rem;color:var(--text-muted);font-weight:700;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Single Strength</div>
+                                        <div style="font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:#c678dd;letter-spacing:0.04em;line-height:1;" id="nora-single">—</div>
+                                        <div style="font-size:0.6rem;color:var(--text-dim);margin-top:2px;">ml/hr</div>
+                                    </div>
+                                    <div style="background:var(--card);border:1px solid rgba(198,120,221,0.3);border-radius:var(--radius-xs);padding:8px 10px;text-align:center;">
+                                        <div style="font-family:'JetBrains Mono',monospace;font-size:0.48rem;color:var(--text-muted);font-weight:700;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Double Strength</div>
+                                        <div style="font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:#c678dd;letter-spacing:0.04em;line-height:1;filter:drop-shadow(0 0 6px rgba(198,120,221,0.5));" id="nora-double">—</div>
+                                        <div style="font-size:0.6rem;color:var(--text-dim);margin-top:2px;">ml/hr</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="nora-placeholder" style="text-align:center;padding:8px 0;font-size:0.68rem;color:var(--text-muted);font-family:'JetBrains Mono',monospace;">
+                                Isi dos dan berat untuk kira rate
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div><!-- /page -->
 
 <!-- MODAL -->
 <div class="modal-overlay" id="overlay" onclick="closeSheet()"></div>
@@ -1052,677 +1406,963 @@
 </div>
 
 <script>
-    const ph2026 = [
-        {n:"Israk dan Mikraj",d:"2026-01-17",paid:false},{n:"Tahun Baru Cina",d:"2026-02-17",paid:false},
-        {n:"Tahun Baru Cina (Hari ke-2)",d:"2026-02-18",paid:false},{n:"Hari Ulangtahun Sultan TRG",d:"2026-03-04",paid:false},
-        {n:"Nuzul Quran",d:"2026-03-07",paid:false},{n:"Hari Raya Puasa",d:"2026-03-21",paid:false},
-        {n:"Hari Raya Puasa (Hari ke-2)",d:"2026-03-22",paid:false},{n:"Hari Keputeraan Sultan TRG",d:"2026-04-26",paid:true},
-        {n:"Hari Pekerja",d:"2026-05-01",paid:true},{n:"Hari Arafah",d:"2026-05-26",paid:false},
-        {n:"Hari Raya Haji",d:"2026-05-27",paid:false},{n:"Hari Raya Haji (Hari ke-2)",d:"2026-05-28",paid:false},
-        {n:"Hari Wesak",d:"2026-05-31",paid:false},{n:"Hari Keputeraan YDPA",d:"2026-06-01",paid:true},
-        {n:"Awal Muharam",d:"2026-06-17",paid:false},{n:"Maulidur Rasul",d:"2026-08-25",paid:false},
-        {n:"Hari Kebangsaan",d:"2026-08-31",paid:true},{n:"Hari Malaysia",d:"2026-09-16",paid:true},
-        {n:"Deepavali",d:"2026-11-08",paid:false},{n:"Hari Krismas",d:"2026-12-25",paid:false}
-    ];
+// ══════════════════════════════════════════
+//  DATA
+// ══════════════════════════════════════════
+const ph2026 = [
+    {n:"Israk dan Mikraj",d:"2026-01-17",paid:false},{n:"Tahun Baru Cina",d:"2026-02-17",paid:false},
+    {n:"Tahun Baru Cina (Hari ke-2)",d:"2026-02-18",paid:false},{n:"Hari Ulangtahun Sultan TRG",d:"2026-03-04",paid:false},
+    {n:"Nuzul Quran",d:"2026-03-07",paid:false},{n:"Hari Raya Puasa",d:"2026-03-21",paid:false},
+    {n:"Hari Raya Puasa (Hari ke-2)",d:"2026-03-22",paid:false},{n:"Hari Keputeraan Sultan TRG",d:"2026-04-26",paid:true},
+    {n:"Hari Pekerja",d:"2026-05-01",paid:true},{n:"Hari Arafah",d:"2026-05-26",paid:false},
+    {n:"Hari Raya Haji",d:"2026-05-27",paid:false},{n:"Hari Raya Haji (Hari ke-2)",d:"2026-05-28",paid:false},
+    {n:"Hari Wesak",d:"2026-05-31",paid:false},{n:"Hari Keputeraan YDPA",d:"2026-06-01",paid:true},
+    {n:"Awal Muharam",d:"2026-06-17",paid:false},{n:"Maulidur Rasul",d:"2026-08-25",paid:false},
+    {n:"Hari Kebangsaan",d:"2026-08-31",paid:true},{n:"Hari Malaysia",d:"2026-09-16",paid:true},
+    {n:"Deepavali",d:"2026-11-08",paid:false},{n:"Hari Krismas",d:"2026-12-25",paid:false}
+];
 
-    const SHIFT_COLORS = { M:'#7ab3ff', E:'#ffb347', N:'#c678dd', AL:'#98c379', MC:'#ff7c7c', PH:'#e5c07b', RPL:'#56b6c2', DO:'#5c6370', SD:'#5c6370', TD:'#aaa', '-':'#2e3a2f' };
-    function shiftColor(s) { return SHIFT_COLORS[s] || 'var(--text)'; }
+const SHIFT_COLORS = { M:'#ffb347', E:'#7ab3ff', N:'#c678dd', AL:'#98c379', MC:'#ff7c7c', PH:'#5c6370', RPL:'#5c6370', DO:'#5c6370', SD:'#5c6370', TD:'#aaa', '-':'#2e3a2f', 'M/E':'#56b6c2', 'M/N':'#56b6c2', 'E/N':'#56b6c2' };
+function shiftColor(s) { return SHIFT_COLORS[s] || 'var(--text)'; }
 
-    let currentCalDate = new Date();
-    let store = JSON.parse(localStorage.getItem('roster_ultimate_v3')) || {
-        al:{total:0,taken:[]}, rpl:{records:[]}, cpd:{records:[]},
-        calendar:{}, todos:[], notes:"", drugs:[],
-        pdfData:null, rsiImage:null, profilePic:null
-    };
+let currentCalDate = new Date();
+let store = JSON.parse(localStorage.getItem('roster_ultimate_v3')) || {
+    al:{total:0,taken:[]}, rpl:{records:[]}, cpd:{records:[]},
+    calendar:{}, todos:[], notes:"", drugs:[],
+    pdfData:null, rsiImage:null, profilePic:null,
+    nursingNotes:[]
+};
+if(!store.nursingNotes) store.nursingNotes = [];
 
-    const RSI_DATA = [
-        { group:"ANALGESIC", drugs:[{name:"IV Fentanyl",ampule:"0.1mg/2ml (100mcg)",prep:"Undiluted"},{name:"IV Lignocaine",ampule:"100mg/5mls",prep:"Undiluted"}]},
-        { group:"INDUCTION (SEDATION)", drugs:[{name:"IV Midazolam",ampule:"5mg/ml",prep:"5mg in 5ml NS"},{name:"IV Etomidate",ampule:"20mg/10ml = 2mg/ml",prep:"Undiluted"},{name:"IV Ketamine",ampule:"200mg/20mls = 10mg/ml",prep:"Undiluted"},{name:"IV Propofol",ampule:"200mg/20mls = 10mg/ml",prep:"Undiluted"}]},
-        { group:"PARALYSIS (MUSCLE RELAXANT)", drugs:[{name:"IV Scoline (Suxamethonium)",ampule:"100mg/2mls = 50mg/ml",prep:"Undiluted"},{name:"Rocuronium (Esmeron)",ampule:"50mg/5mls = 10mg/ml",prep:"Undiluted"}]},
-        { group:"IV INFUSION", drugs:[{name:"IVI Midazolam",ampule:"5mg/ml",prep:"20mg in 20mls NS @ 3ml/Hr"},{name:"IVI Fentanyl",ampule:"0.1mg/2ml (100mcg)",prep:"0.2mg (200mcg) in 20ml NS @ 3ml/Hr"},{name:"IVI Morphine",ampule:"10mg/ml",prep:"20mg in 20mls NS @ 3ml/Hr"},{name:"IVI Ketamine",ampule:"200mg/20mls = 10mg/ml",prep:"Undiluted 20mg (2ml)"}]}
-    ];
+// ══════════════════════════════════════════
+//  PRAYER TIME — Kuala Terengganu
+// ══════════════════════════════════════════
+const PRAYER_NAMES = ['Subuh','Syuruk','Zohor','Asar','Maghrib','Isyak'];
+const PRAYER_KEYS  = ['fajr','sunrise','dhuhr','asr','maghrib','isha'];
+let prayerTimes = null;
+let prayerCountdownTimer = null;
 
-    const DEFAULT_DRUGS = [
-        {name:"IV Fentanyl",ampule:"0.1mg/2ml (100mcg)",prep:"Undiluted"},
-        {name:"IV Lignocaine",ampule:"100mg/5mls",prep:"Undiluted"},
-        {name:"IV Midazolam",ampule:"5mg/ml",prep:"5mg in 5ml NS"},
-        {name:"IV Etomidate",ampule:"20mg/10ml = 2mg/ml",prep:"Undiluted"},
-        {name:"IV Ketamine",ampule:"200mg/20mls = 10mg/ml",prep:"Undiluted"},
-        {name:"IV Propofol",ampule:"200mg/20mls = 10mg/ml",prep:"Undiluted"},
-        {name:"IV Scoline (Suxamethonium)",ampule:"100mg/2mls = 50mg/ml",prep:"Undiluted"},
-        {name:"Rocuronium (Esmeron)",ampule:"50mg/5mls = 10mg/ml",prep:"Undiluted"},
-        {name:"IVI Midazolam",ampule:"5mg/ml",prep:"20mg in 20mls NS @ 3ml/Hr"},
-        {name:"IVI Fentanyl",ampule:"0.1mg/2ml (100mcg)",prep:"0.2mg (200mcg) in 20ml NS @ 3ml/Hr"},
-        {name:"IVI Morphine",ampule:"10mg/ml",prep:"20mg in 20mls NS @ 3ml/Hr"},
-        {name:"IVI Ketamine",ampule:"200mg/20mls = 10mg/ml",prep:"Undiluted 20mg (2ml)"},
-        {name:"IVI Noradrenaline",ampule:"4mg/4mls",prep:"D.S: 8mg in 50mls D5%"},
-        {name:"IVI Amiodarone (Arrhythmias)",ampule:"150mg/3ml",prep:"L.D: 300mg in 100mls D5% (bolus) @ 1Hr"},
-        {name:"IVI Amiodarone (VF, pVT)",ampule:"150mg/3ml",prep:"L.D: 300mg in 20mls D5% (bolus)"},
-        {name:"IVI Amiodarone (Maintenance)",ampule:"150mg/3ml",prep:"900mg in 500ml D5% @ 24Hr"},
-        {name:"IVI GTN",ampule:"50mg/10mls",prep:"10mg (2mls) in 50mls NS"},
-        {name:"IVI Adrenaline 1:1000",ampule:"1mg/ml",prep:"3mg (3mls) in 50mls NS @ 10mls/Hr. For cardiac arrest 1mg every 3-5min"},
-        {name:"IVI Adrenaline 1:10,000 (Paeds)",ampule:"1mg/ml",prep:"For cardiac arrest: dilute 1mg in 10mls NS (1:10,000) given 2.8mls every 3-5min for 28kg patient"},
-        {name:"IVI Atropine",ampule:"1mg/1ml",prep:"IV Bolus 0.6-3mg every 5 mins"},
-        {name:"IVI Dopamine",ampule:"200mg/5mls",prep:"D.S: 400mg in 50mls NS @ 10mls/Hr"},
-        {name:"IVI Dobutamine",ampule:"250mg/20mls",prep:"D.S: 500mg in 50mls NS @ 5mls/Hr"},
-        {name:"IVI Labetalol",ampule:"25mg/5ml",prep:"100mg undiluted (4 amp) in 20ml syringe @ 0.5/min (6ml/Hr)"},
-        {name:"IVI Sodium Bicarb 8.4%",ampule:"10mmol/10ml = 1mEq/ml",prep:"100ml (10 amp) undiluted in chamber @ 1Hr / 50ml undiluted (5 ampule) in 50ml syringe x2 (@ 30min/syringe)"},
-        {name:"IV Pantoprazole",ampule:"40mg",prep:"80mg in 20mls NS bolus"},
-        {name:"IVI Pantoprazole",ampule:"40mg",prep:"40mg in 50mls NS @ 10mls/Hr"},
-        {name:"IV Morphine",ampule:"10mg/ml",prep:"10mg in 10mls NS"},
-        {name:"IV Adenosine (Adenocor)",ampule:"6mg/2mls",prep:"6mg, 12mg, 18mg"},
-        {name:"IV Propranolol",ampule:"1mg/ml",prep:"1mg/min (in 1cc syringe)"},
-        {name:"IV MgSO4",ampule:"2.46mg/amp",prep:"1 amp dilute in 20mls @ 20mls/1Hr"},
-        {name:"IV Potassium Chloride KCL (1Hr)",ampule:"1g/10mls",prep:"1g in 100mls NS @ 1Hr"},
-        {name:"IV Potassium Chloride KCL (Maintenance)",ampule:"1g/10mls",prep:"1g in 500mls NS @ 1Hr"},
-        {name:"IV Flumazenil",ampule:"0.5mg/5ml",prep:"Given undiluted through free-flowing IV solution over 15-30 sec"},
-        {name:"IV Lytic Cocktail",ampule:"—",prep:"Calcium Gluconate 10% 10mls 10min, D50% 50mls, Insulin 10u (0.1ml)"},
-        {name:"IV Rocephin",ampule:"1g/vial",prep:"2g in 20mls NS (slow bolus) / IV infusion 50-100mls @ 30 minutes"},
-        {name:"IV Phenytoin (Dilantin)",ampule:"250mg/5ml",prep:"Maximum dose 1.5g (6 ampule) in 100mls of NS @ 1Hr"},
-        {name:"IV Tranexamic Acid",ampule:"1gm/10ml",prep:"1gm in 100mls NS @ 10min"},
-        {name:"IV Tranexamic Acid (Maintenance)",ampule:"1gm/10ml",prep:"1gm in 500mls NS @ 8Hr"},
-        {name:"IV Bricanyl",ampule:"0.5mg/ml",prep:"3mg (6 amp) in 50mls NS @ 3mls/Hr"},
-        {name:"IV Valium (Diazepam)",ampule:"10mg/2ml",prep:"5mg/min (adults), 0.25mg/kg (children)"}
-    ];
+async function fetchPrayerTimes() {
+    const today = new Date();
+    const y = today.getFullYear(), m = today.getMonth()+1, d = today.getDate();
+    const cacheKey = `prayer_${y}_${m}_${d}`;
+    const cached = localStorage.getItem(cacheKey);
+    if(cached) { prayerTimes = JSON.parse(cached); renderPrayerWidget(); return; }
+    try {
+        // Kuala Terengganu: lat 5.3317, lng 103.1408, Jakim method = 3
+        const url = `https://api.aladhan.com/v1/timings/${d}-${m}-${y}?latitude=5.3317&longitude=103.1408&method=3`;
+        const res = await fetch(url);
+        const data = await res.json();
+        if(data && data.data && data.data.timings) {
+            const t = data.data.timings;
+            prayerTimes = {
+                fajr:    t.Fajr,
+                sunrise: t.Sunrise,
+                dhuhr:   t.Dhuhr,
+                asr:     t.Asr,
+                maghrib: t.Maghrib,
+                isha:    t.Isha
+            };
+            localStorage.setItem(cacheKey, JSON.stringify(prayerTimes));
+            // clear old cache entries
+            Object.keys(localStorage).forEach(k => { if(k.startsWith('prayer_') && k !== cacheKey) localStorage.removeItem(k); });
+            renderPrayerWidget();
+        } else { renderPrayerError('Data tidak tersedia.'); }
+    } catch(e) {
+        // Fallback: approximate times for KT (hardcoded seasonal avg)
+        renderPrayerError('Tiada sambungan internet. Cuba semula.');
+    }
+}
 
-    function toMY(d) { if(!d) return ''; const p=d.split('-'); return p.length===3?`${p[2]}/${p[1]}/${p[0]}`:d; }
-    function saveData() { localStorage.setItem('roster_ultimate_v3',JSON.stringify(store)); renderStats(); updateShiftSummary(); }
-    function saveNotes() { store.notes=document.getElementById('personal-notes').value; localStorage.setItem('roster_ultimate_v3',JSON.stringify(store)); }
-    function loadNotes() { document.getElementById('personal-notes').value=store.notes||""; if(store.profilePic) document.getElementById('profile-pic').src=store.profilePic; }
-    function triggerDatePicker(id) { const el=document.getElementById(id); if(el&&'showPicker' in HTMLInputElement.prototype) el.showPicker(); else if(el){el.focus();el.click();} }
+function timeStrToMinutes(str) {
+    const [h,m] = str.split(':').map(Number);
+    return h*60 + m;
+}
 
-    function updateTime() {
-        const n=new Date();
-        const d=String(n.getDate()).padStart(2,'0'), m=String(n.getMonth()+1).padStart(2,'0'), y=n.getFullYear();
-        document.getElementById('live-clock').innerText=`${d}/${m}/${y} | ${n.toLocaleTimeString('ms-MY',{hour12:false})}`;
-    }
+function minutesToStr(mins) {
+    const h = Math.floor(mins/60) % 24, m = mins%60;
+    return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+}
 
-    function changeMonth(dir) { currentCalDate.setMonth(currentCalDate.getMonth()+dir); generateCalendar(); renderStats(); }
+function renderPrayerWidget() {
+    if(!prayerTimes) return;
+    const now = new Date();
+    const nowMins = now.getHours()*60 + now.getMinutes();
+    const grid = document.getElementById('prayer-grid');
+    const banner = document.getElementById('prayer-next-banner');
 
-    function isoKey(year,month,day) { return `${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`; }
+    let nextIdx = -1, nextMins = Infinity;
+    const times = PRAYER_KEYS.map(k => timeStrToMinutes(prayerTimes[k]));
 
-    function migrateCalendarKeys() {
-        const old=store.calendar, nw={};
-        Object.keys(old).forEach(k=>{
-            const p=k.split('-');
-            nw[p.length===3?`${p[0]}-${p[1].padStart(2,'0')}-${p[2].padStart(2,'0')}`:k]=old[k];
-        });
-        store.calendar=nw;
+    // Find next prayer
+    for(let i=0; i<times.length; i++) {
+        if(times[i] > nowMins) { nextIdx = i; nextMins = times[i]; break; }
     }
+    if(nextIdx === -1) { nextIdx = 0; nextMins = times[0] + 24*60; } // wrap to next day fajr
 
-    function generateCalendar() {
-        const body=document.getElementById('calendar-body');
-        const title=document.getElementById('cal-title');
-        const months=["Januari","Februari","Mac","April","Mei","Jun","Julai","Ogos","September","Oktober","November","Disember"];
-        const year=currentCalDate.getFullYear(), month=currentCalDate.getMonth();
-        title.innerText=`${months[month]} ${year}`; body.innerHTML='';
-        const firstDay=new Date(year,month,1).getDay();
-        const daysInMonth=new Date(year,month+1,0).getDate();
-        for(let i=0;i<firstDay;i++) body.appendChild(document.createElement('div'));
-        for(let d=1;d<=daysInMonth;d++) {
-            const key=isoKey(year,month,d);
-            const data=store.calendar[key]||{s:'-',a:''};
-            const box=document.createElement('div'); box.className='day-box';
-            if(new Date().toDateString()===new Date(year,month,d).toDateString()) box.classList.add('today');
-            box.onclick=()=>openShiftPicker(key);
-            const color = shiftColor(data.s);
-            const reminderDot=data.reminder?`<div style="position:absolute;bottom:2px;right:3px;width:4px;height:4px;border-radius:50%;background:#8888ff;"></div>`:'';
-            box.innerHTML=`<div class="date-num">${d}</div><div class="shift-text" style="color:${color};">${data.s||'-'}</div><div class="assign-text">${data.a||''}</div>${reminderDot}`;
-            body.appendChild(box);
-        }
-        updateShiftSummary();
-    }
+    // Build grid
+    let html = '';
+    PRAYER_KEYS.forEach((k,i) => {
+        const isNext = i === nextIdx;
+        const isPassed = times[i] < nowMins && !(nextIdx === 0 && i === 0);
+        html += `<div class="prayer-slot${isNext?' active':''}${isPassed&&!isNext?' passed':''}">
+            <div class="prayer-slot-name">${PRAYER_NAMES[i]}</div>
+            <div class="prayer-slot-time">${prayerTimes[k]}</div>
+        </div>`;
+    });
+    grid.innerHTML = html;
 
-    function updateShiftSummary() {
-        const now=new Date(), tom=new Date(now); tom.setDate(now.getDate()+1);
-        const getFullAssign=(short)=>{ if(!short) return ''; return short.replace(/Amb/g,'Ambulance').replace(/TL/g,'Team Leader'); };
-        const getS=(date)=>{
-            const key=isoKey(date.getFullYear(),date.getMonth(),date.getDate());
-            const d=store.calendar[key]; if(!d||d.s==='-') return "OFF";
-            return `${d.s}${d.a?' · '+getFullAssign(d.a):''}`;
-        };
-        document.getElementById('summary-today').innerText=getS(now);
-        document.getElementById('summary-tomorrow').innerText=getS(tom);
-        const remDiv=document.getElementById('summary-reminders');
-        const reminders=[];
-        for(let i=0;i<=7;i++){
-            const d=new Date(now); d.setDate(now.getDate()+i);
-            const key=isoKey(d.getFullYear(),d.getMonth(),d.getDate());
-            const entry=store.calendar[key];
-            if(entry&&entry.reminder){
-                const dd=String(d.getDate()).padStart(2,'0');
-                const mm=String(d.getMonth()+1).padStart(2,'0');
-                reminders.push({label:`${dd}/${mm}`,text:entry.reminder});
-            }
-        }
-        if(reminders.length>0){
-            remDiv.style.display='block';
-            remDiv.innerHTML=reminders.map(r=>`<div style="display:flex;justify-content:space-between;gap:8px;margin-bottom:6px;"><span style="font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:#8888ff;font-weight:700;white-space:nowrap;">🔔 ${r.label}</span><span style="font-size:0.7rem;color:var(--text);line-height:1.4;text-align:right;">${r.text}</span></div>`).join('');
-        } else { remDiv.style.display='none'; remDiv.innerHTML=''; }
-    }
+    // Banner
+    banner.style.display = 'flex';
+    document.getElementById('prayer-next-name').innerText = PRAYER_NAMES[nextIdx === 0 && nextMins > 24*60 ? 0 : nextIdx];
+    document.getElementById('prayer-next-time').innerText = prayerTimes[PRAYER_KEYS[nextIdx === 0 && nextMins > 24*60 ? 0 : nextIdx]];
 
-    // ── DRUG ──
-    function searchDrugs() {
-        const q=document.getElementById('drug-search').value.toLowerCase();
-        const results=document.getElementById('drug-results'); results.innerHTML=''; if(!q) return;
-        const matched=store.drugs.map((d,idx)=>({d,idx})).filter(({d})=>d.name.toLowerCase().includes(q));
-        if(matched.length===0){ results.innerHTML='<div style="font-size:0.75rem;color:var(--text-muted);text-align:center;padding:16px;">Tiada ubat ditemui.</div>'; return; }
-        matched.forEach(({d,idx})=>{
-            const div=document.createElement('div'); div.className='drug-item';
-            div.innerHTML=`<div style="flex:1;min-width:0;"><div class="drug-name">${d.name}</div><div class="drug-ampule">${d.ampule||'—'}</div><div class="drug-prep">${d.prep}</div></div><div style="display:flex;flex-direction:column;gap:4px;flex-shrink:0;margin-left:8px;"><button onclick="event.stopPropagation();openEditDrugSheet(${idx})" style="background:none;color:var(--success);border:none;font-size:0.65rem;font-weight:700;cursor:pointer;font-family:'JetBrains Mono',monospace;">EDIT</button><button onclick="event.stopPropagation();deleteDrug(${idx})" style="background:none;color:var(--danger);border:none;font-size:0.65rem;font-weight:700;cursor:pointer;font-family:'JetBrains Mono',monospace;">DEL</button></div>`;
-            results.appendChild(div);
-        });
-    }
+    updatePrayerCountdown(nextMins, nowMins);
+}
 
-    function openAddDrugSheet() {
-        document.getElementById('sheet-title').innerText="Tambah Ubat";
-        document.getElementById('sheet-content').innerHTML=`<label>Nama Ubat</label><input type="text" id="drug-name-in" placeholder="cth: IV Morphine"><label>Dose / Ampule</label><input type="text" id="drug-ampule-in" placeholder="cth: 10mg/ml"><label>Cara Penyediaan</label><textarea id="drug-prep-in" style="height:90px;" placeholder="cth: 10mg in 10mls NS"></textarea><button class="btn-primary" onclick="saveDrug()">SIMPAN</button>`;
-        openSheet();
+function updatePrayerCountdown(nextMins, nowMins) {
+    if(!prayerTimes) return;
+    const now = new Date();
+    const curMins = now.getHours()*60 + now.getMinutes() + now.getSeconds()/60;
+    let diff = nextMins - curMins;
+    if(diff < 0) diff += 24*60;
+    const h = Math.floor(diff/60), m = Math.floor(diff%60), s = Math.floor((diff%1)*60);
+    const el = document.getElementById('prayer-countdown');
+    if(el) {
+        if(h > 0) el.innerText = `${h}j ${m}min lagi`;
+        else if(m > 0) el.innerText = `${m}min ${s}saat lagi`;
+        else el.innerText = `${s}saat lagi`;
     }
-    function saveDrug() {
-        const name=document.getElementById('drug-name-in').value.trim(), ampule=document.getElementById('drug-ampule-in').value.trim(), prep=document.getElementById('drug-prep-in').value.trim();
-        if(name&&prep){store.drugs.push({name,ampule:ampule||'—',prep}); saveData(); closeSheet(); searchDrugs();}
-    }
-    function openEditDrugSheet(idx) {
-        const d=store.drugs[idx]; document.getElementById('sheet-title').innerText="Edit Ubat";
-        document.getElementById('sheet-content').innerHTML=`<label>Nama Ubat</label><input type="text" id="edit-name" value="${d.name}"><label>Dose / Ampule</label><input type="text" id="edit-ampule" value="${d.ampule||''}"><label>Cara Penyediaan</label><textarea id="edit-prep" style="height:90px;">${d.prep}</textarea><button class="btn-primary" onclick="updateDrug(${idx})">KEMASKINI</button>`;
-        openSheet();
-    }
-    function updateDrug(idx) {
-        const n=document.getElementById('edit-name').value.trim(), a=document.getElementById('edit-ampule').value.trim(), p=document.getElementById('edit-prep').value.trim();
-        if(n&&p){store.drugs[idx].name=n;store.drugs[idx].ampule=a||'—';store.drugs[idx].prep=p;saveData();closeSheet();searchDrugs();}
-    }
-    function deleteDrug(idx){if(confirm("Padam ubat ini?")){store.drugs.splice(idx,1);saveData();searchDrugs();}}
+}
 
-    // ── SHIFT PICKER ──
-    function openShiftPicker(key) {
-        const existing=store.calendar[key]||{};
-        const parts=key.split('-');
-        const dispDate=parts.length===3?`${parts[2]}/${parts[1]}/${parts[0]}`:key;
-        document.getElementById('sheet-title').innerText=`Shift — ${dispDate}`;
-        const currentRaw=existing.s&&existing.s!=='-'?existing.s:'';
-        document.getElementById('sheet-content').innerHTML=`
-            <label>Kod Shift</label>
-            <input type="text" id="shift-input" placeholder="cth: N# atau M/E*"
-                value="${currentRaw}"
-                style="font-size:1.2rem;font-weight:700;text-align:center;letter-spacing:0.08em;"
-                oninput="this.value=this.value.toUpperCase()"
-                onkeydown="if(event.key==='Enter') applyTypedShift('${key}')">
-            <div id="shift-parse-preview"></div>
-            <button class="btn-primary" onclick="applyTypedShift('${key}')">SIMPAN SHIFT</button>
-            <button class="btn-secondary" onclick="openReminderSheet('${key}')">🔔 REMINDER${existing.reminder?' · '+existing.reminder.substring(0,18)+(existing.reminder.length>18?'...':''):''}</button>
-            ${existing.s&&existing.s!=='-'?`<button class="btn-danger" onclick="clearShift('${key}')">KOSONGKAN</button>`:''}
-            ${existing.s==='RPL'?`<button class="btn-secondary" onclick="openRPLLinkSheet('${key}')" style="border-color:rgba(80,200,120,0.3);color:var(--primary);">🔗 PAUT REKOD RPL</button>`:''}
-            ${existing.s==='PH'?`<button class="btn-secondary" onclick="openPHLinkSheet('${key}')" style="border-color:rgba(229,192,123,0.35);color:#e5c07b;">📅 PAUT CUTI UMUM</button>`:''}
-        `;
-        openSheet();
-        setTimeout(()=>{
-            const inp=document.getElementById('shift-input');
-            if(inp){inp.focus();inp.select();inp.addEventListener('input',()=>livePreviewShift(inp.value));}
-        },350);
-    }
+function renderPrayerError(msg) {
+    document.getElementById('prayer-grid').innerHTML = `<div class="prayer-error" style="grid-column:1/-1;">${msg}</div>`;
+}
 
-    function livePreviewShift(val) {
-        const prev=document.getElementById('shift-parse-preview'); if(!prev) return;
-        if(!val.trim()){prev.innerHTML='';return;}
-        const parsed=parseShiftCell(val);
-        if(parsed){ const assign=parsed.a?` <span style="color:var(--primary)">@ ${parsed.a}</span>`:''; prev.innerHTML=`<div class="preview-ok">→ Shift: <b style="color:var(--text)">${parsed.s}</b>${assign}</div>`; }
-        else { prev.innerHTML=`<div class="preview-err">⚠️ Format tidak dikenali</div>`; }
-    }
+// Re-render prayer at midnight
+function schedulePrayerRefresh() {
+    const now = new Date();
+    const msToMidnight = (24*60*60*1000) - (now.getHours()*3600 + now.getMinutes()*60 + now.getSeconds())*1000;
+    setTimeout(() => { fetchPrayerTimes(); schedulePrayerRefresh(); }, msToMidnight+1000);
+}
 
-    function applyTypedShift(key) {
-        const val=(document.getElementById('shift-input').value||'').trim(); if(!val) return;
-        const parsed=parseShiftCell(val); if(!parsed){alert('Format shift tidak dikenali.');return;}
-        const prevLinked=(store.calendar[key]&&store.calendar[key].rplLinked)||null;
-        const prevPHLinked=(store.calendar[key]&&store.calendar[key].phLinked)||null;
-        store.calendar[key]={s:parsed.s,a:parsed.a};
-        if(parsed.s==='RPL'&&prevLinked) store.calendar[key].rplLinked=prevLinked;
-        if(parsed.s==='PH'&&prevPHLinked) store.calendar[key].phLinked=prevPHLinked;
-        saveData();generateCalendar();closeSheet();
-        if(parsed.s==='RPL'&&!prevLinked&&store.rpl.records.length>0) setTimeout(()=>openRPLLinkSheet(key),350);
-        if(parsed.s==='PH'&&!prevPHLinked) setTimeout(()=>openPHLinkSheet(key),350);
-    }
-    function clearShift(key){if(store.calendar[key]){delete store.calendar[key];saveData();generateCalendar();closeSheet();}}
+// Prayer countdown tick — every second
+function startPrayerTick() {
+    if(prayerCountdownTimer) clearInterval(prayerCountdownTimer);
+    prayerCountdownTimer = setInterval(() => {
+        if(!prayerTimes) return;
+        const now = new Date();
+        const nowMins = now.getHours()*60 + now.getMinutes();
+        const times = PRAYER_KEYS.map(k => timeStrToMinutes(prayerTimes[k]));
+        let nextIdx = -1, nextMins = Infinity;
+        for(let i=0; i<times.length; i++) { if(times[i] > nowMins) { nextIdx=i; nextMins=times[i]; break; } }
+        if(nextIdx === -1) { nextIdx=0; nextMins=times[0]+24*60; }
+        updatePrayerCountdown(nextMins, nowMins);
 
-    function openReminderSheet(key) {
-        const parts=key.split('-'), dispDate=parts.length===3?`${parts[2]}/${parts[1]}/${parts[0]}`:key;
-        const existing=store.calendar[key]||{};
-        document.getElementById('sheet-title').innerText=`🔔 Reminder — ${dispDate}`;
-        document.getElementById('sheet-content').innerHTML=`
-            <label>Nota Reminder</label>
-            <textarea id="reminder-input" style="height:110px;" placeholder="cth: AUDIT MSQH, Mesyuarat, Kursus BLS...">${existing.reminder||''}</textarea>
-            <button class="btn-primary" onclick="saveReminder('${key}')">SIMPAN REMINDER</button>
-            ${existing.reminder?`<button class="btn-danger" onclick="deleteReminder('${key}')">BUANG REMINDER</button>`:''}
-        `;
-        openSheet();
-        setTimeout(()=>{const el=document.getElementById('reminder-input');if(el)el.focus();},350);
-    }
-    function saveReminder(key){const val=(document.getElementById('reminder-input').value||'').trim(); if(!store.calendar[key]) store.calendar[key]={s:'-',a:''}; store.calendar[key].reminder=val; saveData();generateCalendar();closeSheet();}
-    function deleteReminder(key){if(store.calendar[key]){delete store.calendar[key].reminder;saveData();generateCalendar();closeSheet();}}
+        // Re-render grid slots every minute to update active/passed
+        if(now.getSeconds() === 0) renderPrayerWidget();
+    }, 1000);
+}
 
-    function openRPLLinkSheet(key) {
-        const parts=key.split('-'), dispDate=parts.length===3?`${parts[2]}/${parts[1]}/${parts[0]}`:key;
-        document.getElementById('sheet-title').innerText=`RPL — ${dispDate}`;
-        const linkedDates=Object.keys(store.calendar).filter(k=>store.calendar[k].s==='RPL'&&store.calendar[k].rplLinked&&k!==key).map(k=>store.calendar[k].rplLinked);
-        const available=store.rpl.records.filter(r=>!linkedDates.includes(r.d1));
-        let html='';
-        if(available.length===0) html+=`<div style="font-size:0.75rem;color:var(--text-dim);padding:12px;text-align:center;border:1px solid var(--border);border-radius:var(--radius-xs);margin-bottom:12px;">Tiada rekod RPL. Tambah rekod RPL dahulu.</div>`;
-        else {
-            html+=`<div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px;">`;
-            available.forEach(r=>{
-                const isLinked=store.calendar[key]&&store.calendar[key].rplLinked===r.d1;
-                const dispPH=toMY(r.d1), dispRepl=r.isPaid?'PAID':toMY(r.d2);
-                html+=`<div onclick="linkRPL('${key}','${r.d1}')" style="background:${isLinked?'var(--primary-dim)':'var(--surface)'};border:1px solid ${isLinked?'var(--primary)':'var(--border)'};border-radius:var(--radius-sm);padding:12px;cursor:pointer;"><div style="font-weight:700;font-size:0.8rem;color:${isLinked?'var(--primary)':'var(--text)'};margin-bottom:3px;">${r.t}</div><div style="font-size:0.68rem;color:var(--text-dim);">PH: ${dispPH} → Ganti: ${dispRepl}</div>${isLinked?'<div style="font-size:0.62rem;color:var(--primary);margin-top:4px;">✓ Sedang dipaut</div>':''}</div>`;
-            });
-            html+=`</div>`;
-        }
-        if(store.calendar[key]&&store.calendar[key].rplLinked) html+=`<button class="btn-danger" onclick="unlinkRPL('${key}')">✕ Buang Pautan RPL</button>`;
-        html+=`<button class="btn-secondary" onclick="openShiftPicker('${key}')">✏️ Tukar Shift Lain</button>`;
-        document.getElementById('sheet-content').innerHTML=html; openSheet();
-    }
-    function linkRPL(calKey,rplD1){if(!store.calendar[calKey])store.calendar[calKey]={s:'RPL',a:''}; store.calendar[calKey].rplLinked=rplD1; const phParts=rplD1.split('-'); store.calendar[calKey].a=`PH:${phParts.length===3?phParts[2]+'/'+phParts[1]:rplD1}`; saveData();generateCalendar();closeSheet();}
-    function unlinkRPL(calKey){if(store.calendar[calKey]){delete store.calendar[calKey].rplLinked;store.calendar[calKey].a='';} saveData();generateCalendar();closeSheet();}
+// ══════════════════════════════════════════
+//  TOOLS
+// ══════════════════════════════════════════
+let activeToolTab = 'nursing';
 
-    function openPHLinkSheet(key) {
-        const parts=key.split('-'), dispDate=parts.length===3?`${parts[2]}/${parts[1]}/${parts[0]}`:key;
-        document.getElementById('sheet-title').innerText=`📅 PH — ${dispDate}`;
-        // PH entries from ph2026 that are NOT yet linked to another calendar date (except current key)
-        const linkedPHDates=Object.keys(store.calendar)
-            .filter(k=>store.calendar[k].s==='PH'&&store.calendar[k].phLinked&&k!==key)
-            .map(k=>store.calendar[k].phLinked);
-        const available=ph2026.filter(p=>!linkedPHDates.includes(p.d));
-        let html='';
-        if(available.length===0) {
-            html+=`<div style="font-size:0.75rem;color:var(--text-dim);padding:12px;text-align:center;border:1px solid var(--border);border-radius:var(--radius-xs);margin-bottom:12px;">Tiada rekod PH tersedia.</div>`;
-        } else {
-            html+=`<div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px;">`;
-            available.forEach(p=>{
-                const isLinked=store.calendar[key]&&store.calendar[key].phLinked===p.d;
-                const dispD=toMY(p.d);
-                const paidBadge=p.paid?`<span style="font-size:0.58rem;background:rgba(243,156,18,0.18);color:#f39c12;padding:1px 6px;border-radius:20px;font-weight:700;margin-left:6px;">PAID</span>`:'';
-                html+=`<div onclick="linkPH('${key}','${p.d}')" style="background:${isLinked?'rgba(229,192,123,0.1)':'var(--surface)'};border:1px solid ${isLinked?'#e5c07b':'var(--border)'};border-radius:var(--radius-sm);padding:12px;cursor:pointer;">
-                    <div style="font-weight:700;font-size:0.8rem;color:${isLinked?'#e5c07b':'var(--text)'};margin-bottom:3px;">${p.n}${paidBadge}</div>
-                    <div style="font-size:0.68rem;color:var(--text-dim);">📅 ${dispD}</div>
-                    ${isLinked?'<div style="font-size:0.62rem;color:#e5c07b;margin-top:4px;">✓ Sedang dipaut</div>':''}
-                </div>`;
-            });
-            html+=`</div>`;
-        }
-        if(store.calendar[key]&&store.calendar[key].phLinked) html+=`<button class="btn-danger" onclick="unlinkPH('${key}')">✕ Buang Pautan PH</button>`;
-        html+=`<button class="btn-secondary" onclick="openShiftPicker('${key}')">✏️ Tukar Shift Lain</button>`;
-        document.getElementById('sheet-content').innerHTML=html; openSheet();
+function switchTool(id) {
+    const panels = ['nursing', 'rsi', 'lytic', 'drugcalc'];
+    if(activeToolTab === id) {
+        activeToolTab = 'nursing';
+    } else {
+        activeToolTab = id;
     }
-    function linkPH(calKey,phDate){
-        if(!store.calendar[calKey]) store.calendar[calKey]={s:'PH',a:''};
-        store.calendar[calKey].phLinked=phDate;
-        // Show PH name short label on calendar
-        const entry=ph2026.find(p=>p.d===phDate);
-        if(entry){ const short=entry.n.replace('Hari ','').replace('Tahun ','').substring(0,10); store.calendar[calKey].a=short; }
-        saveData();generateCalendar();closeSheet();
-    }
-    function unlinkPH(calKey){if(store.calendar[calKey]){delete store.calendar[calKey].phLinked;store.calendar[calKey].a='';} saveData();generateCalendar();closeSheet();}
+    panels.forEach(p => {
+        const panel = document.getElementById('tool-' + p);
+        const tab = document.getElementById('tab-' + p);
+        if(panel) panel.classList.toggle('active', activeToolTab === p);
+        if(tab) tab.classList.toggle('active', activeToolTab === p);
+    });
+    if(activeToolTab === 'nursing') renderNursingNotes();
+}
 
-    // ── RECORDS ──
-    function openRecordSheet(type){document.getElementById('sheet-title').innerText=type;renderRecords(type);openSheet();}
+function calcNora() {
+    const dose   = parseFloat(document.getElementById('nora-dose').value);
+    const weight = parseFloat(document.getElementById('nora-weight').value);
+    const result = document.getElementById('nora-result');
+    const placeholder = document.getElementById('nora-placeholder');
+    if(isNaN(dose) || isNaN(weight) || dose <= 0 || weight <= 0) {
+        result.style.display = 'none';
+        placeholder.style.display = 'block';
+        return;
+    }
+    const mghr   = (dose * weight * 60) / 1000;
+    const single = mghr / 0.08;
+    const double = mghr / 0.16;
+    document.getElementById('nora-dose-show').innerText = dose;
+    document.getElementById('nora-wt-show').innerText   = weight;
+    document.getElementById('nora-mghr').innerText      = mghr.toFixed(4) + ' mg/hr';
+    document.getElementById('nora-single').innerText    = single.toFixed(2);
+    document.getElementById('nora-double').innerText    = double.toFixed(2);
+    result.style.display = 'block';
+    placeholder.style.display = 'none';
+}
 
-    function checkPaidPH(){
-        const sel=document.getElementById('in-ph-select'); if(!sel) return;
-        const isPaid=sel.options[sel.selectedIndex].getAttribute('data-paid')==='true';
-        document.getElementById('paid-alert').style.display=isPaid?'block':'none';
-        document.getElementById('in-d2').style.display=isPaid?'none':'block';
-        if(isPaid) document.getElementById('paid-alert').innerText="PH ini telah dibayar (Paid).";
-    }
+// ── NURSING NOTES ──
+const NURSING_CATEGORIES = [
+    {id:'assessment', label:'Assessment'},
+    {id:'intervention', label:'Intervention'},
+    {id:'evaluation', label:'Evaluation'},
+    {id:'education', label:'Education'},
+    {id:'other', label:'Lain-lain'}
+];
 
-    function renderRecords(type){
-        const content=document.getElementById('sheet-content'); let html='<div>';
-        if(type==='AL'){
-            store.al.taken.forEach((d,i)=>html+=`<div class="record-card"><div>Cuti: ${toMY(d)}</div><button class="btn-delete" onclick="store.al.taken.splice(${i},1);saveData();renderRecords('AL')">×</button></div>`);
-            html+=`<label>Tarikh Cuti</label><input type="date" id="in-d" onclick="triggerDatePicker('in-d')">`;
-        } else if(type==='RPL'){
-            store.rpl.records.forEach((r,i)=>html+=`<div class="record-card"><div><b>${r.t}</b><br><small style="color:var(--text-dim)">${toMY(r.d1)} ➔ ${r.isPaid?'PAID':toMY(r.d2)}</small></div><button class="btn-delete" onclick="store.rpl.records.splice(${i},1);saveData();renderRecords('RPL')">×</button></div>`);
-            const recordedDates=store.rpl.records.map(r=>r.d1);
-            const avPH=ph2026.filter(p=>!recordedDates.includes(p.d));
-            html+=`<div id="paid-alert" class="paid-alert"></div><label>Pilih PH</label><select id="in-ph-select" onchange="document.getElementById('in-d1').value=this.value;checkPaidPH();"><option value="">-- Pilih --</option>${avPH.map(p=>{const dp=p.d.split('-');return`<option value="${p.d}" data-paid="${p.paid}">(${dp[2]}/${dp[1]}) ${p.n}</option>`;}).join('')}</select><input type="date" id="in-d1" hidden><label id="label-rpl">Tarikh Ganti</label><input type="date" id="in-d2" onclick="triggerDatePicker('in-d2')">`;
-        } else if(type==='CPD'){
-            store.cpd.records.forEach((r,i)=>html+=`<div class="record-card"><div style="flex:1"><b>${r.t}</b><br><small style="color:var(--text-dim)">📅 ${toMY(r.d)} | 🕒 ${r.t1} - ${r.t2}</small></div><div style="font-weight:700;color:var(--success);margin-right:8px;">${r.p} Pts</div><div style="display:flex;flex-direction:column;gap:4px;"><button style="background:none;color:var(--primary);border:none;font-size:0.65rem;font-weight:700;cursor:pointer;font-family:'JetBrains Mono',monospace;" onclick="editCPD(${i})">EDIT</button><button class="btn-delete" onclick="store.cpd.records.splice(${i},1);saveData();renderRecords('CPD')">×</button></div></div>`);
-            html+=`<input type="hidden" id="cpd-edit-idx" value="-1"><label>Nama Kursus</label><input type="text" id="in-t"><label>Tarikh</label><input type="date" id="in-d" onclick="triggerDatePicker('in-d')"><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;"><div><label>Mula</label><input type="time" id="in-t1"></div><div><label>Tamat</label><input type="time" id="in-t2"></div></div><label>Mata</label><input type="number" id="in-p">`;
-        }
-        html+=`</div><button class="btn-primary" id="btn-save-rec" onclick="addRec('${type}')">SIMPAN</button>`;
-        content.innerHTML=html;
-    }
+function openAddNursingNote(editIdx = -1) {
+    const isEdit = editIdx >= 0;
+    const note = isEdit ? store.nursingNotes[editIdx] : null;
+    document.getElementById('sheet-title').innerText = isEdit ? '✏️ Edit Nota' : '📋 Tambah Nursing Note';
 
-    function addRec(type){
-        if(type==='AL'){const d=document.getElementById('in-d').value;if(d)store.al.taken.push(d);}
-        else if(type==='RPL'){const sel=document.getElementById('in-ph-select'),d1=document.getElementById('in-d1').value,d2=document.getElementById('in-d2').value;if(sel&&d1){const t=sel.options[sel.selectedIndex].text,isPaid=sel.options[sel.selectedIndex].getAttribute('data-paid')==='true';if(t&&d1&&(isPaid||d2))store.rpl.records.push({t,d1,d2,isPaid});}}
-        else if(type==='CPD'){
-            const t=document.getElementById('in-t').value,d=document.getElementById('in-d').value,p=document.getElementById('in-p').value,t1=document.getElementById('in-t1').value,t2=document.getElementById('in-t2').value;
-            const idx=parseInt(document.getElementById('cpd-edit-idx').value);
-            if(t&&d&&p&&t1&&t2){
-                if(idx>=0){ store.cpd.records[idx]={t,d,p,t1,t2}; }
-                else { store.cpd.records.push({t,d,p,t1,t2}); }
-            }
-        }
-        saveData();renderRecords(type);
-    }
+    const today = new Date().toISOString().split('T')[0];
+    const nowTime = new Date().toTimeString().slice(0,5);
 
-    function editCPD(i){
-        const r=store.cpd.records[i];
-        document.getElementById('cpd-edit-idx').value=i;
-        document.getElementById('in-t').value=r.t;
-        document.getElementById('in-d').value=r.d;
-        document.getElementById('in-t1').value=r.t1;
-        document.getElementById('in-t2').value=r.t2;
-        document.getElementById('in-p').value=r.p;
-        const btn=document.getElementById('btn-save-rec');
-        if(btn){btn.innerText='KEMASKINI';btn.style.background='var(--warning)';btn.style.color='black';}
-        document.getElementById('in-t').focus();
-        document.getElementById('in-t').scrollIntoView({behavior:'smooth',block:'center'});
-    }
+    const catOptions = NURSING_CATEGORIES.map(c =>
+        `<option value="${c.id}" ${note && note.category === c.id ? 'selected' : ''}>${c.label}</option>`
+    ).join('');
 
-    // ── TODO ──
-    function openTodoPopup(){
-        document.getElementById('sheet-title').innerText="Tambah Tugasan";
-        document.getElementById('sheet-content').innerHTML=`<label>Tugasan</label><input type="text" id="pop-todo-t" placeholder="Apa yang perlu dibuat?"><label>Tarikh Akhir (Opsional)</label><input type="date" id="pop-todo-d" onclick="triggerDatePicker('pop-todo-d')"><button class="btn-primary" onclick="saveTodoFinal()">SIMPAN TUGASAN</button>`;
-        openSheet();
-    }
-    function saveTodoFinal(){
-        const t=document.getElementById('pop-todo-t').value,d=document.getElementById('pop-todo-d').value;
-        if(!t.trim())return; store.todos.push({t,date:d,done:false});saveData();closeSheet();renderTodos();
-    }
-    function editTodo(i){
-        const todo=store.todos[i];
-        document.getElementById('sheet-title').innerText="Edit Tugasan";
-        document.getElementById('sheet-content').innerHTML=`
-            <label>Tugasan</label>
-            <input type="text" id="pop-todo-t" value="${todo.t.replace(/"/g,'&quot;')}">
-            <label>Tarikh Akhir (Opsional)</label>
-            <input type="date" id="pop-todo-d" value="${todo.date||''}" onclick="triggerDatePicker('pop-todo-d')">
-            <button class="btn-primary" style="background:var(--warning);color:black;" onclick="updateTodo(${i})">KEMASKINI TUGASAN</button>
-            <button class="btn-danger" onclick="store.todos.splice(${i},1);saveData();closeSheet();renderTodos();">PADAM TUGASAN</button>
-        `;
-        openSheet();
-        setTimeout(()=>{const el=document.getElementById('pop-todo-t');if(el){el.focus();el.select();}},350);
-    }
-    function updateTodo(i){
-        const t=document.getElementById('pop-todo-t').value,d=document.getElementById('pop-todo-d').value;
-        if(!t.trim())return;
-        store.todos[i].t=t; store.todos[i].date=d;
-        saveData();closeSheet();renderTodos();
-    }
-    function renderTodos(){
-        const list=document.getElementById('todo-list'); if(!list)return; list.innerHTML='';
-        if(store.todos.length===0){list.innerHTML='<div style="font-size:0.72rem;color:var(--text-muted);padding:10px;text-align:center;">Tiada tugasan.</div>';return;}
-        store.todos.forEach((todo,i)=>{
-            list.innerHTML+=`<div class="todo-item"><input type="checkbox" style="width:16px;height:16px;accent-color:var(--primary);" ${todo.done?'checked':''} onchange="store.todos[${i}].done=!store.todos[${i}].done;saveData();renderTodos();"><div class="todo-text ${todo.done?'done':''}">${todo.t}${todo.date?`<small style="color:var(--text-muted);font-size:0.6rem;margin-left:8px;">(Due: ${toMY(todo.date)})</small>`:''}</div><button onclick="editTodo(${i})" style="background:none;color:var(--primary);border:none;font-size:0.65rem;font-weight:700;cursor:pointer;font-family:'JetBrains Mono',monospace;padding:0 4px;">EDIT</button><button class="todo-del" onclick="store.todos.splice(${i},1);saveData();renderTodos();">×</button></div>`;
-        });
-    }
-
-    // ── STATS ──
-    function renderStats(){
-        document.getElementById('text-al').innerText=store.al.taken.length;
-        document.getElementById('text-rpl').innerText=store.rpl.records.length;
-        const pts=store.cpd.records.reduce((s,r)=>s+Number(r.p),0);
-        document.getElementById('text-cpd').innerText=`${pts}/20`;
-        document.getElementById('bar-cpd').style.width=Math.min((pts/20*100),100)+'%';
-        const month=currentCalDate.getMonth(),year=currentCalDate.getFullYear();
-        let n_count=0;
-        Object.keys(store.calendar).forEach(key=>{
-            const p=key.split('-');
-            if(p.length===3&&parseInt(p[0])===year&&parseInt(p[1])-1===month&&store.calendar[key].s==='N') n_count++;
-        });
-        document.getElementById('text-night-count').innerText=n_count;
-        renderTodos(); renderClaim();
-    }
-
-    // ── CLAIM ──
-    function toggleClaim(){
-        const body=document.getElementById('claim-body'), icon=document.getElementById('claim-toggle-icon'); if(!body)return;
-        const isHidden=body.style.display==='none';
-        body.style.display=isHidden?'block':'none';
-        if(icon) icon.innerText=isHidden?'▲':'▼';
-    }
-
-    function renderClaim(){
-        const year=currentCalDate.getFullYear(), month=currentCalDate.getMonth();
-        const months=["Januari","Februari","Mac","April","Mei","Jun","Julai","Ogos","September","Oktober","November","Disember"];
-        const label=document.getElementById('claim-month-label'), body=document.getElementById('claim-body'); if(!body)return;
-        if(label) label.innerText=`${months[month]} ${year}`;
-        const malam=[],locum=[],phBayar=[];
-        Object.keys(store.calendar).forEach(key=>{
-            const p=key.split('-'); if(p.length!==3)return;
-            const y=parseInt(p[0]),m=parseInt(p[1])-1,d=parseInt(p[2]);
-            if(y!==year||m!==month)return;
-            const entry=store.calendar[key]; const s=entry.s||'';
-            const dateStr=`${String(d).padStart(2,'0')}/${String(month+1).padStart(2,'0')}/${year}`;
-            if(s==='N') malam.push({date:dateStr,shift:s});
-            if(s==='M/E'||s==='M/N'||s==='E/N'){const assign=entry.a?` (${entry.a})`:''; locum.push({date:dateStr,shift:s+assign});}
-            if(s==='PH'){const phEntry=ph2026.find(p=>p.d===key);if(phEntry&&phEntry.paid)phBayar.push({date:dateStr,name:phEntry.n});}
-        });
-        const sortFn=(a,b)=>a.date.localeCompare(b.date);
-        malam.sort(sortFn);locum.sort(sortFn);phBayar.sort(sortFn);
-        function buildRows(items,emptyMsg,fn){if(items.length===0)return`<div style="font-size:0.7rem;color:var(--text-muted);padding:4px 0;">${emptyMsg}</div>`;return items.map(fn).join('');}
-        function row(l,r){return`<div class="claim-row"><span style="font-size:0.78rem;color:var(--text);font-weight:600;">${l}</span><span style="font-size:0.72rem;color:var(--primary);">${r}</span></div>`;}
-        function block(icon,title,count,rows){return`<div style="margin-bottom:12px;"><div class="claim-cat-header"><span style="font-family:'JetBrains Mono',monospace;font-size:0.6rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim);">${icon} ${title}</span><span class="claim-badge">${count}</span></div>${rows}</div>`;}
-        body.innerHTML=
-            block('🌙','Shift Malam',malam.length,buildRows(malam,'Tiada shift malam bulan ini.',i=>row(i.date,i.shift)))+
-            `<div class="claim-divider"></div>`+
-            block('🔄','Locum / Double Shift',locum.length,buildRows(locum,'Tiada double shift bulan ini.',i=>row(i.date,i.shift)))+
-            `<div class="claim-divider"></div>`+
-            block('📅','PH Berbayar',phBayar.length,buildRows(phBayar,'Tiada PH berbayar bulan ini.',i=>row(i.date,i.name)));
-    }
-
-    // ── RSI ──
-    function handleRSIClick(){
-        document.getElementById('sheet-title').innerText="💉 Pre-Med RSI"; let html='';
-        RSI_DATA.forEach(section=>{
-            html+=`<div class="rsi-group-header">${section.group}</div>`;
-            section.drugs.forEach(d=>{
-                html+=`<div class="drug-item"><div style="flex:1;min-width:0;"><div class="drug-name">${d.name}</div><div class="drug-ampule">${d.ampule}</div><div class="drug-prep">${d.prep}</div></div></div>`;
-            });
-        });
-        document.getElementById('sheet-content').innerHTML=html; openSheet();
-    }
-
-    // ── PDF ──
-    function triggerPDFUpload(e){e.preventDefault();document.getElementById('pdf-upload').click();}
-    function savePDF(e){
-        const file=e.target.files[0]; if(file&&file.type==="application/pdf"){
-            const reader=new FileReader(); reader.onload=function(ev){store.pdfData=ev.target.result;saveData();checkPDFStatus();alert("PDF berjaya dimuat naik!");};
-            reader.readAsDataURL(file);
-        } else alert("Sila pilih fail PDF sahaja.");
-    }
-    function openStoredPDF(){
-        if(store.pdfData){
-            const base64Parts=store.pdfData.split(','), contentType=base64Parts[0].split(':')[1].split(';')[0];
-            const byteCharacters=atob(base64Parts[1]), byteArrays=[];
-            for(let o=0;o<byteCharacters.length;o+=512){const slice=byteCharacters.slice(o,o+512);const bn=new Array(slice.length);for(let i=0;i<slice.length;i++)bn[i]=slice.charCodeAt(i);byteArrays.push(new Uint8Array(bn));}
-            const blob=new Blob(byteArrays,{type:contentType}), blobUrl=URL.createObjectURL(blob);
-            window.open(blobUrl,'_blank'); setTimeout(()=>URL.revokeObjectURL(blobUrl),100);
-        }
-    }
-    function checkPDFStatus(){if(store.pdfData) document.getElementById('btn-pdf').style.display='inline-block';}
-
-    // ── SHEET ──
-    function openSheet(){document.getElementById('overlay').style.display='block'; setTimeout(()=>document.getElementById('sheet').classList.add('active'),10);}
-    function closeSheet(){document.getElementById('sheet').classList.remove('active'); setTimeout(()=>document.getElementById('overlay').style.display='none',350);}
-    function loadImg(e){const r=new FileReader();r.onload=()=>{document.getElementById('profile-pic').src=r.result;store.profilePic=r.result;saveData();};r.readAsDataURL(e.target.files[0]);}
-
-    // ── BACKUP / RESTORE ──
-    function backupData(){
-        const blob=new Blob([JSON.stringify(store)],{type:"application/json"});
-        const url=URL.createObjectURL(blob), a=document.createElement('a');
-        a.href=url;a.download=`backup_roster_${new Date().toISOString().split('T')[0]}.json`;a.click();
-        alert("Data berjaya dieksport!");
-    }
-    function restoreData(){document.getElementById('restore-upload').click();}
-    function processRestore(e){
-        const file=e.target.files[0]; if(!file)return;
-        const reader=new FileReader();
-        reader.onload=function(ev){
-            try{
-                const parsed=JSON.parse(ev.target.result);
-                if(typeof parsed!=='object'||!parsed.calendar){alert("Fail tidak sah.");return;}
-                if(!confirm("Data semasa akan digantikan. Teruskan?"))return;
-                store=parsed; migrateCalendarKeys(); saveData(); generateCalendar(); renderStats(); loadNotes(); checkPDFStatus();
-                alert("✅ Data berjaya dipulihkan!");
-            }catch(err){alert("Ralat: Fail tidak dapat dibaca.");}
-        };
-        reader.readAsText(file); e.target.value='';
-    }
-
-    // ── IMPORT ──
-    function openImportSheet(){
-        document.getElementById('sheet-title').innerText="📋 Import Jadual Excel";
-        document.getElementById('sheet-content').innerHTML=`
-            <div style="font-size:0.72rem;color:var(--text-dim);margin-bottom:12px;line-height:1.7;background:var(--surface);padding:12px;border-radius:var(--radius-xs);border:1px solid var(--border);">
-                <b style="color:var(--primary);display:block;margin-bottom:4px;">Cara import:</b>
-                1. Buka Excel, select <b>baris DATE</b> dan <b>baris shift</b> anda (2 baris)<br>
-                2. Copy (Ctrl+C) → Paste dalam kotak bawah<br><br>
-                <b style="color:var(--text-dim)">Format:</b> <span style="font-family:'JetBrains Mono',monospace;color:var(--primary);">M* E(T) N# SD DO AL PH MC RPL (T)M/E#</span>
+    document.getElementById('sheet-content').innerHTML = `
+        <div class="nursing-meta">
+            <div>
+                <label>Tarikh</label>
+                <input type="date" id="nn-date" value="${note ? note.date : today}" onclick="triggerDatePicker('nn-date')">
             </div>
-            <label>Bulan & Tahun</label>
-            <input type="month" id="import-month" style="margin-bottom:10px;">
-            <label>Paste data dari Excel</label>
-            <textarea id="import-paste" style="height:120px;font-family:'JetBrains Mono',monospace;font-size:0.68rem;" placeholder="Paste di sini... (2 baris: DATE dan shift)"></textarea>
-            <div id="import-preview" style="margin-top:8px;"></div>
-            <button class="btn-secondary" onclick="previewImport()">🔍 PREVIEW</button>
-            <button id="btn-confirm-import" class="btn-primary" onclick="confirmImport()" style="display:none;">✅ SIMPAN KE CALENDAR</button>`;
-        const y=currentCalDate.getFullYear(),m=String(currentCalDate.getMonth()+1).padStart(2,'0');
-        document.getElementById('import-month').value=`${y}-${m}`;
-        openSheet();
+            <div>
+                <label>Masa</label>
+                <input type="time" id="nn-time" value="${note ? note.time : nowTime}">
+            </div>
+        </div>
+        <label>Kategori</label>
+        <select id="nn-cat">${catOptions}</select>
+        <label>Pesakit / Kes (Opsional)</label>
+        <input type="text" id="nn-patient" placeholder="cth: Bed 3, Trauma, OD Paracetamol..." value="${note ? (note.patient||'') : ''}">
+        <label>Nota</label>
+        <textarea id="nn-text" style="height:140px;" placeholder="Tulis pemerhatian, tindakan, atau nota nursing di sini...">${note ? note.text : ''}</textarea>
+        <input type="hidden" id="nn-edit-idx" value="${editIdx}">
+        <button class="btn-primary" ${isEdit ? 'style="background:var(--warning);color:black;"' : ''} onclick="saveNursingNote()">
+            ${isEdit ? 'KEMASKINI NOTA' : 'SIMPAN NOTA'}
+        </button>
+        ${isEdit ? `<button class="btn-danger" onclick="deleteNursingNote(${editIdx})">PADAM NOTA</button>` : ''}
+    `;
+    openSheet();
+    setTimeout(() => { const el = document.getElementById('nn-text'); if(el) el.focus(); }, 350);
+}
+
+function saveNursingNote() {
+    const date = document.getElementById('nn-date').value;
+    const time = document.getElementById('nn-time').value;
+    const cat  = document.getElementById('nn-cat').value;
+    const patient = document.getElementById('nn-patient').value.trim();
+    const text = document.getElementById('nn-text').value.trim();
+    const idx  = parseInt(document.getElementById('nn-edit-idx').value);
+    if(!date || !text) { alert('Sila isi tarikh dan nota.'); return; }
+    const entry = { date, time, category: cat, patient, text, id: Date.now() };
+    if(idx >= 0) { store.nursingNotes[idx] = entry; }
+    else { store.nursingNotes.unshift(entry); }
+    saveData();
+    renderNursingNotes();
+    closeSheet();
+}
+
+function deleteNursingNote(idx) {
+    if(!confirm('Padam nota ini?')) return;
+    store.nursingNotes.splice(idx, 1);
+    saveData();
+    renderNursingNotes();
+    closeSheet();
+}
+
+function filterNursingNotes(q) { renderNursingNotes(q); }
+
+function renderNursingNotes(query = '') {
+    const list = document.getElementById('nursing-note-list');
+    if(!list) return;
+    const notes = store.nursingNotes || [];
+    const filtered = query
+        ? notes.filter(n => n.text.toLowerCase().includes(query.toLowerCase()) || (n.patient||'').toLowerCase().includes(query.toLowerCase()))
+        : notes;
+
+    if(filtered.length === 0) {
+        list.innerHTML = `<div class="nursing-empty">${query ? '😕 Tiada nota ditemui.' : '📋 Belum ada nota. Tambah yang pertama!'}</div>`;
+        return;
     }
 
-    function parseAssign(sym){if(!sym)return'';sym=sym.trim();if(sym==='*')return'TL';if(sym==='#')return'Amb';if(sym==='(T)')return'Triage';return sym;}
-    function extractPrefix(cell){const m=cell.match(/^(\*|\(T\)|#)/);return m?m[1]:'';}
-    function extractSuffix(cell){const m=cell.match(/(\*|\(T\)|#)$/);return m?m[1]:'';}
-    function parseShiftCell(raw){
-        if(!raw)return null;
-        const cell=raw.trim().toUpperCase().replace(/\(t\)/gi,'(T)');
-        const plain=['SD','DO','AL','PH','MC','RPL','TD','ST','WP','OFF','-'];
-        if(plain.includes(cell.replace(/[^A-Z]/g,'')))return{s:cell.replace(/[^A-Z\/]/g,''),a:''};
-        if(cell.includes('/')){
-            const prefix=extractPrefix(cell), suffix=extractSuffix(cell);
-            const core=cell.replace(/^(\*|\(T\)|#)/,'').replace(/(\*|\(T\)|#)$/,'');
-            const parts=core.split('/');
-            if(parts.length===2){const shift=`${parts[0]}/${parts[1]}`,a1=parseAssign(prefix),a2=parseAssign(suffix),assign=(a1&&a2)?`${a1} / ${a2}`:(a1||a2);return{s:shift,a:assign};}
-        }
-        const singleMatch=cell.match(/^(\*|\(T\)|#)?([MEN])(\*|\(T\)|#)?$/);
-        if(singleMatch){const sym=singleMatch[1]||singleMatch[3]||'';return{s:singleMatch[2],a:parseAssign(sym)};}
-        const shiftOnly=cell.replace(/[^A-Z\/]/g,'');
-        if(shiftOnly)return{s:shiftOnly,a:''};
-        return null;
-    }
+    // Sort: newest first
+    const sorted = [...filtered].sort((a,b) => {
+        const da = new Date(a.date + 'T' + (a.time||'00:00'));
+        const db = new Date(b.date + 'T' + (b.time||'00:00'));
+        return db - da;
+    });
 
-    let _importParsed=[];
-    function previewImport(){
-        const raw=document.getElementById('import-paste').value, monthVal=document.getElementById('import-month').value, preview=document.getElementById('import-preview');
-        _importParsed=[];
-        if(!monthVal){preview.innerHTML='<p style="color:var(--danger);font-size:0.75rem;">⚠️ Sila pilih bulan & tahun.</p>';return;}
-        if(!raw.trim()){preview.innerHTML='<p style="color:var(--danger);font-size:0.75rem;">⚠️ Tiada data.</p>';return;}
-        const[impYear,impMonth]=monthVal.split('-').map(Number);
-        const rows=raw.trim().split('\n').map(r=>r.split('\t').map(c=>c.trim()));
-        let dateRow=null,shiftRow=null;
-        for(let i=0;i<rows.length;i++){const nc=rows[i].filter(c=>/^\d{1,2}(\(PH\))?$/.test(c.replace(/\s/g,''))).length;if(nc>=5){dateRow=rows[i];shiftRow=rows[i+1]||null;break;}}
-        if(!dateRow||!shiftRow){preview.innerHTML='<p style="color:var(--danger);font-size:0.75rem;">⚠️ Format tidak dikenali. Copy 2 baris: DATE dan shift.</p>';return;}
-        let html=`<div style="font-size:0.7rem;margin-top:6px;border:1px solid var(--border);border-radius:var(--radius-xs);overflow:hidden;"><div style="background:var(--surface);padding:6px 10px;font-size:0.6rem;color:var(--text-dim);font-weight:700;font-family:'JetBrains Mono',monospace;">PREVIEW</div>`;
-        let count=0;
-        for(let col=0;col<dateRow.length;col++){
-            const dayRaw=dateRow[col].replace(/\(PH\)/i,'').trim(), day=parseInt(dayRaw); if(isNaN(day)||day<1||day>31)continue;
-            const cellRaw=shiftRow[col]||''; if(!cellRaw)continue;
-            const parsed=parseShiftCell(cellRaw); if(!parsed)continue;
-            const key=`${impYear}-${String(impMonth).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
-            _importParsed.push({key,...parsed});
-            const assignLabel=parsed.a?`<span style="color:var(--primary)"> @ ${parsed.a}</span>`:'';
-            html+=`<div style="display:flex;justify-content:space-between;padding:5px 10px;border-bottom:1px solid var(--border);align-items:center;"><span style="color:var(--text-dim);min-width:36px;font-family:'JetBrains Mono',monospace;">${String(day).padStart(2,'0')}/${String(impMonth).padStart(2,'0')}</span><span style="font-weight:700;color:var(--text);">${parsed.s}${assignLabel}</span><span style="font-size:0.58rem;color:var(--text-muted);font-family:'JetBrains Mono',monospace;">${cellRaw}</span></div>`;
-            count++;
-        }
-        html+='</div>';
-        if(count===0){preview.innerHTML='<p style="color:var(--danger);font-size:0.75rem;">⚠️ Tiada shift yang dapat dikenali.</p>';document.getElementById('btn-confirm-import').style.display='none';return;}
-        html+=`<p style="font-size:0.7rem;color:var(--text-dim);margin-top:6px;">✅ ${count} hari berjaya diparse.</p>`;
-        preview.innerHTML=html; document.getElementById('btn-confirm-import').style.display='block';
-    }
+    list.innerHTML = sorted.map((n, i) => {
+        const realIdx = store.nursingNotes.indexOf(n);
+        const catInfo = NURSING_CATEGORIES.find(c => c.id === n.category) || NURSING_CATEGORIES[4];
+        const dispDate = n.date ? n.date.split('-').reverse().join('/') : '';
+        return `<div class="nursing-note-card">
+            <div class="nursing-note-card-header">
+                <div class="nursing-note-meta">📅 ${dispDate} ${n.time ? '· 🕒 ' + n.time : ''}${n.patient ? ' · 👤 ' + n.patient : ''}</div>
+                <button onclick="openAddNursingNote(${realIdx})" style="background:none;border:none;color:var(--primary);font-family:'JetBrains Mono',monospace;font-size:0.6rem;font-weight:700;cursor:pointer;padding:0;">EDIT</button>
+            </div>
+            <div class="nursing-note-text">${n.text}</div>
+            <div class="nursing-note-tags">
+                <span class="nursing-tag ${n.category}">${catInfo.label}</span>
+            </div>
+        </div>`;
+    }).join('');
+}
 
-    function confirmImport(){
-        if(_importParsed.length===0)return;
-        _importParsed.forEach(entry=>{store.calendar[entry.key]={s:entry.s,a:entry.a};});
-        saveData();generateCalendar();closeSheet();_importParsed=[];
-        alert("✅ Shift berjaya dimasukkan ke calendar!");
-    }
+// ══════════════════════════════════════════
+//  CORE FUNCTIONS (unchanged)
+// ══════════════════════════════════════════
+function toMY(d) { if(!d) return ''; const p=d.split('-'); return p.length===3?`${p[2]}/${p[1]}/${p[0]}`:d; }
+function saveData() { localStorage.setItem('roster_ultimate_v3',JSON.stringify(store)); renderStats(); updateShiftSummary(); }
+function saveNotes() { store.notes=document.getElementById('personal-notes').value; localStorage.setItem('roster_ultimate_v3',JSON.stringify(store)); }
+function loadNotes() { document.getElementById('personal-notes').value=store.notes||""; if(store.profilePic) document.getElementById('profile-pic').src=store.profilePic; }
+function triggerDatePicker(id) { const el=document.getElementById(id); if(el&&'showPicker' in HTMLInputElement.prototype) el.showPicker(); else if(el){el.focus();el.click();} }
 
-    // ── MIGRATE ──
-    function migrateDefaultDrugs(){
-        const existingNames=store.drugs.map(d=>d.name.toLowerCase()); let added=0;
-        DEFAULT_DRUGS.forEach(def=>{if(!existingNames.includes(def.name.toLowerCase())){store.drugs.push(def);added++;}});
-        store.drugs=store.drugs.map(d=>({name:d.name,ampule:d.ampule||d.prep||'—',prep:d.prep||''}));
-        if(added>0) localStorage.setItem('roster_ultimate_v3',JSON.stringify(store));
-    }
+function updateTime() {
+    const n=new Date();
+    const d=String(n.getDate()).padStart(2,'0'), m=String(n.getMonth()+1).padStart(2,'0'), y=n.getFullYear();
+    document.getElementById('live-clock').innerText=`${d}/${m}/${y} | ${n.toLocaleTimeString('ms-MY',{hour12:false})}`;
+}
 
-    // ── THEME ──
-    const THEMES = {
-        dark: {
-            bg:'#0a0a0a', surface:'#111', card:'#161616', cardRaised:'#1c1c1c',
-            border:'#222', borderBright:'#2e2e2e',
-            text:'#f0f0f0', textDim:'#777', textMuted:'#333',
-            primary:'#50c878', primaryDim:'rgba(80,200,120,0.10)', primaryGlow:'rgba(80,200,120,0.30)',
-            avatarBg:'50c878', avatarFg:'000',
-            icon:'☀️', label:'CERAH'
-        },
-        light: {
-            bg:'#f4f4f4', surface:'#ffffff', card:'#ffffff', cardRaised:'#f9f9f9',
-            border:'#e0e0e0', borderBright:'#cccccc',
-            text:'#111111', textDim:'#666666', textMuted:'#aaaaaa',
-            primary:'#1a8f45', primaryDim:'rgba(26,143,69,0.10)', primaryGlow:'rgba(26,143,69,0.20)',
-            avatarBg:'1a8f45', avatarFg:'fff',
-            icon:'🌙', label:'GELAP'
-        }
+function changeMonth(dir) { currentCalDate.setMonth(currentCalDate.getMonth()+dir); generateCalendar(); renderStats(); }
+
+function isoKey(year,month,day) { return `${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`; }
+
+function migrateCalendarKeys() {
+    const old=store.calendar, nw={};
+    Object.keys(old).forEach(k=>{
+        const p=k.split('-');
+        nw[p.length===3?`${p[0]}-${p[1].padStart(2,'0')}-${p[2].padStart(2,'0')}`:k]=old[k];
+    });
+    store.calendar=nw;
+}
+
+function generateCalendar() {
+    const body=document.getElementById('calendar-body');
+    const title=document.getElementById('cal-title');
+    const months=["Januari","Februari","Mac","April","Mei","Jun","Julai","Ogos","September","Oktober","November","Disember"];
+    const year=currentCalDate.getFullYear(), month=currentCalDate.getMonth();
+    title.innerText=`${months[month]} ${year}`; body.innerHTML='';
+    const firstDay=new Date(year,month,1).getDay();
+    const daysInMonth=new Date(year,month+1,0).getDate();
+    for(let i=0;i<firstDay;i++) body.appendChild(document.createElement('div'));
+    for(let d=1;d<=daysInMonth;d++) {
+        const key=isoKey(year,month,d);
+        const data=store.calendar[key]||{s:'-',a:''};
+        const box=document.createElement('div'); box.className='day-box';
+        if(new Date().toDateString()===new Date(year,month,d).toDateString()) box.classList.add('today');
+        box.onclick=()=>openShiftPicker(key);
+        const color=shiftColor(data.s);
+        const reminderDot=data.reminder?`<div style="position:absolute;bottom:2px;right:3px;width:4px;height:4px;border-radius:50%;background:#8888ff;"></div>`:'';
+        box.innerHTML=`<div class="date-num">${d}</div><div class="shift-text" style="color:${color};">${data.s||'-'}</div><div class="assign-text">${data.a||''}</div>${reminderDot}`;
+        body.appendChild(box);
+    }
+    updateShiftSummary();
+}
+
+function updateShiftSummary() {
+    const now=new Date(), tom=new Date(now); tom.setDate(now.getDate()+1);
+    const getFullAssign=(short)=>{ if(!short) return ''; return short.replace(/Amb/g,'Ambulance').replace(/TL/g,'Team Leader'); };
+    const getS=(date)=>{
+        const key=isoKey(date.getFullYear(),date.getMonth(),date.getDate());
+        const d=store.calendar[key]; if(!d||d.s==='-') return "OFF";
+        return `${d.s}${d.a?' · '+getFullAssign(d.a):''}`;
     };
-
-    let currentTheme = 'dark';
-
-    function applyTheme(name) {
-        const t = THEMES[name]; if(!t) return;
-        const r = document.documentElement;
-        r.style.setProperty('--bg', t.bg);
-        r.style.setProperty('--surface', t.surface);
-        r.style.setProperty('--card', t.card);
-        r.style.setProperty('--card-raised', t.cardRaised);
-        r.style.setProperty('--border', t.border);
-        r.style.setProperty('--border-bright', t.borderBright);
-        r.style.setProperty('--text', t.text);
-        r.style.setProperty('--text-dim', t.textDim);
-        r.style.setProperty('--text-muted', t.textMuted);
-        r.style.setProperty('--primary', t.primary);
-        r.style.setProperty('--primary-dim', t.primaryDim);
-        r.style.setProperty('--primary-glow', t.primaryGlow);
-        // toggle button label
-        const icon = document.getElementById('theme-toggle-icon');
-        const label = document.getElementById('theme-toggle-label');
-        if(icon) icon.innerText = t.icon;
-        if(label) label.innerText = t.label;
-        // avatar
-        const pic = document.getElementById('profile-pic');
-        if(pic && pic.src.includes('ui-avatars'))
-            pic.src = `https://ui-avatars.com/api/?name=Ahmad+Zilalul&background=${t.avatarBg}&color=${t.avatarFg}&bold=true`;
-        // ambient glow
-        const glow = document.querySelector('.ambient-glow');
-        if(glow) glow.style.background = `radial-gradient(circle,${t.primaryGlow} 0%,transparent 70%)`;
-        currentTheme = name;
-        localStorage.setItem('roster_theme', name);
+    document.getElementById('summary-today').innerText=getS(now);
+    document.getElementById('summary-tomorrow').innerText=getS(tom);
+    const remDiv=document.getElementById('summary-reminders');
+    const reminders=[];
+    for(let i=0;i<=7;i++){
+        const d=new Date(now); d.setDate(now.getDate()+i);
+        const key=isoKey(d.getFullYear(),d.getMonth(),d.getDate());
+        const entry=store.calendar[key];
+        if(entry&&entry.reminder){
+            const dd=String(d.getDate()).padStart(2,'0');
+            const mm=String(d.getMonth()+1).padStart(2,'0');
+            reminders.push({label:`${dd}/${mm}`,text:entry.reminder});
+        }
     }
+    if(reminders.length>0){
+        remDiv.style.display='block';
+        remDiv.innerHTML=reminders.map(r=>`<div style="display:flex;justify-content:space-between;gap:8px;margin-bottom:6px;"><span style="font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:#8888ff;font-weight:700;white-space:nowrap;">🔔 ${r.label}</span><span style="font-size:0.7rem;color:var(--text);line-height:1.4;text-align:right;">${r.text}</span></div>`).join('');
+    } else { remDiv.style.display='none'; remDiv.innerHTML=''; }
+}
 
-    function toggleTheme() { applyTheme(currentTheme === 'dark' ? 'light' : 'dark'); }
-    function loadTheme() { applyTheme(localStorage.getItem('roster_theme') === 'light' ? 'light' : 'dark'); }
+// ── DRUG ──
+function searchDrugs() {
+    const q=document.getElementById('drug-search').value.toLowerCase();
+    const results=document.getElementById('drug-results'); results.innerHTML=''; if(!q) return;
+    const matched=store.drugs.map((d,idx)=>({d,idx})).filter(({d})=>d.name.toLowerCase().includes(q));
+    if(matched.length===0){ results.innerHTML='<div style="font-size:0.75rem;color:var(--text-muted);text-align:center;padding:16px;">Tiada ubat ditemui.</div>'; return; }
+    matched.forEach(({d,idx})=>{
+        const div=document.createElement('div'); div.className='drug-item';
+        div.innerHTML=`<div style="flex:1;min-width:0;"><div class="drug-name">${d.name}</div><div class="drug-ampule">${d.ampule||'—'}</div><div class="drug-prep">${d.prep}</div></div><div style="display:flex;flex-direction:column;gap:4px;flex-shrink:0;margin-left:8px;"><button onclick="event.stopPropagation();openEditDrugSheet(${idx})" style="background:none;color:var(--success);border:none;font-size:0.65rem;font-weight:700;cursor:pointer;font-family:'JetBrains Mono',monospace;">EDIT</button><button onclick="event.stopPropagation();deleteDrug(${idx})" style="background:none;color:var(--danger);border:none;font-size:0.65rem;font-weight:700;cursor:pointer;font-family:'JetBrains Mono',monospace;">DEL</button></div>`;
+        results.appendChild(div);
+    });
+}
+function openAddDrugSheet() {
+    document.getElementById('sheet-title').innerText="Tambah Ubat";
+    document.getElementById('sheet-content').innerHTML=`<label>Nama Ubat</label><input type="text" id="drug-name-in" placeholder="cth: IV Morphine"><label>Dose / Ampule</label><input type="text" id="drug-ampule-in" placeholder="cth: 10mg/ml"><label>Cara Penyediaan</label><textarea id="drug-prep-in" style="height:90px;" placeholder="cth: 10mg in 10mls NS"></textarea><button class="btn-primary" onclick="saveDrug()">SIMPAN</button>`;
+    openSheet();
+}
+function saveDrug() {
+    const name=document.getElementById('drug-name-in').value.trim(), ampule=document.getElementById('drug-ampule-in').value.trim(), prep=document.getElementById('drug-prep-in').value.trim();
+    if(name&&prep){store.drugs.push({name,ampule:ampule||'—',prep}); saveData(); closeSheet(); searchDrugs();}
+}
+function openEditDrugSheet(idx) {
+    const d=store.drugs[idx]; document.getElementById('sheet-title').innerText="Edit Ubat";
+    document.getElementById('sheet-content').innerHTML=`<label>Nama Ubat</label><input type="text" id="edit-name" value="${d.name}"><label>Dose / Ampule</label><input type="text" id="edit-ampule" value="${d.ampule||''}"><label>Cara Penyediaan</label><textarea id="edit-prep" style="height:90px;">${d.prep}</textarea><button class="btn-primary" onclick="updateDrug(${idx})">KEMASKINI</button>`;
+    openSheet();
+}
+function updateDrug(idx) {
+    const n=document.getElementById('edit-name').value.trim(), a=document.getElementById('edit-ampule').value.trim(), p=document.getElementById('edit-prep').value.trim();
+    if(n&&p){store.drugs[idx].name=n;store.drugs[idx].ampule=a||'—';store.drugs[idx].prep=p;saveData();closeSheet();searchDrugs();}
+}
+function deleteDrug(idx){if(confirm("Padam ubat ini?")){store.drugs.splice(idx,1);saveData();searchDrugs();}}
 
-    // ── INIT ──
-    window.addEventListener('load',checkPDFStatus);
-    migrateCalendarKeys();
-    migrateDefaultDrugs();
-    setInterval(updateTime,1000);
-    updateTime();
-    generateCalendar();
-    renderStats();
-    loadNotes();
-    loadTheme();
+// ── SHIFT PICKER ──
+function openShiftPicker(key) {
+    const existing=store.calendar[key]||{};
+    const parts=key.split('-');
+    const dispDate=parts.length===3?`${parts[2]}/${parts[1]}/${parts[0]}`:key;
+    document.getElementById('sheet-title').innerText=`Shift — ${dispDate}`;
+    const currentRaw=existing.s&&existing.s!=='-'?existing.s:'';
+    document.getElementById('sheet-content').innerHTML=`
+        <label>Kod Shift</label>
+        <input type="text" id="shift-input" placeholder="cth: N# atau M/E*"
+            value="${currentRaw}"
+            style="font-size:1.2rem;font-weight:700;text-align:center;letter-spacing:0.08em;"
+            oninput="this.value=this.value.toUpperCase()"
+            onkeydown="if(event.key==='Enter') applyTypedShift('${key}')">
+        <div id="shift-parse-preview"></div>
+        <button class="btn-primary" onclick="applyTypedShift('${key}')">SIMPAN SHIFT</button>
+        <button class="btn-secondary" onclick="openReminderSheet('${key}')">🔔 REMINDER${existing.reminder?' · '+existing.reminder.substring(0,18)+(existing.reminder.length>18?'...':''):''}</button>
+        ${existing.s&&existing.s!=='-'?`<button class="btn-danger" onclick="clearShift('${key}')">KOSONGKAN</button>`:''}
+        ${existing.s==='RPL'?`<button class="btn-secondary" onclick="openRPLLinkSheet('${key}')" style="border-color:rgba(80,200,120,0.3);color:var(--primary);">🔗 PAUT REKOD RPL</button>`:''}
+        ${existing.s==='PH'?`<button class="btn-secondary" onclick="openPHLinkSheet('${key}')" style="border-color:rgba(229,192,123,0.35);color:#e5c07b;">📅 PAUT CUTI UMUM</button>`:''}
+    `;
+    openSheet();
+    setTimeout(()=>{
+        const inp=document.getElementById('shift-input');
+        if(inp){inp.focus();inp.select();inp.addEventListener('input',()=>livePreviewShift(inp.value));}
+    },350);
+}
+
+function livePreviewShift(val) {
+    const prev=document.getElementById('shift-parse-preview'); if(!prev) return;
+    if(!val.trim()){prev.innerHTML='';return;}
+    const parsed=parseShiftCell(val);
+    if(parsed){ const assign=parsed.a?` <span style="color:var(--primary)">@ ${parsed.a}</span>`:''; prev.innerHTML=`<div class="preview-ok">→ Shift: <b style="color:var(--text)">${parsed.s}</b>${assign}</div>`; }
+    else { prev.innerHTML=`<div class="preview-err">⚠️ Format tidak dikenali</div>`; }
+}
+
+function applyTypedShift(key) {
+    const val=(document.getElementById('shift-input').value||'').trim(); if(!val) return;
+    const parsed=parseShiftCell(val); if(!parsed){alert('Format shift tidak dikenali.');return;}
+    const prevLinked=(store.calendar[key]&&store.calendar[key].rplLinked)||null;
+    const prevPHLinked=(store.calendar[key]&&store.calendar[key].phLinked)||null;
+    store.calendar[key]={s:parsed.s,a:parsed.a};
+    if(parsed.s==='RPL'&&prevLinked) store.calendar[key].rplLinked=prevLinked;
+    if(parsed.s==='PH'&&prevPHLinked) store.calendar[key].phLinked=prevPHLinked;
+    saveData();generateCalendar();closeSheet();
+    if(parsed.s==='RPL'&&!prevLinked&&store.rpl.records.length>0) setTimeout(()=>openRPLLinkSheet(key),350);
+    if(parsed.s==='PH'&&!prevPHLinked) setTimeout(()=>openPHLinkSheet(key),350);
+}
+function clearShift(key){if(store.calendar[key]){delete store.calendar[key];saveData();generateCalendar();closeSheet();}}
+
+function openReminderSheet(key) {
+    const parts=key.split('-'), dispDate=parts.length===3?`${parts[2]}/${parts[1]}/${parts[0]}`:key;
+    const existing=store.calendar[key]||{};
+    document.getElementById('sheet-title').innerText=`🔔 Reminder — ${dispDate}`;
+    document.getElementById('sheet-content').innerHTML=`
+        <label>Nota Reminder</label>
+        <textarea id="reminder-input" style="height:110px;" placeholder="cth: AUDIT MSQH, Mesyuarat, Kursus BLS...">${existing.reminder||''}</textarea>
+        <button class="btn-primary" onclick="saveReminder('${key}')">SIMPAN REMINDER</button>
+        ${existing.reminder?`<button class="btn-danger" onclick="deleteReminder('${key}')">BUANG REMINDER</button>`:''}
+    `;
+    openSheet();
+    setTimeout(()=>{const el=document.getElementById('reminder-input');if(el)el.focus();},350);
+}
+function saveReminder(key){const val=(document.getElementById('reminder-input').value||'').trim(); if(!store.calendar[key]) store.calendar[key]={s:'-',a:''}; store.calendar[key].reminder=val; saveData();generateCalendar();closeSheet();}
+function deleteReminder(key){if(store.calendar[key]){delete store.calendar[key].reminder;saveData();generateCalendar();closeSheet();}}
+
+function openRPLLinkSheet(key) {
+    const parts=key.split('-'), dispDate=parts.length===3?`${parts[2]}/${parts[1]}/${parts[0]}`:key;
+    document.getElementById('sheet-title').innerText=`RPL — ${dispDate}`;
+    const linkedDates=Object.keys(store.calendar).filter(k=>store.calendar[k].s==='RPL'&&store.calendar[k].rplLinked&&k!==key).map(k=>store.calendar[k].rplLinked);
+    const available=store.rpl.records.filter(r=>!linkedDates.includes(r.d1));
+    let html='';
+    if(available.length===0) html+=`<div style="font-size:0.75rem;color:var(--text-dim);padding:12px;text-align:center;border:1px solid var(--border);border-radius:var(--radius-xs);margin-bottom:12px;">Tiada rekod RPL. Tambah rekod RPL dahulu.</div>`;
+    else {
+        html+=`<div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px;">`;
+        available.forEach(r=>{
+            const isLinked=store.calendar[key]&&store.calendar[key].rplLinked===r.d1;
+            const dispPH=toMY(r.d1), dispRepl=r.isPaid?'PAID':toMY(r.d2);
+            html+=`<div onclick="linkRPL('${key}','${r.d1}')" style="background:${isLinked?'var(--primary-dim)':'var(--surface)'};border:1px solid ${isLinked?'var(--primary)':'var(--border)'};border-radius:var(--radius-sm);padding:12px;cursor:pointer;"><div style="font-weight:700;font-size:0.8rem;color:${isLinked?'var(--primary)':'var(--text)'};margin-bottom:3px;">${r.t}</div><div style="font-size:0.68rem;color:var(--text-dim);">PH: ${dispPH} → Ganti: ${dispRepl}</div>${isLinked?'<div style="font-size:0.62rem;color:var(--primary);margin-top:4px;">✓ Sedang dipaut</div>':''}</div>`;
+        });
+        html+=`</div>`;
+    }
+    if(store.calendar[key]&&store.calendar[key].rplLinked) html+=`<button class="btn-danger" onclick="unlinkRPL('${key}')">✕ Buang Pautan RPL</button>`;
+    html+=`<button class="btn-secondary" onclick="openShiftPicker('${key}')">✏️ Tukar Shift Lain</button>`;
+    document.getElementById('sheet-content').innerHTML=html; openSheet();
+}
+function linkRPL(calKey,rplD1){if(!store.calendar[calKey])store.calendar[calKey]={s:'RPL',a:''}; store.calendar[calKey].rplLinked=rplD1; const phParts=rplD1.split('-'); store.calendar[calKey].a=`PH:${phParts.length===3?phParts[2]+'/'+phParts[1]:rplD1}`; saveData();generateCalendar();closeSheet();}
+function unlinkRPL(calKey){if(store.calendar[calKey]){delete store.calendar[calKey].rplLinked;store.calendar[calKey].a='';} saveData();generateCalendar();closeSheet();}
+
+function openPHLinkSheet(key) {
+    const parts=key.split('-'), dispDate=parts.length===3?`${parts[2]}/${parts[1]}/${parts[0]}`:key;
+    document.getElementById('sheet-title').innerText=`📅 PH — ${dispDate}`;
+    const linkedPHDates=Object.keys(store.calendar).filter(k=>store.calendar[k].s==='PH'&&store.calendar[k].phLinked&&k!==key).map(k=>store.calendar[k].phLinked);
+    const available=ph2026.filter(p=>!linkedPHDates.includes(p.d));
+    let html='';
+    if(available.length===0) {
+        html+=`<div style="font-size:0.75rem;color:var(--text-dim);padding:12px;text-align:center;border:1px solid var(--border);border-radius:var(--radius-xs);margin-bottom:12px;">Tiada rekod PH tersedia.</div>`;
+    } else {
+        html+=`<div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px;">`;
+        available.forEach(p=>{
+            const isLinked=store.calendar[key]&&store.calendar[key].phLinked===p.d;
+            const dispD=toMY(p.d);
+            const paidBadge=p.paid?`<span style="font-size:0.58rem;background:rgba(243,156,18,0.18);color:#f39c12;padding:1px 6px;border-radius:20px;font-weight:700;margin-left:6px;">PAID</span>`:'';
+            html+=`<div onclick="linkPH('${key}','${p.d}')" style="background:${isLinked?'rgba(229,192,123,0.1)':'var(--surface)'};border:1px solid ${isLinked?'#e5c07b':'var(--border)'};border-radius:var(--radius-sm);padding:12px;cursor:pointer;">
+                <div style="font-weight:700;font-size:0.8rem;color:${isLinked?'#e5c07b':'var(--text)'};margin-bottom:3px;">${p.n}${paidBadge}</div>
+                <div style="font-size:0.68rem;color:var(--text-dim);">📅 ${dispD}</div>
+                ${isLinked?'<div style="font-size:0.62rem;color:#e5c07b;margin-top:4px;">✓ Sedang dipaut</div>':''}
+            </div>`;
+        });
+        html+=`</div>`;
+    }
+    if(store.calendar[key]&&store.calendar[key].phLinked) html+=`<button class="btn-danger" onclick="unlinkPH('${key}')">✕ Buang Pautan PH</button>`;
+    html+=`<button class="btn-secondary" onclick="openShiftPicker('${key}')">✏️ Tukar Shift Lain</button>`;
+    document.getElementById('sheet-content').innerHTML=html; openSheet();
+}
+function linkPH(calKey,phDate){
+    if(!store.calendar[calKey]) store.calendar[calKey]={s:'PH',a:''};
+    store.calendar[calKey].phLinked=phDate;
+    const entry=ph2026.find(p=>p.d===phDate);
+    if(entry){ const short=entry.n.replace('Hari ','').replace('Tahun ','').substring(0,10); store.calendar[calKey].a=short; }
+    saveData();generateCalendar();closeSheet();
+}
+function unlinkPH(calKey){if(store.calendar[calKey]){delete store.calendar[calKey].phLinked;store.calendar[calKey].a='';} saveData();generateCalendar();closeSheet();}
+
+// ── RECORDS ──
+function openRecordSheet(type){document.getElementById('sheet-title').innerText=type;renderRecords(type);openSheet();}
+function checkPaidPH(){
+    const sel=document.getElementById('in-ph-select'); if(!sel) return;
+    const isPaid=sel.options[sel.selectedIndex].getAttribute('data-paid')==='true';
+    document.getElementById('paid-alert').style.display=isPaid?'block':'none';
+    document.getElementById('in-d2').style.display=isPaid?'none':'block';
+    if(isPaid) document.getElementById('paid-alert').innerText="PH ini telah dibayar (Paid).";
+}
+
+function renderRecords(type){
+    const content=document.getElementById('sheet-content'); let html='<div>';
+    if(type==='AL'){
+        store.al.taken.forEach((d,i)=>html+=`<div class="record-card"><div>Cuti: ${toMY(d)}</div><button class="btn-delete" onclick="store.al.taken.splice(${i},1);saveData();renderRecords('AL')">×</button></div>`);
+        html+=`<label>Tarikh Cuti</label><input type="date" id="in-d" onclick="triggerDatePicker('in-d')">`;
+    } else if(type==='RPL'){
+        store.rpl.records.forEach((r,i)=>html+=`<div class="record-card"><div><b>${r.t}</b><br><small style="color:var(--text-dim)">${toMY(r.d1)} ➔ ${r.isPaid?'PAID':toMY(r.d2)}</small></div><button class="btn-delete" onclick="store.rpl.records.splice(${i},1);saveData();renderRecords('RPL')">×</button></div>`);
+        const recordedDates=store.rpl.records.map(r=>r.d1);
+        const avPH=ph2026.filter(p=>!recordedDates.includes(p.d));
+        html+=`<div id="paid-alert" class="paid-alert"></div><label>Pilih PH</label><select id="in-ph-select" onchange="document.getElementById('in-d1').value=this.value;checkPaidPH();"><option value="">-- Pilih --</option>${avPH.map(p=>{const dp=p.d.split('-');return`<option value="${p.d}" data-paid="${p.paid}">(${dp[2]}/${dp[1]}) ${p.n}</option>`;}).join('')}</select><input type="date" id="in-d1" hidden><label id="label-rpl">Tarikh Ganti</label><input type="date" id="in-d2" onclick="triggerDatePicker('in-d2')">`;
+    } else if(type==='CPD'){
+        store.cpd.records.forEach((r,i)=>html+=`<div class="record-card"><div style="flex:1"><b>${r.t}</b><br><small style="color:var(--text-dim)">📅 ${toMY(r.d)} | 🕒 ${r.t1} - ${r.t2}</small></div><div style="font-weight:700;color:var(--success);margin-right:8px;">${r.p} Pts</div><div style="display:flex;flex-direction:column;gap:4px;"><button style="background:none;color:var(--primary);border:none;font-size:0.65rem;font-weight:700;cursor:pointer;font-family:'JetBrains Mono',monospace;" onclick="editCPD(${i})">EDIT</button><button class="btn-delete" onclick="store.cpd.records.splice(${i},1);saveData();renderRecords('CPD')">×</button></div></div>`);
+        html+=`<input type="hidden" id="cpd-edit-idx" value="-1"><label>Nama Kursus</label><input type="text" id="in-t"><label>Tarikh</label><input type="date" id="in-d" onclick="triggerDatePicker('in-d')"><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;"><div><label>Mula</label><input type="time" id="in-t1"></div><div><label>Tamat</label><input type="time" id="in-t2"></div></div><label>Mata</label><input type="number" id="in-p">`;
+    }
+    html+=`</div><button class="btn-primary" id="btn-save-rec" onclick="addRec('${type}')">SIMPAN</button>`;
+    content.innerHTML=html;
+}
+
+function addRec(type){
+    if(type==='AL'){const d=document.getElementById('in-d').value;if(d)store.al.taken.push(d);}
+    else if(type==='RPL'){const sel=document.getElementById('in-ph-select'),d1=document.getElementById('in-d1').value,d2=document.getElementById('in-d2').value;if(sel&&d1){const t=sel.options[sel.selectedIndex].text,isPaid=sel.options[sel.selectedIndex].getAttribute('data-paid')==='true';if(t&&d1&&(isPaid||d2))store.rpl.records.push({t,d1,d2,isPaid});}}
+    else if(type==='CPD'){
+        const t=document.getElementById('in-t').value,d=document.getElementById('in-d').value,p=document.getElementById('in-p').value,t1=document.getElementById('in-t1').value,t2=document.getElementById('in-t2').value;
+        const idx=parseInt(document.getElementById('cpd-edit-idx').value);
+        if(t&&d&&p&&t1&&t2){ if(idx>=0){ store.cpd.records[idx]={t,d,p,t1,t2}; } else { store.cpd.records.push({t,d,p,t1,t2}); } }
+    }
+    saveData();renderRecords(type);
+}
+
+function editCPD(i){
+    const r=store.cpd.records[i];
+    document.getElementById('cpd-edit-idx').value=i;
+    document.getElementById('in-t').value=r.t;
+    document.getElementById('in-d').value=r.d;
+    document.getElementById('in-t1').value=r.t1;
+    document.getElementById('in-t2').value=r.t2;
+    document.getElementById('in-p').value=r.p;
+    const btn=document.getElementById('btn-save-rec');
+    if(btn){btn.innerText='KEMASKINI';btn.style.background='var(--warning)';btn.style.color='black';}
+    document.getElementById('in-t').focus();
+    document.getElementById('in-t').scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+// ── TODO ──
+function openTodoPopup(){
+    document.getElementById('sheet-title').innerText="Tambah Tugasan";
+    document.getElementById('sheet-content').innerHTML=`<label>Tugasan</label><input type="text" id="pop-todo-t" placeholder="Apa yang perlu dibuat?"><label>Tarikh Akhir (Opsional)</label><input type="date" id="pop-todo-d" onclick="triggerDatePicker('pop-todo-d')"><button class="btn-primary" onclick="saveTodoFinal()">SIMPAN TUGASAN</button>`;
+    openSheet();
+}
+function saveTodoFinal(){
+    const t=document.getElementById('pop-todo-t').value,d=document.getElementById('pop-todo-d').value;
+    if(!t.trim())return; store.todos.push({t,date:d,done:false});saveData();closeSheet();renderTodos();
+}
+function editTodo(i){
+    const todo=store.todos[i];
+    document.getElementById('sheet-title').innerText="Edit Tugasan";
+    document.getElementById('sheet-content').innerHTML=`
+        <label>Tugasan</label>
+        <input type="text" id="pop-todo-t" value="${todo.t.replace(/"/g,'&quot;')}">
+        <label>Tarikh Akhir (Opsional)</label>
+        <input type="date" id="pop-todo-d" value="${todo.date||''}" onclick="triggerDatePicker('pop-todo-d')">
+        <button class="btn-primary" style="background:var(--warning);color:black;" onclick="updateTodo(${i})">KEMASKINI TUGASAN</button>
+        <button class="btn-danger" onclick="store.todos.splice(${i},1);saveData();closeSheet();renderTodos();">PADAM TUGASAN</button>
+    `;
+    openSheet();
+    setTimeout(()=>{const el=document.getElementById('pop-todo-t');if(el){el.focus();el.select();}},350);
+}
+function updateTodo(i){
+    const t=document.getElementById('pop-todo-t').value,d=document.getElementById('pop-todo-d').value;
+    if(!t.trim())return;
+    store.todos[i].t=t; store.todos[i].date=d;
+    saveData();closeSheet();renderTodos();
+}
+function renderTodos(){
+    const list=document.getElementById('todo-list'); if(!list)return; list.innerHTML='';
+    if(store.todos.length===0){list.innerHTML='<div style="font-size:0.72rem;color:var(--text-muted);padding:10px;text-align:center;">Tiada tugasan.</div>';return;}
+    store.todos.forEach((todo,i)=>{
+        list.innerHTML+=`<div class="todo-item"><input type="checkbox" style="width:16px;height:16px;accent-color:var(--primary);" ${todo.done?'checked':''} onchange="store.todos[${i}].done=!store.todos[${i}].done;saveData();renderTodos();"><div class="todo-text ${todo.done?'done':''}">${todo.t}${todo.date?`<small style="color:var(--text-muted);font-size:0.6rem;margin-left:8px;">(Due: ${toMY(todo.date)})</small>`:''}</div><button onclick="editTodo(${i})" style="background:none;color:var(--primary);border:none;font-size:0.65rem;font-weight:700;cursor:pointer;font-family:'JetBrains Mono',monospace;padding:0 4px;">EDIT</button><button class="todo-del" onclick="store.todos.splice(${i},1);saveData();renderTodos();">×</button></div>`;
+    });
+}
+
+// ── STATS ──
+function renderStats(){
+    document.getElementById('text-al').innerText=store.al.taken.length;
+    document.getElementById('text-rpl').innerText=store.rpl.records.length;
+    const pts=store.cpd.records.reduce((s,r)=>s+Number(r.p),0);
+    document.getElementById('text-cpd').innerText=`${pts}/20`;
+    document.getElementById('bar-cpd').style.width=Math.min((pts/20*100),100)+'%';
+    const month=currentCalDate.getMonth(),year=currentCalDate.getFullYear();
+    let n_count=0;
+    Object.keys(store.calendar).forEach(key=>{
+        const p=key.split('-');
+        if(p.length===3&&parseInt(p[0])===year&&parseInt(p[1])-1===month&&store.calendar[key].s==='N') n_count++;
+    });
+    document.getElementById('text-night-count').innerText=n_count;
+    renderTodos(); renderClaim();
+}
+
+// ── CLAIM ──
+function toggleClaim(){
+    const body=document.getElementById('claim-body'), icon=document.getElementById('claim-toggle-icon'); if(!body)return;
+    const isHidden=body.style.display==='none';
+    body.style.display=isHidden?'block':'none';
+    if(icon) icon.innerText=isHidden?'▲':'▼';
+}
+
+function renderClaim(){
+    const year=currentCalDate.getFullYear(), month=currentCalDate.getMonth();
+    const months=["Januari","Februari","Mac","April","Mei","Jun","Julai","Ogos","September","Oktober","November","Disember"];
+    const label=document.getElementById('claim-month-label'), body=document.getElementById('claim-body'); if(!body)return;
+    if(label) label.innerText=`${months[month]} ${year}`;
+    const malam=[],locum=[],phBayar=[];
+    Object.keys(store.calendar).forEach(key=>{
+        const p=key.split('-'); if(p.length!==3)return;
+        const y=parseInt(p[0]),m=parseInt(p[1])-1,d=parseInt(p[2]);
+        if(y!==year||m!==month)return;
+        const entry=store.calendar[key]; const s=entry.s||'';
+        const dateStr=`${String(d).padStart(2,'0')}/${String(month+1).padStart(2,'0')}/${year}`;
+        if(s==='N') malam.push({date:dateStr,shift:s});
+        if(s==='M/E'||s==='M/N'||s==='E/N'){const assign=entry.a?` (${entry.a})`:''; locum.push({date:dateStr,shift:s+assign});}
+        if(s==='PH'){const phEntry=ph2026.find(p=>p.d===key);if(phEntry&&phEntry.paid)phBayar.push({date:dateStr,name:phEntry.n});}
+    });
+    const sortFn=(a,b)=>a.date.localeCompare(b.date);
+    malam.sort(sortFn);locum.sort(sortFn);phBayar.sort(sortFn);
+    function buildRows(items,emptyMsg,fn){if(items.length===0)return`<div style="font-size:0.7rem;color:var(--text-muted);padding:4px 0;">${emptyMsg}</div>`;return items.map(fn).join('');}
+    function row(l,r){return`<div class="claim-row"><span style="font-size:0.78rem;color:var(--text);font-weight:600;">${l}</span><span style="font-size:0.72rem;color:var(--primary);">${r}</span></div>`;}
+    function block(icon,title,count,rows){return`<div style="margin-bottom:12px;"><div class="claim-cat-header"><span style="font-family:'JetBrains Mono',monospace;font-size:0.6rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim);">${icon} ${title}</span><span class="claim-badge">${count}</span></div>${rows}</div>`;}
+    body.innerHTML=
+        block('🌙','Shift Malam',malam.length,buildRows(malam,'Tiada shift malam bulan ini.',i=>row(i.date,i.shift)))+
+        `<div class="claim-divider"></div>`+
+        block('🔄','Locum / Double Shift',locum.length,buildRows(locum,'Tiada double shift bulan ini.',i=>row(i.date,i.shift)))+
+        `<div class="claim-divider"></div>`+
+        block('📅','PH Berbayar',phBayar.length,buildRows(phBayar,'Tiada PH berbayar bulan ini.',i=>row(i.date,i.name)));
+}
+
+// ── RSI ──
+const RSI_DATA = [
+    { group:"ANALGESIC", drugs:[{name:"IV Fentanyl",ampule:"0.1mg/2ml (100mcg)",prep:"Undiluted"},{name:"IV Lignocaine",ampule:"100mg/5mls",prep:"Undiluted"}]},
+    { group:"INDUCTION (SEDATION)", drugs:[{name:"IV Midazolam",ampule:"5mg/ml",prep:"5mg in 5ml NS"},{name:"IV Etomidate",ampule:"20mg/10ml = 2mg/ml",prep:"Undiluted"},{name:"IV Ketamine",ampule:"200mg/20mls = 10mg/ml",prep:"Undiluted"},{name:"IV Propofol",ampule:"200mg/20mls = 10mg/ml",prep:"Undiluted"}]},
+    { group:"PARALYSIS (MUSCLE RELAXANT)", drugs:[{name:"IV Scoline (Suxamethonium)",ampule:"100mg/2mls = 50mg/ml",prep:"Undiluted"},{name:"Rocuronium (Esmeron)",ampule:"50mg/5mls = 10mg/ml",prep:"Undiluted"}]},
+    { group:"IV INFUSION", drugs:[{name:"IVI Midazolam",ampule:"5mg/ml",prep:"20mg in 20mls NS @ 3ml/Hr"},{name:"IVI Fentanyl",ampule:"0.1mg/2ml (100mcg)",prep:"0.2mg (200mcg) in 20ml NS @ 3ml/Hr"},{name:"IVI Morphine",ampule:"10mg/ml",prep:"20mg in 20mls NS @ 3ml/Hr"},{name:"IVI Ketamine",ampule:"200mg/20mls = 10mg/ml",prep:"Undiluted 20mg (2ml)"}]}
+];
+
+function handleRSIClick(){
+    document.getElementById('sheet-title').innerText="💉 Pre-Med RSI"; let html='';
+    RSI_DATA.forEach(section=>{
+        html+=`<div class="rsi-group-header">${section.group}</div>`;
+        section.drugs.forEach(d=>{
+            html+=`<div class="drug-item"><div style="flex:1;min-width:0;"><div class="drug-name">${d.name}</div><div class="drug-ampule">${d.ampule}</div><div class="drug-prep">${d.prep}</div></div></div>`;
+        });
+    });
+    document.getElementById('sheet-content').innerHTML=html; openSheet();
+}
+
+// ── PDF ──
+function triggerPDFUpload(e){e.preventDefault();document.getElementById('pdf-upload').click();}
+function savePDF(e){
+    const file=e.target.files[0]; if(file&&file.type==="application/pdf"){
+        const reader=new FileReader(); reader.onload=function(ev){store.pdfData=ev.target.result;saveData();checkPDFStatus();alert("PDF berjaya dimuat naik!");};
+        reader.readAsDataURL(file);
+    } else alert("Sila pilih fail PDF sahaja.");
+}
+function openStoredPDF(){
+    if(store.pdfData){
+        const base64Parts=store.pdfData.split(','), contentType=base64Parts[0].split(':')[1].split(';')[0];
+        const byteCharacters=atob(base64Parts[1]), byteArrays=[];
+        for(let o=0;o<byteCharacters.length;o+=512){const slice=byteCharacters.slice(o,o+512);const bn=new Array(slice.length);for(let i=0;i<slice.length;i++)bn[i]=slice.charCodeAt(i);byteArrays.push(new Uint8Array(bn));}
+        const blob=new Blob(byteArrays,{type:contentType}), blobUrl=URL.createObjectURL(blob);
+        window.open(blobUrl,'_blank'); setTimeout(()=>URL.revokeObjectURL(blobUrl),100);
+    }
+}
+function checkPDFStatus(){if(store.pdfData) document.getElementById('btn-pdf').style.display='inline-block';}
+
+// ── SHEET ──
+function openSheet(){document.getElementById('overlay').style.display='block'; setTimeout(()=>document.getElementById('sheet').classList.add('active'),10);}
+function closeSheet(){document.getElementById('sheet').classList.remove('active'); setTimeout(()=>document.getElementById('overlay').style.display='none',350);}
+function loadImg(e){const r=new FileReader();r.onload=()=>{document.getElementById('profile-pic').src=r.result;store.profilePic=r.result;saveData();};r.readAsDataURL(e.target.files[0]);}
+
+// ── BACKUP / RESTORE ──
+function backupData(){
+    const blob=new Blob([JSON.stringify(store)],{type:"application/json"});
+    const url=URL.createObjectURL(blob), a=document.createElement('a');
+    a.href=url;a.download=`backup_roster_${new Date().toISOString().split('T')[0]}.json`;a.click();
+    alert("Data berjaya dieksport!");
+}
+function restoreData(){document.getElementById('restore-upload').click();}
+function processRestore(e){
+    const file=e.target.files[0]; if(!file)return;
+    const reader=new FileReader();
+    reader.onload=function(ev){
+        try{
+            const parsed=JSON.parse(ev.target.result);
+            if(typeof parsed!=='object'||!parsed.calendar){alert("Fail tidak sah.");return;}
+            if(!confirm("Data semasa akan digantikan. Teruskan?"))return;
+            store=parsed;
+            if(!store.nursingNotes) store.nursingNotes=[];
+            migrateCalendarKeys(); saveData(); generateCalendar(); renderStats(); loadNotes(); checkPDFStatus();
+            alert("✅ Data berjaya dipulihkan!");
+        }catch(err){alert("Ralat: Fail tidak dapat dibaca.");}
+    };
+    reader.readAsText(file); e.target.value='';
+}
+
+// ── IMPORT ──
+function openImportSheet(){
+    document.getElementById('sheet-title').innerText="📋 Import Jadual Excel";
+    document.getElementById('sheet-content').innerHTML=`
+        <div style="font-size:0.72rem;color:var(--text-dim);margin-bottom:12px;line-height:1.7;background:var(--surface);padding:12px;border-radius:var(--radius-xs);border:1px solid var(--border);">
+            <b style="color:var(--primary);display:block;margin-bottom:4px;">Cara import:</b>
+            1. Buka Excel, select <b>baris DATE</b> dan <b>baris shift</b> anda (2 baris)<br>
+            2. Copy (Ctrl+C) → Paste dalam kotak bawah<br><br>
+            <b style="color:var(--text-dim)">Format:</b> <span style="font-family:'JetBrains Mono',monospace;color:var(--primary);">M* E(T) N# SD DO AL PH MC RPL (T)M/E#</span>
+        </div>
+        <label>Bulan & Tahun</label>
+        <input type="month" id="import-month" style="margin-bottom:10px;">
+        <label>Paste data dari Excel</label>
+        <textarea id="import-paste" style="height:120px;font-family:'JetBrains Mono',monospace;font-size:0.68rem;" placeholder="Paste di sini... (2 baris: DATE dan shift)"></textarea>
+        <div id="import-preview" style="margin-top:8px;"></div>
+        <button class="btn-secondary" onclick="previewImport()">🔍 PREVIEW</button>
+        <button id="btn-confirm-import" class="btn-primary" onclick="confirmImport()" style="display:none;">✅ SIMPAN KE CALENDAR</button>`;
+    const y=currentCalDate.getFullYear(),m=String(currentCalDate.getMonth()+1).padStart(2,'0');
+    document.getElementById('import-month').value=`${y}-${m}`;
+    openSheet();
+}
+
+function parseAssign(sym){if(!sym)return'';sym=sym.trim();if(sym==='*')return'TL';if(sym==='#')return'Amb';if(sym==='(T)')return'Triage';return sym;}
+function extractPrefix(cell){const m=cell.match(/^(\*|\(T\)|#)/);return m?m[1]:'';}
+function extractSuffix(cell){const m=cell.match(/(\*|\(T\)|#)$/);return m?m[1]:'';}
+function parseShiftCell(raw){
+    if(!raw)return null;
+    const cell=raw.trim().toUpperCase().replace(/\(t\)/gi,'(T)');
+    const plain=['SD','DO','AL','PH','MC','RPL','TD','ST','WP','OFF','-'];
+    if(plain.includes(cell.replace(/[^A-Z]/g,'')))return{s:cell.replace(/[^A-Z\/]/g,''),a:''};
+    if(cell.includes('/')){
+        const prefix=extractPrefix(cell), suffix=extractSuffix(cell);
+        const core=cell.replace(/^(\*|\(T\)|#)/,'').replace(/(\*|\(T\)|#)$/,'');
+        const parts=core.split('/');
+        if(parts.length===2){const shift=`${parts[0]}/${parts[1]}`,a1=parseAssign(prefix),a2=parseAssign(suffix),assign=(a1&&a2)?`${a1} / ${a2}`:(a1||a2);return{s:shift,a:assign};}
+    }
+    const singleMatch=cell.match(/^(\*|\(T\)|#)?([MEN])(\*|\(T\)|#)?$/);
+    if(singleMatch){const sym=singleMatch[1]||singleMatch[3]||'';return{s:singleMatch[2],a:parseAssign(sym)};}
+    const shiftOnly=cell.replace(/[^A-Z\/]/g,'');
+    if(shiftOnly)return{s:shiftOnly,a:''};
+    return null;
+}
+
+let _importParsed=[];
+function previewImport(){
+    const raw=document.getElementById('import-paste').value, monthVal=document.getElementById('import-month').value, preview=document.getElementById('import-preview');
+    _importParsed=[];
+    if(!monthVal){preview.innerHTML='<p style="color:var(--danger);font-size:0.75rem;">⚠️ Sila pilih bulan & tahun.</p>';return;}
+    if(!raw.trim()){preview.innerHTML='<p style="color:var(--danger);font-size:0.75rem;">⚠️ Tiada data.</p>';return;}
+    const[impYear,impMonth]=monthVal.split('-').map(Number);
+    const rows=raw.trim().split('\n').map(r=>r.split('\t').map(c=>c.trim()));
+    let dateRow=null,shiftRow=null;
+    for(let i=0;i<rows.length;i++){const nc=rows[i].filter(c=>/^\d{1,2}(\(PH\))?$/.test(c.replace(/\s/g,''))).length;if(nc>=5){dateRow=rows[i];shiftRow=rows[i+1]||null;break;}}
+    if(!dateRow||!shiftRow){preview.innerHTML='<p style="color:var(--danger);font-size:0.75rem;">⚠️ Format tidak dikenali. Copy 2 baris: DATE dan shift.</p>';return;}
+    let html=`<div style="font-size:0.7rem;margin-top:6px;border:1px solid var(--border);border-radius:var(--radius-xs);overflow:hidden;"><div style="background:var(--surface);padding:6px 10px;font-size:0.6rem;color:var(--text-dim);font-weight:700;font-family:'JetBrains Mono',monospace;">PREVIEW</div>`;
+    let count=0;
+    for(let col=0;col<dateRow.length;col++){
+        const dayRaw=dateRow[col].replace(/\(PH\)/i,'').trim(), day=parseInt(dayRaw); if(isNaN(day)||day<1||day>31)continue;
+        const cellRaw=shiftRow[col]||''; if(!cellRaw)continue;
+        const parsed=parseShiftCell(cellRaw); if(!parsed)continue;
+        const key=`${impYear}-${String(impMonth).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+        _importParsed.push({key,...parsed});
+        const assignLabel=parsed.a?`<span style="color:var(--primary)"> @ ${parsed.a}</span>`:'';
+        html+=`<div style="display:flex;justify-content:space-between;padding:5px 10px;border-bottom:1px solid var(--border);align-items:center;"><span style="color:var(--text-dim);min-width:36px;font-family:'JetBrains Mono',monospace;">${String(day).padStart(2,'0')}/${String(impMonth).padStart(2,'0')}</span><span style="font-weight:700;color:var(--text);">${parsed.s}${assignLabel}</span><span style="font-size:0.58rem;color:var(--text-muted);font-family:'JetBrains Mono',monospace;">${cellRaw}</span></div>`;
+        count++;
+    }
+    html+='</div>';
+    if(count===0){preview.innerHTML='<p style="color:var(--danger);font-size:0.75rem;">⚠️ Tiada shift yang dapat dikenali.</p>';document.getElementById('btn-confirm-import').style.display='none';return;}
+    html+=`<p style="font-size:0.7rem;color:var(--text-dim);margin-top:6px;">✅ ${count} hari berjaya diparse.</p>`;
+    preview.innerHTML=html; document.getElementById('btn-confirm-import').style.display='block';
+}
+
+function confirmImport(){
+    if(_importParsed.length===0)return;
+    _importParsed.forEach(entry=>{store.calendar[entry.key]={s:entry.s,a:entry.a};});
+    saveData();generateCalendar();closeSheet();_importParsed=[];
+    alert("✅ Shift berjaya dimasukkan ke calendar!");
+}
+
+// ── MIGRATE DEFAULT DRUGS ──
+const DEFAULT_DRUGS = [
+    {name:"IV Fentanyl",ampule:"0.1mg/2ml (100mcg)",prep:"Undiluted"},
+    {name:"IV Lignocaine",ampule:"100mg/5mls",prep:"Undiluted"},
+    {name:"IV Midazolam",ampule:"5mg/ml",prep:"5mg in 5ml NS"},
+    {name:"IV Etomidate",ampule:"20mg/10ml = 2mg/ml",prep:"Undiluted"},
+    {name:"IV Ketamine",ampule:"200mg/20mls = 10mg/ml",prep:"Undiluted"},
+    {name:"IV Propofol",ampule:"200mg/20mls = 10mg/ml",prep:"Undiluted"},
+    {name:"IV Scoline (Suxamethonium)",ampule:"100mg/2mls = 50mg/ml",prep:"Undiluted"},
+    {name:"Rocuronium (Esmeron)",ampule:"50mg/5mls = 10mg/ml",prep:"Undiluted"},
+    {name:"IVI Midazolam",ampule:"5mg/ml",prep:"20mg in 20mls NS @ 3ml/Hr"},
+    {name:"IVI Fentanyl",ampule:"0.1mg/2ml (100mcg)",prep:"0.2mg (200mcg) in 20ml NS @ 3ml/Hr"},
+    {name:"IVI Morphine",ampule:"10mg/ml",prep:"20mg in 20mls NS @ 3ml/Hr"},
+    {name:"IVI Ketamine",ampule:"200mg/20mls = 10mg/ml",prep:"Undiluted 20mg (2ml)"},
+    {name:"IVI Noradrenaline",ampule:"4mg/4mls",prep:"D.S: 8mg in 50mls D5%"},
+    {name:"IVI Amiodarone (Arrhythmias)",ampule:"150mg/3ml",prep:"L.D: 300mg in 100mls D5% (bolus) @ 1Hr"},
+    {name:"IVI Amiodarone (VF, pVT)",ampule:"150mg/3ml",prep:"L.D: 300mg in 20mls D5% (bolus)"},
+    {name:"IVI Amiodarone (Maintenance)",ampule:"150mg/3ml",prep:"900mg in 500ml D5% @ 24Hr"},
+    {name:"IVI GTN",ampule:"50mg/10mls",prep:"10mg (2mls) in 50mls NS"},
+    {name:"IVI Adrenaline 1:1000",ampule:"1mg/ml",prep:"3mg (3mls) in 50mls NS @ 10mls/Hr. For cardiac arrest 1mg every 3-5min"},
+    {name:"IVI Adrenaline 1:10,000 (Paeds)",ampule:"1mg/ml",prep:"For cardiac arrest: dilute 1mg in 10mls NS (1:10,000) given 2.8mls every 3-5min for 28kg patient"},
+    {name:"IVI Atropine",ampule:"1mg/1ml",prep:"IV Bolus 0.6-3mg every 5 mins"},
+    {name:"IVI Dopamine",ampule:"200mg/5mls",prep:"D.S: 400mg in 50mls NS @ 10mls/Hr"},
+    {name:"IVI Dobutamine",ampule:"250mg/20mls",prep:"D.S: 500mg in 50mls NS @ 5mls/Hr"},
+    {name:"IVI Labetalol",ampule:"25mg/5ml",prep:"100mg undiluted (4 amp) in 20ml syringe @ 0.5/min (6ml/Hr)"},
+    {name:"IVI Sodium Bicarb 8.4%",ampule:"10mmol/10ml = 1mEq/ml",prep:"100ml (10 amp) undiluted in chamber @ 1Hr / 50ml undiluted (5 ampule) in 50ml syringe x2 (@ 30min/syringe)"},
+    {name:"IV Pantoprazole",ampule:"40mg",prep:"80mg in 20mls NS bolus"},
+    {name:"IVI Pantoprazole",ampule:"40mg",prep:"40mg in 50mls NS @ 10mls/Hr"},
+    {name:"IV Morphine",ampule:"10mg/ml",prep:"10mg in 10mls NS"},
+    {name:"IV Adenosine (Adenocor)",ampule:"6mg/2mls",prep:"6mg, 12mg, 18mg"},
+    {name:"IV Propranolol",ampule:"1mg/ml",prep:"1mg/min (in 1cc syringe)"},
+    {name:"IV MgSO4",ampule:"2.46mg/amp",prep:"1 amp dilute in 20mls @ 20mls/1Hr"},
+    {name:"IV Potassium Chloride KCL (1Hr)",ampule:"1g/10mls",prep:"1g in 100mls NS @ 1Hr"},
+    {name:"IV Potassium Chloride KCL (Maintenance)",ampule:"1g/10mls",prep:"1g in 500mls NS @ 1Hr"},
+    {name:"IV Flumazenil",ampule:"0.5mg/5ml",prep:"Given undiluted through free-flowing IV solution over 15-30 sec"},
+    {name:"IV Lytic Cocktail",ampule:"—",prep:"Calcium Gluconate 10% 10mls 10min, D50% 50mls, Insulin 10u (0.1ml)"},
+    {name:"IV Rocephin",ampule:"1g/vial",prep:"2g in 20mls NS (slow bolus) / IV infusion 50-100mls @ 30 minutes"},
+    {name:"IV Phenytoin (Dilantin)",ampule:"250mg/5ml",prep:"Maximum dose 1.5g (6 ampule) in 100mls of NS @ 1Hr"},
+    {name:"IV Tranexamic Acid",ampule:"1gm/10ml",prep:"1gm in 100mls NS @ 10min"},
+    {name:"IV Tranexamic Acid (Maintenance)",ampule:"1gm/10ml",prep:"1gm in 500mls NS @ 8Hr"},
+    {name:"IV Bricanyl",ampule:"0.5mg/ml",prep:"3mg (6 amp) in 50mls NS @ 3mls/Hr"},
+    {name:"IV Valium (Diazepam)",ampule:"10mg/2ml",prep:"5mg/min (adults), 0.25mg/kg (children)"}
+];
+
+function migrateDefaultDrugs(){
+    const existingNames=store.drugs.map(d=>d.name.toLowerCase()); let added=0;
+    DEFAULT_DRUGS.forEach(def=>{if(!existingNames.includes(def.name.toLowerCase())){store.drugs.push(def);added++;}});
+    store.drugs=store.drugs.map(d=>({name:d.name,ampule:d.ampule||d.prep||'—',prep:d.prep||''}));
+    if(added>0) localStorage.setItem('roster_ultimate_v3',JSON.stringify(store));
+}
+
+// ── THEME ──
+const THEMES = {
+    dark: {
+        bg:'#0a0a0a', surface:'#111', card:'#161616', cardRaised:'#1c1c1c',
+        border:'#222', borderBright:'#2e2e2e',
+        text:'#f0f0f0', textDim:'#777', textMuted:'#333',
+        primary:'#50c878', primaryDim:'rgba(80,200,120,0.10)', primaryGlow:'rgba(80,200,120,0.30)',
+        avatarBg:'50c878', avatarFg:'000',
+        icon:'☀️', label:'CERAH'
+    },
+    light: {
+        bg:'#f4f4f4', surface:'#ffffff', card:'#ffffff', cardRaised:'#f9f9f9',
+        border:'#e0e0e0', borderBright:'#cccccc',
+        text:'#111111', textDim:'#666666', textMuted:'#aaaaaa',
+        primary:'#1a8f45', primaryDim:'rgba(26,143,69,0.10)', primaryGlow:'rgba(26,143,69,0.20)',
+        avatarBg:'1a8f45', avatarFg:'fff',
+        icon:'🌙', label:'GELAP'
+    }
+};
+
+let currentTheme = 'dark';
+
+function applyTheme(name) {
+    const t=THEMES[name]; if(!t) return;
+    const r=document.documentElement;
+    r.style.setProperty('--bg',t.bg);
+    r.style.setProperty('--surface',t.surface);
+    r.style.setProperty('--card',t.card);
+    r.style.setProperty('--card-raised',t.cardRaised);
+    r.style.setProperty('--border',t.border);
+    r.style.setProperty('--border-bright',t.borderBright);
+    r.style.setProperty('--text',t.text);
+    r.style.setProperty('--text-dim',t.textDim);
+    r.style.setProperty('--text-muted',t.textMuted);
+    r.style.setProperty('--primary',t.primary);
+    r.style.setProperty('--primary-dim',t.primaryDim);
+    r.style.setProperty('--primary-glow',t.primaryGlow);
+    const icon=document.getElementById('theme-toggle-icon'), label=document.getElementById('theme-toggle-label');
+    if(icon) icon.innerText=t.icon;
+    if(label) label.innerText=t.label;
+    const pic=document.getElementById('profile-pic');
+    if(pic&&pic.src.includes('ui-avatars')) pic.src=`https://ui-avatars.com/api/?name=Ahmad+Zilalul&background=${t.avatarBg}&color=${t.avatarFg}&bold=true`;
+    const glow=document.querySelector('.ambient-glow');
+    if(glow) glow.style.background=`radial-gradient(circle,${t.primaryGlow} 0%,transparent 70%)`;
+    currentTheme=name;
+    localStorage.setItem('roster_theme',name);
+}
+
+function toggleTheme() { applyTheme(currentTheme==='dark'?'light':'dark'); }
+function loadTheme() { applyTheme(localStorage.getItem('roster_theme')==='light'?'light':'dark'); }
+
+// ── INIT ──
+window.addEventListener('load', () => {
+    checkPDFStatus();
+    fetchPrayerTimes();
+    startPrayerTick();
+    schedulePrayerRefresh();
+});
+migrateCalendarKeys();
+migrateDefaultDrugs();
+setInterval(updateTime, 1000);
+updateTime();
+generateCalendar();
+renderStats();
+loadNotes();
+loadTheme();
+renderNursingNotes();
 </script>
 </body>
 </html>
