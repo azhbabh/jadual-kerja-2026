@@ -396,17 +396,109 @@
         .calendar-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:4px; }
         .day-label { text-align:center; font-family:'JetBrains Mono',monospace; font-size:0.55rem; font-weight:700; color:var(--text-muted); padding-bottom:6px; letter-spacing:0.05em; }
         .day-box {
-            aspect-ratio:1; background:var(--surface); border-radius:var(--radius-xs);
+            aspect-ratio:1; border-radius:var(--radius-xs);
             display:flex; flex-direction:column; align-items:center; justify-content:center;
-            border:1px solid var(--border); position:relative; cursor:pointer;
+            position:relative; cursor:pointer;
             transition:all 0.15s cubic-bezier(0.34,1.56,0.64,1);
+
+            /* ── MASTER: light-theme style untuk semua shift boxes ── */
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
         }
-        .day-box:active { transform:scale(0.88); background:var(--primary-dim); border-color:var(--primary); }
-        .day-box.today { border-color:var(--primary); background:var(--primary-dim); box-shadow:0 0 0 1px var(--primary-glow) inset; }
-        .day-box .date-num { position:absolute; top:2px; left:4px; font-family:'JetBrains Mono',monospace; font-size:0.5rem; color:var(--text-dim); font-weight:700; }
-        .day-box.today .date-num { color:var(--primary); }
+        .day-box:active { transform:scale(0.88); }
+
+        .day-box .date-num {
+            position:absolute; top:2px; left:4px;
+            font-family:'JetBrains Mono',monospace; font-size:0.5rem;
+            font-weight:700;
+            /* default: neutral grey */
+            color: #aaaaaa;
+        }
         .day-box .shift-text { font-family:'Bebas Neue',sans-serif; font-size:1.05rem; letter-spacing:0.03em; line-height:1; }
-        .day-box .assign-text { font-size:0.38rem; color:var(--primary); font-weight:700; text-align:center; width:95%; overflow:hidden; white-space:nowrap; letter-spacing:0.03em; text-transform:uppercase; }
+        .day-box .assign-text { font-size:0.38rem; font-weight:700; text-align:center; width:95%; overflow:hidden; white-space:nowrap; letter-spacing:0.03em; text-transform:uppercase; }
+
+        /* ── SHIFT COLOURS — SAMA untuk dark & light ── */
+
+        /* Kerja (M, E) — hijau gelap */
+        .day-box[data-shift="M"] .shift-text,
+        .day-box[data-shift="E"] .shift-text { color: #2e7d32; }
+        .day-box[data-shift="M"] .date-num,
+        .day-box[data-shift="E"] .date-num { color: #66bb6a; }
+        .day-box[data-shift="M"] .assign-text,
+        .day-box[data-shift="E"] .assign-text { color: #2e7d32; }
+
+        /* Malam (N) — hitam */
+        .day-box[data-shift="N"] .shift-text { color: #212121; }
+        .day-box[data-shift="N"] .date-num { color: #757575; }
+        .day-box[data-shift="N"] .assign-text { color: #424242; }
+
+        /* Double shift / Locum (M/E, M/N, E/N, SD/M, SD/E, SD/N, DO/M, DO/E, DO/N) — teal */
+        .day-box[data-shift="M/E"] .shift-text,
+        .day-box[data-shift="M/N"] .shift-text,
+        .day-box[data-shift="E/N"] .shift-text,
+        .day-box[data-shift="SD/M"] .shift-text,
+        .day-box[data-shift="SD/E"] .shift-text,
+        .day-box[data-shift="SD/N"] .shift-text,
+        .day-box[data-shift="DO/M"] .shift-text,
+        .day-box[data-shift="DO/E"] .shift-text,
+        .day-box[data-shift="DO/N"] .shift-text { color: #00695c; }
+        .day-box[data-shift="M/E"] .date-num,
+        .day-box[data-shift="M/N"] .date-num,
+        .day-box[data-shift="E/N"] .date-num,
+        .day-box[data-shift="SD/M"] .date-num,
+        .day-box[data-shift="SD/E"] .date-num,
+        .day-box[data-shift="SD/N"] .date-num,
+        .day-box[data-shift="DO/M"] .date-num,
+        .day-box[data-shift="DO/E"] .date-num,
+        .day-box[data-shift="DO/N"] .date-num { color: #26a69a; }
+        .day-box[data-shift="M/E"] .assign-text,
+        .day-box[data-shift="M/N"] .assign-text,
+        .day-box[data-shift="E/N"] .assign-text,
+        .day-box[data-shift="SD/M"] .assign-text,
+        .day-box[data-shift="SD/E"] .assign-text,
+        .day-box[data-shift="SD/N"] .assign-text,
+        .day-box[data-shift="DO/M"] .assign-text,
+        .day-box[data-shift="DO/E"] .assign-text,
+        .day-box[data-shift="DO/N"] .assign-text { color: #00695c; }
+
+        /* Cuti (SD, DO, AL, RPL, MC, PH) — peach/oren */
+        .day-box[data-shift="SD"] .shift-text,
+        .day-box[data-shift="DO"] .shift-text,
+        .day-box[data-shift="AL"] .shift-text,
+        .day-box[data-shift="RPL"] .shift-text,
+        .day-box[data-shift="MC"] .shift-text,
+        .day-box[data-shift="PH"] .shift-text { color: #e64a19; }
+        .day-box[data-shift="SD"] .date-num,
+        .day-box[data-shift="DO"] .date-num,
+        .day-box[data-shift="AL"] .date-num,
+        .day-box[data-shift="RPL"] .date-num,
+        .day-box[data-shift="MC"] .date-num,
+        .day-box[data-shift="PH"] .date-num { color: #ff8a65; }
+        .day-box[data-shift="SD"] .assign-text,
+        .day-box[data-shift="DO"] .assign-text,
+        .day-box[data-shift="AL"] .assign-text,
+        .day-box[data-shift="RPL"] .assign-text,
+        .day-box[data-shift="MC"] .assign-text,
+        .day-box[data-shift="PH"] .assign-text { color: #e64a19; }
+
+        /* Empty / OFF */
+        .day-box[data-shift="-"] .shift-text { color: #cccccc; }
+        .day-box[data-shift="-"] .date-num { color: #cccccc; }
+
+        /* ── TODAY — heartbeat border hijau ── */
+        @keyframes heartbeat-border {
+            0%   { box-shadow: 0 0 0 0px rgba(80,200,120,0.8), 0 0 0 2px rgba(80,200,120,0.4); border-color: #50c878; }
+            30%  { box-shadow: 0 0 0 3px rgba(80,200,120,0.5), 0 0 0 5px rgba(80,200,120,0.2); border-color: #2ecc71; }
+            50%  { box-shadow: 0 0 0 1px rgba(80,200,120,0.9), 0 0 0 3px rgba(80,200,120,0.3); border-color: #50c878; }
+            70%  { box-shadow: 0 0 0 4px rgba(80,200,120,0.4), 0 0 0 7px rgba(80,200,120,0.1); border-color: #2ecc71; }
+            100% { box-shadow: 0 0 0 0px rgba(80,200,120,0.8), 0 0 0 2px rgba(80,200,120,0.4); border-color: #50c878; }
+        }
+        .day-box.today {
+            background: #ffffff !important;
+            border: 2px solid #50c878 !important;
+            animation: heartbeat-border 1.6s ease-in-out infinite !important;
+        }
+        .day-box.today .date-num { color: #2e7d32 !important; }
 
         /* ── CLAIM ── */
         .claim-toggle { display:flex; justify-content:space-between; align-items:center; cursor:pointer; user-select:none; }
@@ -915,145 +1007,6 @@
             border-color: #c678dd;
             color: #c678dd;
         }
-
-        /* ── SHIFT COLORS ── */
-        [data-shift="M"] { color: #ffb347; }
-        [data-shift="E"] { color: #7ab3ff; }
-        [data-shift="N"] { color: #c678dd; }
-        [data-shift="AL"] { color: #98c379; }
-        [data-shift="MC"] { color: #ff7c7c; }
-        [data-shift="PH"] { color: #5c6370; }
-        [data-shift="RPL"] { color: #5c6370; }
-        [data-shift="DO"] { color: #5c6370; }
-        [data-shift="SD"] { color: #5c6370; }
-        [data-shift="-"] { color: #2e3a2f; }
-
-        /* ══════════════════════════════════════════
-           SHIFT BACKGROUNDS — TEMA CERAH SAHAJA
-           ══════════════════════════════════════════ */
-
-        /* ── N (Malam) — Background putih, tulisan hitam ── */
-        body.theme-light .day-box[data-shift="N"] {
-            background: #ffffff !important;
-            border-color: #e0e0e0 !important;
-        }
-        body.theme-light .day-box[data-shift="N"] .shift-text {
-            color: #212121 !important;
-            text-shadow: none;
-        }
-        body.theme-light .day-box[data-shift="N"] .date-num {
-            color: #757575 !important;
-        }
-        body.theme-light .day-box[data-shift="N"] .assign-text {
-            color: #424242 !important;
-        }
-
-        /* ── Cuti (SD, DO, AL, RPL, MC, PH) — Background putih, tulisan peach ── */
-        body.theme-light .day-box[data-shift="SD"],
-        body.theme-light .day-box[data-shift="DO"],
-        body.theme-light .day-box[data-shift="AL"],
-        body.theme-light .day-box[data-shift="RPL"],
-        body.theme-light .day-box[data-shift="MC"],
-        body.theme-light .day-box[data-shift="PH"] {
-            background: #ffffff !important;
-            border-color: #e0e0e0 !important;
-        }
-        body.theme-light .day-box[data-shift="SD"] .shift-text,
-        body.theme-light .day-box[data-shift="DO"] .shift-text,
-        body.theme-light .day-box[data-shift="AL"] .shift-text,
-        body.theme-light .day-box[data-shift="RPL"] .shift-text,
-        body.theme-light .day-box[data-shift="MC"] .shift-text,
-        body.theme-light .day-box[data-shift="PH"] .shift-text {
-            color: #ff8a65 !important;
-        }
-        body.theme-light .day-box[data-shift="SD"] .date-num,
-        body.theme-light .day-box[data-shift="DO"] .date-num,
-        body.theme-light .day-box[data-shift="AL"] .date-num,
-        body.theme-light .day-box[data-shift="RPL"] .date-num,
-        body.theme-light .day-box[data-shift="MC"] .date-num,
-        body.theme-light .day-box[data-shift="PH"] .date-num {
-            color: #ffab91 !important;
-        }
-        body.theme-light .day-box[data-shift="SD"] .assign-text,
-        body.theme-light .day-box[data-shift="DO"] .assign-text,
-        body.theme-light .day-box[data-shift="AL"] .assign-text,
-        body.theme-light .day-box[data-shift="RPL"] .assign-text,
-        body.theme-light .day-box[data-shift="MC"] .assign-text,
-        body.theme-light .day-box[data-shift="PH"] .assign-text {
-            color: #ff8a65 !important;
-        }
-
-        /* ── Shift kerja + Locum — Background putih, tulisan hijau pastel ── */
-        body.theme-light .day-box[data-shift="M"],
-        body.theme-light .day-box[data-shift="E"],
-        body.theme-light .day-box[data-shift="M/E"],
-        body.theme-light .day-box[data-shift="M/N"],
-        body.theme-light .day-box[data-shift="E/N"],
-        body.theme-light .day-box[data-shift="SD/M"],
-        body.theme-light .day-box[data-shift="SD/E"],
-        body.theme-light .day-box[data-shift="SD/N"],
-        body.theme-light .day-box[data-shift="DO/M"],
-        body.theme-light .day-box[data-shift="DO/E"],
-        body.theme-light .day-box[data-shift="DO/N"] {
-            background: #ffffff !important;
-            border-color: #e0e0e0 !important;
-        }
-        body.theme-light .day-box[data-shift="M"] .shift-text,
-        body.theme-light .day-box[data-shift="E"] .shift-text,
-        body.theme-light .day-box[data-shift="M/E"] .shift-text,
-        body.theme-light .day-box[data-shift="M/N"] .shift-text,
-        body.theme-light .day-box[data-shift="E/N"] .shift-text,
-        body.theme-light .day-box[data-shift="SD/M"] .shift-text,
-        body.theme-light .day-box[data-shift="SD/E"] .shift-text,
-        body.theme-light .day-box[data-shift="SD/N"] .shift-text,
-        body.theme-light .day-box[data-shift="DO/M"] .shift-text,
-        body.theme-light .day-box[data-shift="DO/E"] .shift-text,
-        body.theme-light .day-box[data-shift="DO/N"] .shift-text {
-            color: #2e7d32 !important;
-        }
-        body.theme-light .day-box[data-shift="M"] .date-num,
-        body.theme-light .day-box[data-shift="E"] .date-num,
-        body.theme-light .day-box[data-shift="M/E"] .date-num,
-        body.theme-light .day-box[data-shift="M/N"] .date-num,
-        body.theme-light .day-box[data-shift="E/N"] .date-num,
-        body.theme-light .day-box[data-shift="SD/M"] .date-num,
-        body.theme-light .day-box[data-shift="SD/E"] .date-num,
-        body.theme-light .day-box[data-shift="SD/N"] .date-num,
-        body.theme-light .day-box[data-shift="DO/M"] .date-num,
-        body.theme-light .day-box[data-shift="DO/E"] .date-num,
-        body.theme-light .day-box[data-shift="DO/N"] .date-num {
-            color: #66bb6a !important;
-        }
-        body.theme-light .day-box[data-shift="M"] .assign-text,
-        body.theme-light .day-box[data-shift="E"] .assign-text,
-        body.theme-light .day-box[data-shift="M/E"] .assign-text,
-        body.theme-light .day-box[data-shift="M/N"] .assign-text,
-        body.theme-light .day-box[data-shift="E/N"] .assign-text,
-        body.theme-light .day-box[data-shift="SD/M"] .assign-text,
-        body.theme-light .day-box[data-shift="SD/E"] .assign-text,
-        body.theme-light .day-box[data-shift="SD/N"] .assign-text,
-        body.theme-light .day-box[data-shift="DO/M"] .assign-text,
-        body.theme-light .day-box[data-shift="DO/E"] .assign-text,
-        body.theme-light .day-box[data-shift="DO/N"] .assign-text {
-            color: #2e7d32 !important;
-        }
-
-        /* ── Hari ini (today) — heartbeat border emerald, background putih ── */
-        @keyframes heartbeat-border {
-            0%   { box-shadow: 0 0 0 0px rgba(80,200,120,0.8), 0 0 0 2px rgba(80,200,120,0.4); border-color: #50c878; }
-            30%  { box-shadow: 0 0 0 3px rgba(80,200,120,0.5), 0 0 0 5px rgba(80,200,120,0.2); border-color: #2ecc71; }
-            50%  { box-shadow: 0 0 0 1px rgba(80,200,120,0.9), 0 0 0 3px rgba(80,200,120,0.3); border-color: #50c878; }
-            70%  { box-shadow: 0 0 0 4px rgba(80,200,120,0.4), 0 0 0 7px rgba(80,200,120,0.1); border-color: #2ecc71; }
-            100% { box-shadow: 0 0 0 0px rgba(80,200,120,0.8), 0 0 0 2px rgba(80,200,120,0.4); border-color: #50c878; }
-        }
-        body.theme-light .day-box.today {
-            background: #ffffff !important;
-            border: 2px solid #50c878 !important;
-            animation: heartbeat-border 1.6s ease-in-out infinite !important;
-        }
-        body.theme-light .day-box.today .date-num {
-            color: #2e7d32 !important;
-        }
     </style>
 </head>
 <body>
@@ -1240,11 +1193,7 @@
             <div id="nursing-note-list"></div>
         </div>
         <div id="tool-rsi" class="tool-panel">
-
-                    <!-- Header -->
                     <div class="rsi-panel-title">7P Rapid Sequence Intubation (RSI)</div>
-
-                    <!-- 1. Preparation -->
                     <div class="rsi-step">
                         <div class="rsi-step-header">
                             <span class="rsi-step-num">1</span>
@@ -1278,37 +1227,22 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- 2. Preoxygenation -->
                     <div class="rsi-step">
-                        <div class="rsi-step-header">
-                            <span class="rsi-step-num">2</span>
-                            <span class="rsi-step-name">Preoxygenation</span>
-                        </div>
+                        <div class="rsi-step-header"><span class="rsi-step-num">2</span><span class="rsi-step-name">Preoxygenation</span></div>
                         <div class="rsi-step-body">
                             <div class="rsi-sub-content">3–5 minit 100% O₂ via BVM untuk mencegah hipoksia.</div>
                             <div class="rsi-quote">"Nitrogen washout, Oxygen wash in"</div>
                         </div>
                     </div>
-
-                    <!-- 3. Pretreatment -->
                     <div class="rsi-step">
-                        <div class="rsi-step-header">
-                            <span class="rsi-step-num">3</span>
-                            <span class="rsi-step-name">Pretreatment <span style="font-size:0.6rem;font-weight:400;opacity:0.6;">(Analgesic)</span></span>
-                        </div>
+                        <div class="rsi-step-header"><span class="rsi-step-num">3</span><span class="rsi-step-name">Pretreatment <span style="font-size:0.6rem;font-weight:400;opacity:0.6;">(Analgesic)</span></span></div>
                         <div class="rsi-step-body">
                             <div class="rsi-drug-row"><span class="rsi-drug-name">IV Fentanyl</span><span class="rsi-drug-dose">1–2 mcg/kg</span></div>
                             <div class="rsi-drug-row"><span class="rsi-drug-name">IV Lignocaine</span><span class="rsi-drug-dose">1–2 mg/kg</span></div>
                         </div>
                     </div>
-
-                    <!-- 4. Paralysis with Induction -->
                     <div class="rsi-step">
-                        <div class="rsi-step-header">
-                            <span class="rsi-step-num">4</span>
-                            <span class="rsi-step-name">Paralysis with Induction</span>
-                        </div>
+                        <div class="rsi-step-header"><span class="rsi-step-num">4</span><span class="rsi-step-name">Paralysis with Induction</span></div>
                         <div class="rsi-step-body">
                             <div class="rsi-sub-label" style="margin-bottom:6px;">💊 Induction (Sedation)</div>
                             <div class="rsi-drug-row"><span class="rsi-drug-name">IV Midazolam</span><span class="rsi-drug-dose">0.1–0.2 mg/kg</span></div>
@@ -1320,24 +1254,14 @@
                             <div class="rsi-drug-row"><span class="rsi-drug-name">IV Rocuronium <span style="opacity:0.6;font-size:0.7rem;">(Esmeron)</span></span><span class="rsi-drug-dose">0.6–1 mg/kg</span></div>
                         </div>
                     </div>
-
-                    <!-- 5. Positioning -->
                     <div class="rsi-step">
-                        <div class="rsi-step-header">
-                            <span class="rsi-step-num">5</span>
-                            <span class="rsi-step-name">Positioning</span>
-                        </div>
+                        <div class="rsi-step-header"><span class="rsi-step-num">5</span><span class="rsi-step-name">Positioning</span></div>
                         <div class="rsi-step-body">
                             <div class="rsi-quote" style="margin:0;">"Sniffing" position — flexion lower cervical spine + extension atlanto-occipital joint</div>
                         </div>
                     </div>
-
-                    <!-- 6. Placement with Proof -->
                     <div class="rsi-step">
-                        <div class="rsi-step-header">
-                            <span class="rsi-step-num">6</span>
-                            <span class="rsi-step-name">Placement with Proof</span>
-                        </div>
+                        <div class="rsi-step-header"><span class="rsi-step-num">6</span><span class="rsi-step-name">Placement with Proof</span></div>
                         <div class="rsi-step-body">
                             <div class="rsi-checklist-item">✅ Direct visualization</div>
                             <div class="rsi-checklist-item">✅ Vapour in tube</div>
@@ -1357,13 +1281,8 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- 7. Post intubation care -->
                     <div class="rsi-step" style="margin-bottom:0;">
-                        <div class="rsi-step-header">
-                            <span class="rsi-step-num">7</span>
-                            <span class="rsi-step-name">Post-Intubation Care</span>
-                        </div>
+                        <div class="rsi-step-header"><span class="rsi-step-num">7</span><span class="rsi-step-name">Post-Intubation Care</span></div>
                         <div class="rsi-step-body">
                             <div class="rsi-sub-label" style="margin-bottom:6px;">💊 IVI Sedation</div>
                             <div class="rsi-post-tags">
@@ -1384,8 +1303,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- LYTIC COCKTAIL -->
                 </div>
             </div>
         </div>
@@ -1424,13 +1341,10 @@
             </div>
         </div>
 
-        <!-- DRUG CALCULATION PANEL -->
         <div id="tool-drugcalc" class="tool-panel">
             <div class="rsi-panel">
                 <div class="rsi-panel-title" style="color:#c678dd;filter:drop-shadow(0 0 6px rgba(198,120,221,0.4));">🧮 Drug Calculation</div>
                 <div style="font-size:0.68rem;color:var(--text-dim);margin-bottom:14px;font-family:'JetBrains Mono',monospace;letter-spacing:0.06em;text-transform:uppercase;">IV Infusion Protocol</div>
-
-                <!-- NORADRENALINE -->
                 <div class="rsi-step" style="border-color:rgba(198,120,221,0.2);margin-bottom:0;">
                     <div class="rsi-step-header" style="background:linear-gradient(90deg,rgba(198,120,221,0.1),transparent);border-bottom-color:rgba(198,120,221,0.2);">
                         <span style="font-size:0.9rem;">💊</span>
@@ -1440,8 +1354,6 @@
                         </div>
                     </div>
                     <div class="rsi-step-body">
-
-                        <!-- Strength -->
                         <div class="rsi-sub-label" style="margin-bottom:6px;">Preparation</div>
                         <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px;">
                             <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-xs);padding:8px 10px;">
@@ -1455,8 +1367,6 @@
                                 <div style="font-family:'JetBrains Mono',monospace;font-size:0.62rem;color:#c678dd;margin-top:2px;">= 0.16 mg/ml</div>
                             </div>
                         </div>
-
-                        <!-- Formula -->
                         <div class="rsi-sub-label" style="margin-bottom:6px;">Formula</div>
                         <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius-xs);padding:10px 12px;margin-bottom:12px;">
                             <div style="text-align:center;">
@@ -1470,22 +1380,16 @@
                                 <div style="font-size:0.65rem;color:var(--text-dim);">Concentration (mg/ml)</div>
                             </div>
                         </div>
-
-                        <!-- Interactive Calculator -->
                         <div class="rsi-sub-label" style="margin-bottom:8px;">Calculator</div>
                         <div style="background:rgba(198,120,221,0.06);border:1px solid rgba(198,120,221,0.2);border-radius:var(--radius-xs);padding:12px;">
                             <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
                                 <div>
                                     <div style="font-family:'JetBrains Mono',monospace;font-size:0.52rem;color:var(--text-dim);font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px;">Dose (mcg/kg/min)</div>
-                                    <input type="number" id="nora-dose" placeholder="0.05" step="0.01" min="0.05" max="0.15"
-                                        oninput="calcNora()"
-                                        style="background:var(--surface);border:1px solid rgba(198,120,221,0.3);color:var(--text);padding:9px 10px;border-radius:var(--radius-xs);width:100%;font-size:0.82rem;font-family:'JetBrains Mono',monospace;margin-bottom:0;">
+                                    <input type="number" id="nora-dose" placeholder="0.05" step="0.01" min="0.05" max="0.15" oninput="calcNora()" style="background:var(--surface);border:1px solid rgba(198,120,221,0.3);color:var(--text);padding:9px 10px;border-radius:var(--radius-xs);width:100%;font-size:0.82rem;font-family:'JetBrains Mono',monospace;margin-bottom:0;">
                                 </div>
                                 <div>
                                     <div style="font-family:'JetBrains Mono',monospace;font-size:0.52rem;color:var(--text-dim);font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px;">Berat (kg)</div>
-                                    <input type="number" id="nora-weight" placeholder="cth: 70" step="0.1" min="0"
-                                        oninput="calcNora()"
-                                        style="background:var(--surface);border:1px solid rgba(198,120,221,0.3);color:var(--text);padding:9px 10px;border-radius:var(--radius-xs);width:100%;font-size:0.82rem;font-family:'JetBrains Mono',monospace;margin-bottom:0;">
+                                    <input type="number" id="nora-weight" placeholder="cth: 70" step="0.1" min="0" oninput="calcNora()" style="background:var(--surface);border:1px solid rgba(198,120,221,0.3);color:var(--text);padding:9px 10px;border-radius:var(--radius-xs);width:100%;font-size:0.82rem;font-family:'JetBrains Mono',monospace;margin-bottom:0;">
                                 </div>
                             </div>
                             <div id="nora-result" style="display:none;">
@@ -1510,7 +1414,6 @@
                                 Isi dos dan berat untuk kira rate
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -1549,9 +1452,6 @@ const ph2026 = [
     {n:"Deepavali",d:"2026-11-08",paid:false},{n:"Hari Krismas",d:"2026-12-25",paid:false}
 ];
 
-const SHIFT_COLORS = { M:'#ffb347', E:'#7ab3ff', N:'#c678dd', AL:'#98c379', MC:'#ff7c7c', PH:'#5c6370', RPL:'#5c6370', DO:'#5c6370', SD:'#5c6370', TD:'#aaa', '-':'#2e3a2f', 'M/E':'#56b6c2', 'M/N':'#56b6c2', 'E/N':'#56b6c2' };
-function shiftColor(s) { return SHIFT_COLORS[s] || 'var(--text)'; }
-
 let currentCalDate = new Date();
 let store = JSON.parse(localStorage.getItem('roster_ultimate_v3')) || {
     al:{total:0,taken:[]}, rpl:{records:[]}, cpd:{records:[]},
@@ -1581,32 +1481,15 @@ async function fetchPrayerTimes() {
         const data = await res.json();
         if(data && data.data && data.data.timings) {
             const t = data.data.timings;
-            prayerTimes = {
-                fajr:    t.Fajr,
-                sunrise: t.Sunrise,
-                dhuhr:   t.Dhuhr,
-                asr:     t.Asr,
-                maghrib: t.Maghrib,
-                isha:    t.Isha
-            };
+            prayerTimes = { fajr:t.Fajr, sunrise:t.Sunrise, dhuhr:t.Dhuhr, asr:t.Asr, maghrib:t.Maghrib, isha:t.Isha };
             localStorage.setItem(cacheKey, JSON.stringify(prayerTimes));
             Object.keys(localStorage).forEach(k => { if(k.startsWith('prayer_') && k !== cacheKey) localStorage.removeItem(k); });
             renderPrayerWidget();
         } else { renderPrayerError('Data tidak tersedia.'); }
-    } catch(e) {
-        renderPrayerError('Tiada sambungan internet. Cuba semula.');
-    }
+    } catch(e) { renderPrayerError('Tiada sambungan internet. Cuba semula.'); }
 }
 
-function timeStrToMinutes(str) {
-    const [h,m] = str.split(':').map(Number);
-    return h*60 + m;
-}
-
-function minutesToStr(mins) {
-    const h = Math.floor(mins/60) % 24, m = mins%60;
-    return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
-}
+function timeStrToMinutes(str) { const [h,m] = str.split(':').map(Number); return h*60 + m; }
 
 function renderPrayerWidget() {
     if(!prayerTimes) return;
@@ -1614,30 +1497,20 @@ function renderPrayerWidget() {
     const nowMins = now.getHours()*60 + now.getMinutes();
     const grid = document.getElementById('prayer-grid');
     const banner = document.getElementById('prayer-next-banner');
-
     let nextIdx = -1, nextMins = Infinity;
     const times = PRAYER_KEYS.map(k => timeStrToMinutes(prayerTimes[k]));
-
-    for(let i=0; i<times.length; i++) {
-        if(times[i] > nowMins) { nextIdx = i; nextMins = times[i]; break; }
-    }
+    for(let i=0; i<times.length; i++) { if(times[i] > nowMins) { nextIdx = i; nextMins = times[i]; break; } }
     if(nextIdx === -1) { nextIdx = 0; nextMins = times[0] + 24*60; }
-
     let html = '';
     PRAYER_KEYS.forEach((k,i) => {
         const isNext = i === nextIdx;
         const isPassed = times[i] < nowMins && !(nextIdx === 0 && i === 0);
-        html += `<div class="prayer-slot${isNext?' active':''}${isPassed&&!isNext?' passed':''}">
-            <div class="prayer-slot-name">${PRAYER_NAMES[i]}</div>
-            <div class="prayer-slot-time">${prayerTimes[k]}</div>
-        </div>`;
+        html += `<div class="prayer-slot${isNext?' active':''}${isPassed&&!isNext?' passed':''}"><div class="prayer-slot-name">${PRAYER_NAMES[i]}</div><div class="prayer-slot-time">${prayerTimes[k]}</div></div>`;
     });
     grid.innerHTML = html;
-
     banner.style.display = 'flex';
     document.getElementById('prayer-next-name').innerText = PRAYER_NAMES[nextIdx === 0 && nextMins > 24*60 ? 0 : nextIdx];
     document.getElementById('prayer-next-time').innerText = prayerTimes[PRAYER_KEYS[nextIdx === 0 && nextMins > 24*60 ? 0 : nextIdx]];
-
     updatePrayerCountdown(nextMins, nowMins);
 }
 
@@ -1645,20 +1518,13 @@ function updatePrayerCountdown(nextMins, nowMins) {
     if(!prayerTimes) return;
     const now = new Date();
     const curMins = now.getHours()*60 + now.getMinutes() + now.getSeconds()/60;
-    let diff = nextMins - curMins;
-    if(diff < 0) diff += 24*60;
+    let diff = nextMins - curMins; if(diff < 0) diff += 24*60;
     const h = Math.floor(diff/60), m = Math.floor(diff%60), s = Math.floor((diff%1)*60);
     const el = document.getElementById('prayer-countdown');
-    if(el) {
-        if(h > 0) el.innerText = `${h}j ${m}min lagi`;
-        else if(m > 0) el.innerText = `${m}min ${s}saat lagi`;
-        else el.innerText = `${s}saat lagi`;
-    }
+    if(el) { if(h > 0) el.innerText = `${h}j ${m}min lagi`; else if(m > 0) el.innerText = `${m}min ${s}saat lagi`; else el.innerText = `${s}saat lagi`; }
 }
 
-function renderPrayerError(msg) {
-    document.getElementById('prayer-grid').innerHTML = `<div class="prayer-error" style="grid-column:1/-1;">${msg}</div>`;
-}
+function renderPrayerError(msg) { document.getElementById('prayer-grid').innerHTML = `<div class="prayer-error" style="grid-column:1/-1;">${msg}</div>`; }
 
 function schedulePrayerRefresh() {
     const now = new Date();
@@ -1688,11 +1554,7 @@ let activeToolTab = 'nursing';
 
 function switchTool(id) {
     const panels = ['nursing', 'rsi', 'lytic', 'drugcalc'];
-    if(activeToolTab === id) {
-        activeToolTab = 'nursing';
-    } else {
-        activeToolTab = id;
-    }
+    activeToolTab = (activeToolTab === id) ? 'nursing' : id;
     panels.forEach(p => {
         const panel = document.getElementById('tool-' + p);
         const tab = document.getElementById('tab-' + p);
@@ -1703,121 +1565,75 @@ function switchTool(id) {
 }
 
 function calcNora() {
-    const dose   = parseFloat(document.getElementById('nora-dose').value);
+    const dose = parseFloat(document.getElementById('nora-dose').value);
     const weight = parseFloat(document.getElementById('nora-weight').value);
     const result = document.getElementById('nora-result');
     const placeholder = document.getElementById('nora-placeholder');
-    if(isNaN(dose) || isNaN(weight) || dose <= 0 || weight <= 0) {
-        result.style.display = 'none';
-        placeholder.style.display = 'block';
-        return;
-    }
-    const mghr   = (dose * weight * 60) / 1000;
-    const single = mghr / 0.08;
-    const double = mghr / 0.16;
+    if(isNaN(dose) || isNaN(weight) || dose <= 0 || weight <= 0) { result.style.display='none'; placeholder.style.display='block'; return; }
+    const mghr = (dose * weight * 60) / 1000;
+    const single = mghr / 0.08, double = mghr / 0.16;
     document.getElementById('nora-dose-show').innerText = dose;
-    document.getElementById('nora-wt-show').innerText   = weight;
-    document.getElementById('nora-mghr').innerText      = mghr.toFixed(4) + ' mg/hr';
-    document.getElementById('nora-single').innerText    = single.toFixed(2);
-    document.getElementById('nora-double').innerText    = double.toFixed(2);
-    result.style.display = 'block';
-    placeholder.style.display = 'none';
+    document.getElementById('nora-wt-show').innerText = weight;
+    document.getElementById('nora-mghr').innerText = mghr.toFixed(4) + ' mg/hr';
+    document.getElementById('nora-single').innerText = single.toFixed(2);
+    document.getElementById('nora-double').innerText = double.toFixed(2);
+    result.style.display = 'block'; placeholder.style.display = 'none';
 }
 
 // ── NURSING NOTES ──
 const NURSING_CATEGORIES = [
-    {id:'assessment', label:'Assessment'},
-    {id:'intervention', label:'Intervention'},
-    {id:'evaluation', label:'Evaluation'},
-    {id:'education', label:'Education'},
-    {id:'other', label:'Lain-lain'}
+    {id:'assessment',label:'Assessment'},{id:'intervention',label:'Intervention'},
+    {id:'evaluation',label:'Evaluation'},{id:'education',label:'Education'},{id:'other',label:'Lain-lain'}
 ];
 
 function openAddNursingNote(editIdx = -1) {
     const isEdit = editIdx >= 0;
     const note = isEdit ? store.nursingNotes[editIdx] : null;
     document.getElementById('sheet-title').innerText = isEdit ? '✏️ Edit Nota' : '📋 Tambah Nursing Note';
-
     const today = new Date().toISOString().split('T')[0];
     const nowTime = new Date().toTimeString().slice(0,5);
-
-    const catOptions = NURSING_CATEGORIES.map(c =>
-        `<option value="${c.id}" ${note && note.category === c.id ? 'selected' : ''}>${c.label}</option>`
-    ).join('');
-
+    const catOptions = NURSING_CATEGORIES.map(c => `<option value="${c.id}" ${note && note.category === c.id ? 'selected' : ''}>${c.label}</option>`).join('');
     document.getElementById('sheet-content').innerHTML = `
         <div class="nursing-meta">
-            <div>
-                <label>Tarikh</label>
-                <input type="date" id="nn-date" value="${note ? note.date : today}" onclick="triggerDatePicker('nn-date')">
-            </div>
-            <div>
-                <label>Masa</label>
-                <input type="time" id="nn-time" value="${note ? note.time : nowTime}">
-            </div>
+            <div><label>Tarikh</label><input type="date" id="nn-date" value="${note ? note.date : today}" onclick="triggerDatePicker('nn-date')"></div>
+            <div><label>Masa</label><input type="time" id="nn-time" value="${note ? note.time : nowTime}"></div>
         </div>
-        <label>Kategori</label>
-        <select id="nn-cat">${catOptions}</select>
+        <label>Kategori</label><select id="nn-cat">${catOptions}</select>
         <label>Pesakit / Kes (Opsional)</label>
         <input type="text" id="nn-patient" placeholder="cth: Bed 3, Trauma, OD Paracetamol..." value="${note ? (note.patient||'') : ''}">
         <label>Nota</label>
         <textarea id="nn-text" style="height:140px;" placeholder="Tulis pemerhatian, tindakan, atau nota nursing di sini...">${note ? note.text : ''}</textarea>
         <input type="hidden" id="nn-edit-idx" value="${editIdx}">
-        <button class="btn-primary" ${isEdit ? 'style="background:var(--warning);color:black;"' : ''} onclick="saveNursingNote()">
-            ${isEdit ? 'KEMASKINI NOTA' : 'SIMPAN NOTA'}
-        </button>
-        ${isEdit ? `<button class="btn-danger" onclick="deleteNursingNote(${editIdx})">PADAM NOTA</button>` : ''}
-    `;
+        <button class="btn-primary" ${isEdit ? 'style="background:var(--warning);color:black;"' : ''} onclick="saveNursingNote()">${isEdit ? 'KEMASKINI NOTA' : 'SIMPAN NOTA'}</button>
+        ${isEdit ? `<button class="btn-danger" onclick="deleteNursingNote(${editIdx})">PADAM NOTA</button>` : ''}`;
     openSheet();
     setTimeout(() => { const el = document.getElementById('nn-text'); if(el) el.focus(); }, 350);
 }
 
 function saveNursingNote() {
-    const date = document.getElementById('nn-date').value;
-    const time = document.getElementById('nn-time').value;
-    const cat  = document.getElementById('nn-cat').value;
-    const patient = document.getElementById('nn-patient').value.trim();
-    const text = document.getElementById('nn-text').value.trim();
-    const idx  = parseInt(document.getElementById('nn-edit-idx').value);
+    const date = document.getElementById('nn-date').value, time = document.getElementById('nn-time').value;
+    const cat = document.getElementById('nn-cat').value, patient = document.getElementById('nn-patient').value.trim();
+    const text = document.getElementById('nn-text').value.trim(), idx = parseInt(document.getElementById('nn-edit-idx').value);
     if(!date || !text) { alert('Sila isi tarikh dan nota.'); return; }
     const entry = { date, time, category: cat, patient, text, id: Date.now() };
-    if(idx >= 0) { store.nursingNotes[idx] = entry; }
-    else { store.nursingNotes.unshift(entry); }
-    saveData();
-    renderNursingNotes();
-    closeSheet();
+    if(idx >= 0) { store.nursingNotes[idx] = entry; } else { store.nursingNotes.unshift(entry); }
+    saveData(); renderNursingNotes(); closeSheet();
 }
 
 function deleteNursingNote(idx) {
     if(!confirm('Padam nota ini?')) return;
-    store.nursingNotes.splice(idx, 1);
-    saveData();
-    renderNursingNotes();
-    closeSheet();
+    store.nursingNotes.splice(idx, 1); saveData(); renderNursingNotes(); closeSheet();
 }
 
 function filterNursingNotes(q) { renderNursingNotes(q); }
 
 function renderNursingNotes(query = '') {
-    const list = document.getElementById('nursing-note-list');
-    if(!list) return;
+    const list = document.getElementById('nursing-note-list'); if(!list) return;
     const notes = store.nursingNotes || [];
-    const filtered = query
-        ? notes.filter(n => n.text.toLowerCase().includes(query.toLowerCase()) || (n.patient||'').toLowerCase().includes(query.toLowerCase()))
-        : notes;
-
-    if(filtered.length === 0) {
-        list.innerHTML = `<div class="nursing-empty">${query ? '😕 Tiada nota ditemui.' : '📋 Belum ada nota. Tambah yang pertama!'}</div>`;
-        return;
-    }
-
-    const sorted = [...filtered].sort((a,b) => {
-        const da = new Date(a.date + 'T' + (a.time||'00:00'));
-        const db = new Date(b.date + 'T' + (b.time||'00:00'));
-        return db - da;
-    });
-
-    list.innerHTML = sorted.map((n, i) => {
+    const filtered = query ? notes.filter(n => n.text.toLowerCase().includes(query.toLowerCase()) || (n.patient||'').toLowerCase().includes(query.toLowerCase())) : notes;
+    if(filtered.length === 0) { list.innerHTML = `<div class="nursing-empty">${query ? '😕 Tiada nota ditemui.' : '📋 Belum ada nota. Tambah yang pertama!'}</div>`; return; }
+    const sorted = [...filtered].sort((a,b) => { const da = new Date(a.date+'T'+(a.time||'00:00')), db = new Date(b.date+'T'+(b.time||'00:00')); return db-da; });
+    list.innerHTML = sorted.map(n => {
         const realIdx = store.nursingNotes.indexOf(n);
         const catInfo = NURSING_CATEGORIES.find(c => c.id === n.category) || NURSING_CATEGORIES[4];
         const dispDate = n.date ? n.date.split('-').reverse().join('/') : '';
@@ -1827,9 +1643,7 @@ function renderNursingNotes(query = '') {
                 <button onclick="openAddNursingNote(${realIdx})" style="background:none;border:none;color:var(--primary);font-family:'JetBrains Mono',monospace;font-size:0.6rem;font-weight:700;cursor:pointer;padding:0;">EDIT</button>
             </div>
             <div class="nursing-note-text">${n.text}</div>
-            <div class="nursing-note-tags">
-                <span class="nursing-tag ${n.category}">${catInfo.label}</span>
-            </div>
+            <div class="nursing-note-tags"><span class="nursing-tag ${n.category}">${catInfo.label}</span></div>
         </div>`;
     }).join('');
 }
@@ -1850,39 +1664,31 @@ function updateTime() {
 }
 
 function changeMonth(dir) { currentCalDate.setMonth(currentCalDate.getMonth()+dir); generateCalendar(); renderStats(); }
-
 function isoKey(year,month,day) { return `${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`; }
 
 function migrateCalendarKeys() {
     const old=store.calendar, nw={};
-    Object.keys(old).forEach(k=>{
-        const p=k.split('-');
-        nw[p.length===3?`${p[0]}-${p[1].padStart(2,'0')}-${p[2].padStart(2,'0')}`:k]=old[k];
-    });
+    Object.keys(old).forEach(k=>{ const p=k.split('-'); nw[p.length===3?`${p[0]}-${p[1].padStart(2,'0')}-${p[2].padStart(2,'0')}`:k]=old[k]; });
     store.calendar=nw;
 }
 
 function generateCalendar() {
-    const body=document.getElementById('calendar-body');
-    const title=document.getElementById('cal-title');
+    const body=document.getElementById('calendar-body'), title=document.getElementById('cal-title');
     const months=["Januari","Februari","Mac","April","Mei","Jun","Julai","Ogos","September","Oktober","November","Disember"];
     const year=currentCalDate.getFullYear(), month=currentCalDate.getMonth();
     title.innerText=`${months[month]} ${year}`; body.innerHTML='';
-    const firstDay=new Date(year,month,1).getDay();
-    const daysInMonth=new Date(year,month+1,0).getDate();
+    const firstDay=new Date(year,month,1).getDay(), daysInMonth=new Date(year,month+1,0).getDate();
     for(let i=0;i<firstDay;i++) body.appendChild(document.createElement('div'));
     for(let d=1;d<=daysInMonth;d++) {
         const key=isoKey(year,month,d);
         const data=store.calendar[key]||{s:'-',a:''};
         const box=document.createElement('div');
         box.className='day-box';
-        // ── PERUBAHAN: tambah data-shift attribute untuk CSS styling ──
         box.setAttribute('data-shift', data.s||'-');
         if(new Date().toDateString()===new Date(year,month,d).toDateString()) box.classList.add('today');
         box.onclick=()=>openShiftPicker(key);
-        const color=shiftColor(data.s);
         const reminderDot=data.reminder?`<div style="position:absolute;bottom:2px;right:3px;width:4px;height:4px;border-radius:50%;background:#8888ff;"></div>`:'';
-        box.innerHTML=`<div class="date-num">${d}</div><div class="shift-text" style="color:${color};">${data.s||'-'}</div><div class="assign-text">${data.a||''}</div>${reminderDot}`;
+        box.innerHTML=`<div class="date-num">${d}</div><div class="shift-text">${data.s||'-'}</div><div class="assign-text">${data.a||''}</div>${reminderDot}`;
         body.appendChild(box);
     }
     updateShiftSummary();
@@ -1891,29 +1697,18 @@ function generateCalendar() {
 function updateShiftSummary() {
     const now=new Date(), tom=new Date(now); tom.setDate(now.getDate()+1);
     const getFullAssign=(short)=>{ if(!short) return ''; return short.replace(/Amb/g,'Ambulance').replace(/TL/g,'Team Leader'); };
-    const getS=(date)=>{
-        const key=isoKey(date.getFullYear(),date.getMonth(),date.getDate());
-        const d=store.calendar[key]; if(!d||d.s==='-') return "OFF";
-        return `${d.s}${d.a?' · '+getFullAssign(d.a):''}`;
-    };
+    const getS=(date)=>{ const key=isoKey(date.getFullYear(),date.getMonth(),date.getDate()); const d=store.calendar[key]; if(!d||d.s==='-') return "OFF"; return `${d.s}${d.a?' · '+getFullAssign(d.a):''}`; };
     document.getElementById('summary-today').innerText=getS(now);
     document.getElementById('summary-tomorrow').innerText=getS(tom);
-    const remDiv=document.getElementById('summary-reminders');
-    const reminders=[];
+    const remDiv=document.getElementById('summary-reminders'), reminders=[];
     for(let i=0;i<=7;i++){
         const d=new Date(now); d.setDate(now.getDate()+i);
         const key=isoKey(d.getFullYear(),d.getMonth(),d.getDate());
         const entry=store.calendar[key];
-        if(entry&&entry.reminder){
-            const dd=String(d.getDate()).padStart(2,'0');
-            const mm=String(d.getMonth()+1).padStart(2,'0');
-            reminders.push({label:`${dd}/${mm}`,text:entry.reminder});
-        }
+        if(entry&&entry.reminder){ const dd=String(d.getDate()).padStart(2,'0'), mm=String(d.getMonth()+1).padStart(2,'0'); reminders.push({label:`${dd}/${mm}`,text:entry.reminder}); }
     }
-    if(reminders.length>0){
-        remDiv.style.display='block';
-        remDiv.innerHTML=reminders.map(r=>`<div style="display:flex;justify-content:space-between;gap:8px;margin-bottom:6px;"><span style="font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:#8888ff;font-weight:700;white-space:nowrap;">🔔 ${r.label}</span><span style="font-size:0.7rem;color:var(--text);line-height:1.4;text-align:right;">${r.text}</span></div>`).join('');
-    } else { remDiv.style.display='none'; remDiv.innerHTML=''; }
+    if(reminders.length>0){ remDiv.style.display='block'; remDiv.innerHTML=reminders.map(r=>`<div style="display:flex;justify-content:space-between;gap:8px;margin-bottom:6px;"><span style="font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:#8888ff;font-weight:700;white-space:nowrap;">🔔 ${r.label}</span><span style="font-size:0.7rem;color:var(--text);line-height:1.4;text-align:right;">${r.text}</span></div>`).join(''); }
+    else { remDiv.style.display='none'; remDiv.innerHTML=''; }
 }
 
 // ── DRUG ──
@@ -1922,43 +1717,23 @@ function searchDrugs() {
     const results=document.getElementById('drug-results'); results.innerHTML=''; if(!q) return;
     const matched=store.drugs.map((d,idx)=>({d,idx})).filter(({d})=>d.name.toLowerCase().includes(q));
     if(matched.length===0){ results.innerHTML='<div style="font-size:0.75rem;color:var(--text-muted);text-align:center;padding:16px;">Tiada ubat ditemui.</div>'; return; }
-    matched.forEach(({d,idx})=>{
-        const div=document.createElement('div'); div.className='drug-item';
-        div.innerHTML=`<div style="flex:1;min-width:0;"><div class="drug-name">${d.name}</div><div class="drug-ampule">${d.ampule||'—'}</div><div class="drug-prep">${d.prep}</div></div><div style="display:flex;flex-direction:column;gap:4px;flex-shrink:0;margin-left:8px;"><button onclick="event.stopPropagation();openEditDrugSheet(${idx})" style="background:none;color:var(--success);border:none;font-size:0.65rem;font-weight:700;cursor:pointer;font-family:'JetBrains Mono',monospace;">EDIT</button><button onclick="event.stopPropagation();deleteDrug(${idx})" style="background:none;color:var(--danger);border:none;font-size:0.65rem;font-weight:700;cursor:pointer;font-family:'JetBrains Mono',monospace;">DEL</button></div>`;
-        results.appendChild(div);
-    });
+    matched.forEach(({d,idx})=>{ const div=document.createElement('div'); div.className='drug-item'; div.innerHTML=`<div style="flex:1;min-width:0;"><div class="drug-name">${d.name}</div><div class="drug-ampule">${d.ampule||'—'}</div><div class="drug-prep">${d.prep}</div></div><div style="display:flex;flex-direction:column;gap:4px;flex-shrink:0;margin-left:8px;"><button onclick="event.stopPropagation();openEditDrugSheet(${idx})" style="background:none;color:var(--success);border:none;font-size:0.65rem;font-weight:700;cursor:pointer;font-family:'JetBrains Mono',monospace;">EDIT</button><button onclick="event.stopPropagation();deleteDrug(${idx})" style="background:none;color:var(--danger);border:none;font-size:0.65rem;font-weight:700;cursor:pointer;font-family:'JetBrains Mono',monospace;">DEL</button></div>`; results.appendChild(div); });
 }
-function openAddDrugSheet() {
-    document.getElementById('sheet-title').innerText="Tambah Ubat";
-    document.getElementById('sheet-content').innerHTML=`<label>Nama Ubat</label><input type="text" id="drug-name-in" placeholder="cth: IV Morphine"><label>Dose / Ampule</label><input type="text" id="drug-ampule-in" placeholder="cth: 10mg/ml"><label>Cara Penyediaan</label><textarea id="drug-prep-in" style="height:90px;" placeholder="cth: 10mg in 10mls NS"></textarea><button class="btn-primary" onclick="saveDrug()">SIMPAN</button>`;
-    openSheet();
-}
-function saveDrug() {
-    const name=document.getElementById('drug-name-in').value.trim(), ampule=document.getElementById('drug-ampule-in').value.trim(), prep=document.getElementById('drug-prep-in').value.trim();
-    if(name&&prep){store.drugs.push({name,ampule:ampule||'—',prep}); saveData(); closeSheet(); searchDrugs();}
-}
-function openEditDrugSheet(idx) {
-    const d=store.drugs[idx]; document.getElementById('sheet-title').innerText="Edit Ubat";
-    document.getElementById('sheet-content').innerHTML=`<label>Nama Ubat</label><input type="text" id="edit-name" value="${d.name}"><label>Dose / Ampule</label><input type="text" id="edit-ampule" value="${d.ampule||''}"><label>Cara Penyediaan</label><textarea id="edit-prep" style="height:90px;">${d.prep}</textarea><button class="btn-primary" onclick="updateDrug(${idx})">KEMASKINI</button>`;
-    openSheet();
-}
-function updateDrug(idx) {
-    const n=document.getElementById('edit-name').value.trim(), a=document.getElementById('edit-ampule').value.trim(), p=document.getElementById('edit-prep').value.trim();
-    if(n&&p){store.drugs[idx].name=n;store.drugs[idx].ampule=a||'—';store.drugs[idx].prep=p;saveData();closeSheet();searchDrugs();}
-}
+function openAddDrugSheet() { document.getElementById('sheet-title').innerText="Tambah Ubat"; document.getElementById('sheet-content').innerHTML=`<label>Nama Ubat</label><input type="text" id="drug-name-in" placeholder="cth: IV Morphine"><label>Dose / Ampule</label><input type="text" id="drug-ampule-in" placeholder="cth: 10mg/ml"><label>Cara Penyediaan</label><textarea id="drug-prep-in" style="height:90px;" placeholder="cth: 10mg in 10mls NS"></textarea><button class="btn-primary" onclick="saveDrug()">SIMPAN</button>`; openSheet(); }
+function saveDrug() { const name=document.getElementById('drug-name-in').value.trim(), ampule=document.getElementById('drug-ampule-in').value.trim(), prep=document.getElementById('drug-prep-in').value.trim(); if(name&&prep){store.drugs.push({name,ampule:ampule||'—',prep}); saveData(); closeSheet(); searchDrugs();} }
+function openEditDrugSheet(idx) { const d=store.drugs[idx]; document.getElementById('sheet-title').innerText="Edit Ubat"; document.getElementById('sheet-content').innerHTML=`<label>Nama Ubat</label><input type="text" id="edit-name" value="${d.name}"><label>Dose / Ampule</label><input type="text" id="edit-ampule" value="${d.ampule||''}"><label>Cara Penyediaan</label><textarea id="edit-prep" style="height:90px;">${d.prep}</textarea><button class="btn-primary" onclick="updateDrug(${idx})">KEMASKINI</button>`; openSheet(); }
+function updateDrug(idx) { const n=document.getElementById('edit-name').value.trim(), a=document.getElementById('edit-ampule').value.trim(), p=document.getElementById('edit-prep').value.trim(); if(n&&p){store.drugs[idx].name=n;store.drugs[idx].ampule=a||'—';store.drugs[idx].prep=p;saveData();closeSheet();searchDrugs();} }
 function deleteDrug(idx){if(confirm("Padam ubat ini?")){store.drugs.splice(idx,1);saveData();searchDrugs();}}
 
 // ── SHIFT PICKER ──
 function openShiftPicker(key) {
     const existing=store.calendar[key]||{};
-    const parts=key.split('-');
-    const dispDate=parts.length===3?`${parts[2]}/${parts[1]}/${parts[0]}`:key;
+    const parts=key.split('-'), dispDate=parts.length===3?`${parts[2]}/${parts[1]}/${parts[0]}`:key;
     document.getElementById('sheet-title').innerText=`Shift — ${dispDate}`;
     const currentRaw=existing.s&&existing.s!=='-'?existing.s:'';
     document.getElementById('sheet-content').innerHTML=`
         <label>Kod Shift</label>
-        <input type="text" id="shift-input" placeholder="cth: N# atau M/E*"
-            value="${currentRaw}"
+        <input type="text" id="shift-input" placeholder="cth: N# atau M/E*" value="${currentRaw}"
             style="font-size:1.2rem;font-weight:700;text-align:center;letter-spacing:0.08em;"
             oninput="this.value=this.value.toUpperCase()"
             onkeydown="if(event.key==='Enter') applyTypedShift('${key}')">
@@ -1967,13 +1742,9 @@ function openShiftPicker(key) {
         <button class="btn-secondary" onclick="openReminderSheet('${key}')">🔔 REMINDER${existing.reminder?' · '+existing.reminder.substring(0,18)+(existing.reminder.length>18?'...':''):''}</button>
         ${existing.s&&existing.s!=='-'?`<button class="btn-danger" onclick="clearShift('${key}')">KOSONGKAN</button>`:''}
         ${existing.s==='RPL'?`<button class="btn-secondary" onclick="openRPLLinkSheet('${key}')" style="border-color:rgba(80,200,120,0.3);color:var(--primary);">🔗 PAUT REKOD RPL</button>`:''}
-        ${existing.s==='PH'?`<button class="btn-secondary" onclick="openPHLinkSheet('${key}')" style="border-color:rgba(229,192,123,0.35);color:#e5c07b;">📅 PAUT CUTI UMUM</button>`:''}
-    `;
+        ${existing.s==='PH'?`<button class="btn-secondary" onclick="openPHLinkSheet('${key}')" style="border-color:rgba(229,192,123,0.35);color:#e5c07b;">📅 PAUT CUTI UMUM</button>`:''}`;
     openSheet();
-    setTimeout(()=>{
-        const inp=document.getElementById('shift-input');
-        if(inp){inp.focus();inp.select();inp.addEventListener('input',()=>livePreviewShift(inp.value));}
-    },350);
+    setTimeout(()=>{ const inp=document.getElementById('shift-input'); if(inp){inp.focus();inp.select();inp.addEventListener('input',()=>livePreviewShift(inp.value));} },350);
 }
 
 function livePreviewShift(val) {
@@ -2002,13 +1773,7 @@ function openReminderSheet(key) {
     const parts=key.split('-'), dispDate=parts.length===3?`${parts[2]}/${parts[1]}/${parts[0]}`:key;
     const existing=store.calendar[key]||{};
     document.getElementById('sheet-title').innerText=`🔔 Reminder — ${dispDate}`;
-    document.getElementById('sheet-content').innerHTML=`
-        <label>Nota Reminder</label>
-        <textarea id="reminder-input" style="height:110px;" placeholder="cth: AUDIT MSQH, Mesyuarat, Kursus BLS...">${existing.reminder||''}</textarea>
-        <button class="btn-primary" onclick="saveReminder('${key}')">SIMPAN REMINDER</button>
-        ${existing.reminder?`<button class="btn-danger" onclick="deleteReminder('${key}')">BUANG REMINDER</button>`:''}
-    `;
-    openSheet();
+    document.getElementById('sheet-content').innerHTML=`<label>Nota Reminder</label><textarea id="reminder-input" style="height:110px;" placeholder="cth: AUDIT MSQH, Mesyuarat, Kursus BLS...">${existing.reminder||''}</textarea><button class="btn-primary" onclick="saveReminder('${key}')">SIMPAN REMINDER</button>${existing.reminder?`<button class="btn-danger" onclick="deleteReminder('${key}')">BUANG REMINDER</button>`:''}`; openSheet();
     setTimeout(()=>{const el=document.getElementById('reminder-input');if(el)el.focus();},350);
 }
 function saveReminder(key){const val=(document.getElementById('reminder-input').value||'').trim(); if(!store.calendar[key]) store.calendar[key]={s:'-',a:''}; store.calendar[key].reminder=val; saveData();generateCalendar();closeSheet();}
@@ -2021,15 +1786,7 @@ function openRPLLinkSheet(key) {
     const available=store.rpl.records.filter(r=>!linkedDates.includes(r.d1));
     let html='';
     if(available.length===0) html+=`<div style="font-size:0.75rem;color:var(--text-dim);padding:12px;text-align:center;border:1px solid var(--border);border-radius:var(--radius-xs);margin-bottom:12px;">Tiada rekod RPL. Tambah rekod RPL dahulu.</div>`;
-    else {
-        html+=`<div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px;">`;
-        available.forEach(r=>{
-            const isLinked=store.calendar[key]&&store.calendar[key].rplLinked===r.d1;
-            const dispPH=toMY(r.d1), dispRepl=r.isPaid?'PAID':toMY(r.d2);
-            html+=`<div onclick="linkRPL('${key}','${r.d1}')" style="background:${isLinked?'var(--primary-dim)':'var(--surface)'};border:1px solid ${isLinked?'var(--primary)':'var(--border)'};border-radius:var(--radius-sm);padding:12px;cursor:pointer;"><div style="font-weight:700;font-size:0.8rem;color:${isLinked?'var(--primary)':'var(--text)'};margin-bottom:3px;">${r.t}</div><div style="font-size:0.68rem;color:var(--text-dim);">PH: ${dispPH} → Ganti: ${dispRepl}</div>${isLinked?'<div style="font-size:0.62rem;color:var(--primary);margin-top:4px;">✓ Sedang dipaut</div>':''}</div>`;
-        });
-        html+=`</div>`;
-    }
+    else { html+=`<div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px;">`; available.forEach(r=>{ const isLinked=store.calendar[key]&&store.calendar[key].rplLinked===r.d1; const dispPH=toMY(r.d1), dispRepl=r.isPaid?'PAID':toMY(r.d2); html+=`<div onclick="linkRPL('${key}','${r.d1}')" style="background:${isLinked?'var(--primary-dim)':'var(--surface)'};border:1px solid ${isLinked?'var(--primary)':'var(--border)'};border-radius:var(--radius-sm);padding:12px;cursor:pointer;"><div style="font-weight:700;font-size:0.8rem;color:${isLinked?'var(--primary)':'var(--text)'};margin-bottom:3px;">${r.t}</div><div style="font-size:0.68rem;color:var(--text-dim);">PH: ${dispPH} → Ganti: ${dispRepl}</div>${isLinked?'<div style="font-size:0.62rem;color:var(--primary);margin-top:4px;">✓ Sedang dipaut</div>':''}</div>`; }); html+=`</div>`; }
     if(store.calendar[key]&&store.calendar[key].rplLinked) html+=`<button class="btn-danger" onclick="unlinkRPL('${key}')">✕ Buang Pautan RPL</button>`;
     html+=`<button class="btn-secondary" onclick="openShiftPicker('${key}')">✏️ Tukar Shift Lain</button>`;
     document.getElementById('sheet-content').innerHTML=html; openSheet();
@@ -2043,125 +1800,42 @@ function openPHLinkSheet(key) {
     const linkedPHDates=Object.keys(store.calendar).filter(k=>store.calendar[k].s==='PH'&&store.calendar[k].phLinked&&k!==key).map(k=>store.calendar[k].phLinked);
     const available=ph2026.filter(p=>!linkedPHDates.includes(p.d));
     let html='';
-    if(available.length===0) {
-        html+=`<div style="font-size:0.75rem;color:var(--text-dim);padding:12px;text-align:center;border:1px solid var(--border);border-radius:var(--radius-xs);margin-bottom:12px;">Tiada rekod PH tersedia.</div>`;
-    } else {
-        html+=`<div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px;">`;
-        available.forEach(p=>{
-            const isLinked=store.calendar[key]&&store.calendar[key].phLinked===p.d;
-            const dispD=toMY(p.d);
-            const paidBadge=p.paid?`<span style="font-size:0.58rem;background:rgba(243,156,18,0.18);color:#f39c12;padding:1px 6px;border-radius:20px;font-weight:700;margin-left:6px;">PAID</span>`:'';
-            html+=`<div onclick="linkPH('${key}','${p.d}')" style="background:${isLinked?'rgba(229,192,123,0.1)':'var(--surface)'};border:1px solid ${isLinked?'#e5c07b':'var(--border)'};border-radius:var(--radius-sm);padding:12px;cursor:pointer;">
-                <div style="font-weight:700;font-size:0.8rem;color:${isLinked?'#e5c07b':'var(--text)'};margin-bottom:3px;">${p.n}${paidBadge}</div>
-                <div style="font-size:0.68rem;color:var(--text-dim);">📅 ${dispD}</div>
-                ${isLinked?'<div style="font-size:0.62rem;color:#e5c07b;margin-top:4px;">✓ Sedang dipaut</div>':''}
-            </div>`;
-        });
-        html+=`</div>`;
-    }
+    if(available.length===0) html+=`<div style="font-size:0.75rem;color:var(--text-dim);padding:12px;text-align:center;border:1px solid var(--border);border-radius:var(--radius-xs);margin-bottom:12px;">Tiada rekod PH tersedia.</div>`;
+    else { html+=`<div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px;">`; available.forEach(p=>{ const isLinked=store.calendar[key]&&store.calendar[key].phLinked===p.d; const dispD=toMY(p.d); const paidBadge=p.paid?`<span style="font-size:0.58rem;background:rgba(243,156,18,0.18);color:#f39c12;padding:1px 6px;border-radius:20px;font-weight:700;margin-left:6px;">PAID</span>`:''; html+=`<div onclick="linkPH('${key}','${p.d}')" style="background:${isLinked?'rgba(229,192,123,0.1)':'var(--surface)'};border:1px solid ${isLinked?'#e5c07b':'var(--border)'};border-radius:var(--radius-sm);padding:12px;cursor:pointer;"><div style="font-weight:700;font-size:0.8rem;color:${isLinked?'#e5c07b':'var(--text)'};margin-bottom:3px;">${p.n}${paidBadge}</div><div style="font-size:0.68rem;color:var(--text-dim);">📅 ${dispD}</div>${isLinked?'<div style="font-size:0.62rem;color:#e5c07b;margin-top:4px;">✓ Sedang dipaut</div>':''}</div>`; }); html+=`</div>`; }
     if(store.calendar[key]&&store.calendar[key].phLinked) html+=`<button class="btn-danger" onclick="unlinkPH('${key}')">✕ Buang Pautan PH</button>`;
     html+=`<button class="btn-secondary" onclick="openShiftPicker('${key}')">✏️ Tukar Shift Lain</button>`;
     document.getElementById('sheet-content').innerHTML=html; openSheet();
 }
-function linkPH(calKey,phDate){
-    if(!store.calendar[calKey]) store.calendar[calKey]={s:'PH',a:''};
-    store.calendar[calKey].phLinked=phDate;
-    const entry=ph2026.find(p=>p.d===phDate);
-    if(entry){ const short=entry.n.replace('Hari ','').replace('Tahun ','').substring(0,10); store.calendar[calKey].a=short; }
-    saveData();generateCalendar();closeSheet();
-}
+function linkPH(calKey,phDate){ if(!store.calendar[calKey]) store.calendar[calKey]={s:'PH',a:''}; store.calendar[calKey].phLinked=phDate; const entry=ph2026.find(p=>p.d===phDate); if(entry){ const short=entry.n.replace('Hari ','').replace('Tahun ','').substring(0,10); store.calendar[calKey].a=short; } saveData();generateCalendar();closeSheet(); }
 function unlinkPH(calKey){if(store.calendar[calKey]){delete store.calendar[calKey].phLinked;store.calendar[calKey].a='';} saveData();generateCalendar();closeSheet();}
 
 // ── RECORDS ──
 function openRecordSheet(type){document.getElementById('sheet-title').innerText=type;renderRecords(type);openSheet();}
-function checkPaidPH(){
-    const sel=document.getElementById('in-ph-select'); if(!sel) return;
-    const isPaid=sel.options[sel.selectedIndex].getAttribute('data-paid')==='true';
-    document.getElementById('paid-alert').style.display=isPaid?'block':'none';
-    document.getElementById('in-d2').style.display=isPaid?'none':'block';
-    if(isPaid) document.getElementById('paid-alert').innerText="PH ini telah dibayar (Paid).";
-}
+function checkPaidPH(){ const sel=document.getElementById('in-ph-select'); if(!sel) return; const isPaid=sel.options[sel.selectedIndex].getAttribute('data-paid')==='true'; document.getElementById('paid-alert').style.display=isPaid?'block':'none'; document.getElementById('in-d2').style.display=isPaid?'none':'block'; if(isPaid) document.getElementById('paid-alert').innerText="PH ini telah dibayar (Paid)."; }
 
 function renderRecords(type){
     const content=document.getElementById('sheet-content'); let html='<div>';
-    if(type==='AL'){
-        store.al.taken.forEach((d,i)=>html+=`<div class="record-card"><div>Cuti: ${toMY(d)}</div><button class="btn-delete" onclick="store.al.taken.splice(${i},1);saveData();renderRecords('AL')">×</button></div>`);
-        html+=`<label>Tarikh Cuti</label><input type="date" id="in-d" onclick="triggerDatePicker('in-d')">`;
-    } else if(type==='RPL'){
-        store.rpl.records.forEach((r,i)=>html+=`<div class="record-card"><div><b>${r.t}</b><br><small style="color:var(--text-dim)">${toMY(r.d1)} ➔ ${r.isPaid?'PAID':toMY(r.d2)}</small></div><button class="btn-delete" onclick="store.rpl.records.splice(${i},1);saveData();renderRecords('RPL')">×</button></div>`);
-        const recordedDates=store.rpl.records.map(r=>r.d1);
-        const avPH=ph2026.filter(p=>!recordedDates.includes(p.d));
-        html+=`<div id="paid-alert" class="paid-alert"></div><label>Pilih PH</label><select id="in-ph-select" onchange="document.getElementById('in-d1').value=this.value;checkPaidPH();"><option value="">-- Pilih --</option>${avPH.map(p=>{const dp=p.d.split('-');return`<option value="${p.d}" data-paid="${p.paid}">(${dp[2]}/${dp[1]}) ${p.n}</option>`;}).join('')}</select><input type="date" id="in-d1" hidden><label id="label-rpl">Tarikh Ganti</label><input type="date" id="in-d2" onclick="triggerDatePicker('in-d2')">`;
-    } else if(type==='CPD'){
-        store.cpd.records.forEach((r,i)=>html+=`<div class="record-card"><div style="flex:1"><b>${r.t}</b><br><small style="color:var(--text-dim)">📅 ${toMY(r.d)} | 🕒 ${r.t1} - ${r.t2}</small></div><div style="font-weight:700;color:var(--success);margin-right:8px;">${r.p} Pts</div><div style="display:flex;flex-direction:column;gap:4px;"><button style="background:none;color:var(--primary);border:none;font-size:0.65rem;font-weight:700;cursor:pointer;font-family:'JetBrains Mono',monospace;" onclick="editCPD(${i})">EDIT</button><button class="btn-delete" onclick="store.cpd.records.splice(${i},1);saveData();renderRecords('CPD')">×</button></div></div>`);
-        html+=`<input type="hidden" id="cpd-edit-idx" value="-1"><label>Nama Kursus</label><input type="text" id="in-t"><label>Tarikh</label><input type="date" id="in-d" onclick="triggerDatePicker('in-d')"><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;"><div><label>Mula</label><input type="time" id="in-t1"></div><div><label>Tamat</label><input type="time" id="in-t2"></div></div><label>Mata</label><input type="number" id="in-p">`;
-    }
-    html+=`</div><button class="btn-primary" id="btn-save-rec" onclick="addRec('${type}')">SIMPAN</button>`;
-    content.innerHTML=html;
+    if(type==='AL'){ store.al.taken.forEach((d,i)=>html+=`<div class="record-card"><div>Cuti: ${toMY(d)}</div><button class="btn-delete" onclick="store.al.taken.splice(${i},1);saveData();renderRecords('AL')">×</button></div>`); html+=`<label>Tarikh Cuti</label><input type="date" id="in-d" onclick="triggerDatePicker('in-d')">`; }
+    else if(type==='RPL'){ store.rpl.records.forEach((r,i)=>html+=`<div class="record-card"><div><b>${r.t}</b><br><small style="color:var(--text-dim)">${toMY(r.d1)} ➔ ${r.isPaid?'PAID':toMY(r.d2)}</small></div><button class="btn-delete" onclick="store.rpl.records.splice(${i},1);saveData();renderRecords('RPL')">×</button></div>`); const recordedDates=store.rpl.records.map(r=>r.d1); const avPH=ph2026.filter(p=>!recordedDates.includes(p.d)); html+=`<div id="paid-alert" class="paid-alert"></div><label>Pilih PH</label><select id="in-ph-select" onchange="document.getElementById('in-d1').value=this.value;checkPaidPH();"><option value="">-- Pilih --</option>${avPH.map(p=>{const dp=p.d.split('-');return`<option value="${p.d}" data-paid="${p.paid}">(${dp[2]}/${dp[1]}) ${p.n}</option>`;}).join('')}</select><input type="date" id="in-d1" hidden><label id="label-rpl">Tarikh Ganti</label><input type="date" id="in-d2" onclick="triggerDatePicker('in-d2')">`; }
+    else if(type==='CPD'){ store.cpd.records.forEach((r,i)=>html+=`<div class="record-card"><div style="flex:1"><b>${r.t}</b><br><small style="color:var(--text-dim)">📅 ${toMY(r.d)} | 🕒 ${r.t1} - ${r.t2}</small></div><div style="font-weight:700;color:var(--success);margin-right:8px;">${r.p} Pts</div><div style="display:flex;flex-direction:column;gap:4px;"><button style="background:none;color:var(--primary);border:none;font-size:0.65rem;font-weight:700;cursor:pointer;font-family:'JetBrains Mono',monospace;" onclick="editCPD(${i})">EDIT</button><button class="btn-delete" onclick="store.cpd.records.splice(${i},1);saveData();renderRecords('CPD')">×</button></div></div>`); html+=`<input type="hidden" id="cpd-edit-idx" value="-1"><label>Nama Kursus</label><input type="text" id="in-t"><label>Tarikh</label><input type="date" id="in-d" onclick="triggerDatePicker('in-d')"><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;"><div><label>Mula</label><input type="time" id="in-t1"></div><div><label>Tamat</label><input type="time" id="in-t2"></div></div><label>Mata</label><input type="number" id="in-p">`; }
+    html+=`</div><button class="btn-primary" id="btn-save-rec" onclick="addRec('${type}')">SIMPAN</button>`; content.innerHTML=html;
 }
 
 function addRec(type){
     if(type==='AL'){const d=document.getElementById('in-d').value;if(d)store.al.taken.push(d);}
     else if(type==='RPL'){const sel=document.getElementById('in-ph-select'),d1=document.getElementById('in-d1').value,d2=document.getElementById('in-d2').value;if(sel&&d1){const t=sel.options[sel.selectedIndex].text,isPaid=sel.options[sel.selectedIndex].getAttribute('data-paid')==='true';if(t&&d1&&(isPaid||d2))store.rpl.records.push({t,d1,d2,isPaid});}}
-    else if(type==='CPD'){
-        const t=document.getElementById('in-t').value,d=document.getElementById('in-d').value,p=document.getElementById('in-p').value,t1=document.getElementById('in-t1').value,t2=document.getElementById('in-t2').value;
-        const idx=parseInt(document.getElementById('cpd-edit-idx').value);
-        if(t&&d&&p&&t1&&t2){ if(idx>=0){ store.cpd.records[idx]={t,d,p,t1,t2}; } else { store.cpd.records.push({t,d,p,t1,t2}); } }
-    }
+    else if(type==='CPD'){ const t=document.getElementById('in-t').value,d=document.getElementById('in-d').value,p=document.getElementById('in-p').value,t1=document.getElementById('in-t1').value,t2=document.getElementById('in-t2').value; const idx=parseInt(document.getElementById('cpd-edit-idx').value); if(t&&d&&p&&t1&&t2){ if(idx>=0){ store.cpd.records[idx]={t,d,p,t1,t2}; } else { store.cpd.records.push({t,d,p,t1,t2}); } } }
     saveData();renderRecords(type);
 }
 
-function editCPD(i){
-    const r=store.cpd.records[i];
-    document.getElementById('cpd-edit-idx').value=i;
-    document.getElementById('in-t').value=r.t;
-    document.getElementById('in-d').value=r.d;
-    document.getElementById('in-t1').value=r.t1;
-    document.getElementById('in-t2').value=r.t2;
-    document.getElementById('in-p').value=r.p;
-    const btn=document.getElementById('btn-save-rec');
-    if(btn){btn.innerText='KEMASKINI';btn.style.background='var(--warning)';btn.style.color='black';}
-    document.getElementById('in-t').focus();
-    document.getElementById('in-t').scrollIntoView({behavior:'smooth',block:'center'});
-}
+function editCPD(i){ const r=store.cpd.records[i]; document.getElementById('cpd-edit-idx').value=i; document.getElementById('in-t').value=r.t; document.getElementById('in-d').value=r.d; document.getElementById('in-t1').value=r.t1; document.getElementById('in-t2').value=r.t2; document.getElementById('in-p').value=r.p; const btn=document.getElementById('btn-save-rec'); if(btn){btn.innerText='KEMASKINI';btn.style.background='var(--warning)';btn.style.color='black';} document.getElementById('in-t').focus(); document.getElementById('in-t').scrollIntoView({behavior:'smooth',block:'center'}); }
 
 // ── TODO ──
-function openTodoPopup(){
-    document.getElementById('sheet-title').innerText="Tambah Tugasan";
-    document.getElementById('sheet-content').innerHTML=`<label>Tugasan</label><input type="text" id="pop-todo-t" placeholder="Apa yang perlu dibuat?"><label>Tarikh Akhir (Opsional)</label><input type="date" id="pop-todo-d" onclick="triggerDatePicker('pop-todo-d')"><button class="btn-primary" onclick="saveTodoFinal()">SIMPAN TUGASAN</button>`;
-    openSheet();
-}
-function saveTodoFinal(){
-    const t=document.getElementById('pop-todo-t').value,d=document.getElementById('pop-todo-d').value;
-    if(!t.trim())return; store.todos.push({t,date:d,done:false});saveData();closeSheet();renderTodos();
-}
-function editTodo(i){
-    const todo=store.todos[i];
-    document.getElementById('sheet-title').innerText="Edit Tugasan";
-    document.getElementById('sheet-content').innerHTML=`
-        <label>Tugasan</label>
-        <input type="text" id="pop-todo-t" value="${todo.t.replace(/"/g,'&quot;')}">
-        <label>Tarikh Akhir (Opsional)</label>
-        <input type="date" id="pop-todo-d" value="${todo.date||''}" onclick="triggerDatePicker('pop-todo-d')">
-        <button class="btn-primary" style="background:var(--warning);color:black;" onclick="updateTodo(${i})">KEMASKINI TUGASAN</button>
-        <button class="btn-danger" onclick="store.todos.splice(${i},1);saveData();closeSheet();renderTodos();">PADAM TUGASAN</button>
-    `;
-    openSheet();
-    setTimeout(()=>{const el=document.getElementById('pop-todo-t');if(el){el.focus();el.select();}},350);
-}
-function updateTodo(i){
-    const t=document.getElementById('pop-todo-t').value,d=document.getElementById('pop-todo-d').value;
-    if(!t.trim())return;
-    store.todos[i].t=t; store.todos[i].date=d;
-    saveData();closeSheet();renderTodos();
-}
-function renderTodos(){
-    const list=document.getElementById('todo-list'); if(!list)return; list.innerHTML='';
-    if(store.todos.length===0){list.innerHTML='<div style="font-size:0.72rem;color:var(--text-muted);padding:10px;text-align:center;">Tiada tugasan.</div>';return;}
-    store.todos.forEach((todo,i)=>{
-        list.innerHTML+=`<div class="todo-item"><input type="checkbox" style="width:16px;height:16px;accent-color:var(--primary);" ${todo.done?'checked':''} onchange="store.todos[${i}].done=!store.todos[${i}].done;saveData();renderTodos();"><div class="todo-text ${todo.done?'done':''}">${todo.t}${todo.date?`<small style="color:var(--text-muted);font-size:0.6rem;margin-left:8px;">(Due: ${toMY(todo.date)})</small>`:''}</div><button onclick="editTodo(${i})" style="background:none;color:var(--primary);border:none;font-size:0.65rem;font-weight:700;cursor:pointer;font-family:'JetBrains Mono',monospace;padding:0 4px;">EDIT</button><button class="todo-del" onclick="store.todos.splice(${i},1);saveData();renderTodos();">×</button></div>`;
-    });
-}
+function openTodoPopup(){ document.getElementById('sheet-title').innerText="Tambah Tugasan"; document.getElementById('sheet-content').innerHTML=`<label>Tugasan</label><input type="text" id="pop-todo-t" placeholder="Apa yang perlu dibuat?"><label>Tarikh Akhir (Opsional)</label><input type="date" id="pop-todo-d" onclick="triggerDatePicker('pop-todo-d')"><button class="btn-primary" onclick="saveTodoFinal()">SIMPAN TUGASAN</button>`; openSheet(); }
+function saveTodoFinal(){ const t=document.getElementById('pop-todo-t').value,d=document.getElementById('pop-todo-d').value; if(!t.trim())return; store.todos.push({t,date:d,done:false});saveData();closeSheet();renderTodos(); }
+function editTodo(i){ const todo=store.todos[i]; document.getElementById('sheet-title').innerText="Edit Tugasan"; document.getElementById('sheet-content').innerHTML=`<label>Tugasan</label><input type="text" id="pop-todo-t" value="${todo.t.replace(/"/g,'&quot;')}"><label>Tarikh Akhir (Opsional)</label><input type="date" id="pop-todo-d" value="${todo.date||''}" onclick="triggerDatePicker('pop-todo-d')"><button class="btn-primary" style="background:var(--warning);color:black;" onclick="updateTodo(${i})">KEMASKINI TUGASAN</button><button class="btn-danger" onclick="store.todos.splice(${i},1);saveData();closeSheet();renderTodos();">PADAM TUGASAN</button>`; openSheet(); setTimeout(()=>{const el=document.getElementById('pop-todo-t');if(el){el.focus();el.select();}},350); }
+function updateTodo(i){ const t=document.getElementById('pop-todo-t').value,d=document.getElementById('pop-todo-d').value; if(!t.trim())return; store.todos[i].t=t; store.todos[i].date=d; saveData();closeSheet();renderTodos(); }
+function renderTodos(){ const list=document.getElementById('todo-list'); if(!list)return; list.innerHTML=''; if(store.todos.length===0){list.innerHTML='<div style="font-size:0.72rem;color:var(--text-muted);padding:10px;text-align:center;">Tiada tugasan.</div>';return;} store.todos.forEach((todo,i)=>{ list.innerHTML+=`<div class="todo-item"><input type="checkbox" style="width:16px;height:16px;accent-color:var(--primary);" ${todo.done?'checked':''} onchange="store.todos[${i}].done=!store.todos[${i}].done;saveData();renderTodos();"><div class="todo-text ${todo.done?'done':''}">${todo.t}${todo.date?`<small style="color:var(--text-muted);font-size:0.6rem;margin-left:8px;">(Due: ${toMY(todo.date)})</small>`:''}</div><button onclick="editTodo(${i})" style="background:none;color:var(--primary);border:none;font-size:0.65rem;font-weight:700;cursor:pointer;font-family:'JetBrains Mono',monospace;padding:0 4px;">EDIT</button><button class="todo-del" onclick="store.todos.splice(${i},1);saveData();renderTodos();">×</button></div>`; }); }
 
 // ── STATS ──
 function renderStats(){
@@ -2172,21 +1846,13 @@ function renderStats(){
     document.getElementById('bar-cpd').style.width=Math.min((pts/20*100),100)+'%';
     const month=currentCalDate.getMonth(),year=currentCalDate.getFullYear();
     let n_count=0;
-    Object.keys(store.calendar).forEach(key=>{
-        const p=key.split('-');
-        if(p.length===3&&parseInt(p[0])===year&&parseInt(p[1])-1===month&&store.calendar[key].s==='N') n_count++;
-    });
+    Object.keys(store.calendar).forEach(key=>{ const p=key.split('-'); if(p.length===3&&parseInt(p[0])===year&&parseInt(p[1])-1===month&&store.calendar[key].s==='N') n_count++; });
     document.getElementById('text-night-count').innerText=n_count;
     renderTodos(); renderClaim();
 }
 
 // ── CLAIM ──
-function toggleClaim(){
-    const body=document.getElementById('claim-body'), icon=document.getElementById('claim-toggle-icon'); if(!body)return;
-    const isHidden=body.style.display==='none';
-    body.style.display=isHidden?'block':'none';
-    if(icon) icon.innerText=isHidden?'▲':'▼';
-}
+function toggleClaim(){ const body=document.getElementById('claim-body'), icon=document.getElementById('claim-toggle-icon'); if(!body)return; const isHidden=body.style.display==='none'; body.style.display=isHidden?'block':'none'; if(icon) icon.innerText=isHidden?'▲':'▼'; }
 
 function renderClaim(){
     const year=currentCalDate.getFullYear(), month=currentCalDate.getMonth();
@@ -2194,28 +1860,12 @@ function renderClaim(){
     const label=document.getElementById('claim-month-label'), body=document.getElementById('claim-body'); if(!body)return;
     if(label) label.innerText=`${months[month]} ${year}`;
     const malam=[],locum=[],phBayar=[];
-    Object.keys(store.calendar).forEach(key=>{
-        const p=key.split('-'); if(p.length!==3)return;
-        const y=parseInt(p[0]),m=parseInt(p[1])-1,d=parseInt(p[2]);
-        if(y!==year||m!==month)return;
-        const entry=store.calendar[key]; const s=entry.s||'';
-        const dateStr=`${String(d).padStart(2,'0')}/${String(month+1).padStart(2,'0')}/${year}`;
-        if(s==='N') malam.push({date:dateStr,shift:s});
-        const LOCUM_SHIFTS=['M/E','M/N','E/N','SD/M','SD/E','SD/N','DO/M','DO/E','DO/N'];
-        if(LOCUM_SHIFTS.includes(s)){const assign=entry.a?` (${entry.a})`:''; locum.push({date:dateStr,shift:s+assign});}
-        if(s==='PH'){const phEntry=ph2026.find(p=>p.d===key);if(phEntry&&phEntry.paid)phBayar.push({date:dateStr,name:phEntry.n});}
-    });
-    const sortFn=(a,b)=>a.date.localeCompare(b.date);
-    malam.sort(sortFn);locum.sort(sortFn);phBayar.sort(sortFn);
+    Object.keys(store.calendar).forEach(key=>{ const p=key.split('-'); if(p.length!==3)return; const y=parseInt(p[0]),m=parseInt(p[1])-1,d=parseInt(p[2]); if(y!==year||m!==month)return; const entry=store.calendar[key]; const s=entry.s||''; const dateStr=`${String(d).padStart(2,'0')}/${String(month+1).padStart(2,'0')}/${year}`; if(s==='N') malam.push({date:dateStr,shift:s}); const LOCUM_SHIFTS=['M/E','M/N','E/N','SD/M','SD/E','SD/N','DO/M','DO/E','DO/N']; if(LOCUM_SHIFTS.includes(s)){const assign=entry.a?` (${entry.a})`:''; locum.push({date:dateStr,shift:s+assign});} if(s==='PH'){const phEntry=ph2026.find(p=>p.d===key);if(phEntry&&phEntry.paid)phBayar.push({date:dateStr,name:phEntry.n});} });
+    const sortFn=(a,b)=>a.date.localeCompare(b.date); malam.sort(sortFn);locum.sort(sortFn);phBayar.sort(sortFn);
     function buildRows(items,emptyMsg,fn){if(items.length===0)return`<div style="font-size:0.7rem;color:var(--text-muted);padding:4px 0;">${emptyMsg}</div>`;return items.map(fn).join('');}
     function row(l,r){return`<div class="claim-row"><span style="font-size:0.78rem;color:var(--text);font-weight:600;">${l}</span><span style="font-size:0.72rem;color:var(--primary);">${r}</span></div>`;}
     function block(icon,title,count,rows){return`<div style="margin-bottom:12px;"><div class="claim-cat-header"><span style="font-family:'JetBrains Mono',monospace;font-size:0.6rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim);">${icon} ${title}</span><span class="claim-badge">${count}</span></div>${rows}</div>`;}
-    body.innerHTML=
-        block('🌙','Shift Malam',malam.length,buildRows(malam,'Tiada shift malam bulan ini.',i=>row(i.date,i.shift)))+
-        `<div class="claim-divider"></div>`+
-        block('🔄','Locum / Double Shift',locum.length,buildRows(locum,'Tiada double shift bulan ini.',i=>row(i.date,i.shift)))+
-        `<div class="claim-divider"></div>`+
-        block('📅','PH Berbayar',phBayar.length,buildRows(phBayar,'Tiada PH berbayar bulan ini.',i=>row(i.date,i.name)));
+    body.innerHTML=block('🌙','Shift Malam',malam.length,buildRows(malam,'Tiada shift malam bulan ini.',i=>row(i.date,i.shift)))+`<div class="claim-divider"></div>`+block('🔄','Locum / Double Shift',locum.length,buildRows(locum,'Tiada double shift bulan ini.',i=>row(i.date,i.shift)))+`<div class="claim-divider"></div>`+block('📅','PH Berbayar',phBayar.length,buildRows(phBayar,'Tiada PH berbayar bulan ini.',i=>row(i.date,i.name)));
 }
 
 // ── RSI ──
@@ -2226,34 +1876,12 @@ const RSI_DATA = [
     { group:"IV INFUSION", drugs:[{name:"IVI Midazolam",ampule:"5mg/ml",prep:"20mg in 20mls NS @ 3ml/Hr"},{name:"IVI Fentanyl",ampule:"0.1mg/2ml (100mcg)",prep:"0.2mg (200mcg) in 20ml NS @ 3ml/Hr"},{name:"IVI Morphine",ampule:"10mg/ml",prep:"20mg in 20mls NS @ 3ml/Hr"},{name:"IVI Ketamine",ampule:"200mg/20mls = 10mg/ml",prep:"Undiluted 20mg (2ml)"}]}
 ];
 
-function handleRSIClick(){
-    document.getElementById('sheet-title').innerText="💉 Pre-Med RSI"; let html='';
-    RSI_DATA.forEach(section=>{
-        html+=`<div class="rsi-group-header">${section.group}</div>`;
-        section.drugs.forEach(d=>{
-            html+=`<div class="drug-item"><div style="flex:1;min-width:0;"><div class="drug-name">${d.name}</div><div class="drug-ampule">${d.ampule}</div><div class="drug-prep">${d.prep}</div></div></div>`;
-        });
-    });
-    document.getElementById('sheet-content').innerHTML=html; openSheet();
-}
+function handleRSIClick(){ document.getElementById('sheet-title').innerText="💉 Pre-Med RSI"; let html=''; RSI_DATA.forEach(section=>{ html+=`<div class="rsi-group-header">${section.group}</div>`; section.drugs.forEach(d=>{ html+=`<div class="drug-item"><div style="flex:1;min-width:0;"><div class="drug-name">${d.name}</div><div class="drug-ampule">${d.ampule}</div><div class="drug-prep">${d.prep}</div></div></div>`; }); }); document.getElementById('sheet-content').innerHTML=html; openSheet(); }
 
 // ── PDF ──
 function triggerPDFUpload(e){e.preventDefault();document.getElementById('pdf-upload').click();}
-function savePDF(e){
-    const file=e.target.files[0]; if(file&&file.type==="application/pdf"){
-        const reader=new FileReader(); reader.onload=function(ev){store.pdfData=ev.target.result;saveData();checkPDFStatus();alert("PDF berjaya dimuat naik!");};
-        reader.readAsDataURL(file);
-    } else alert("Sila pilih fail PDF sahaja.");
-}
-function openStoredPDF(){
-    if(store.pdfData){
-        const base64Parts=store.pdfData.split(','), contentType=base64Parts[0].split(':')[1].split(';')[0];
-        const byteCharacters=atob(base64Parts[1]), byteArrays=[];
-        for(let o=0;o<byteCharacters.length;o+=512){const slice=byteCharacters.slice(o,o+512);const bn=new Array(slice.length);for(let i=0;i<slice.length;i++)bn[i]=slice.charCodeAt(i);byteArrays.push(new Uint8Array(bn));}
-        const blob=new Blob(byteArrays,{type:contentType}), blobUrl=URL.createObjectURL(blob);
-        window.open(blobUrl,'_blank'); setTimeout(()=>URL.revokeObjectURL(blobUrl),100);
-    }
-}
+function savePDF(e){ const file=e.target.files[0]; if(file&&file.type==="application/pdf"){ const reader=new FileReader(); reader.onload=function(ev){store.pdfData=ev.target.result;saveData();checkPDFStatus();alert("PDF berjaya dimuat naik!");}; reader.readAsDataURL(file); } else alert("Sila pilih fail PDF sahaja."); }
+function openStoredPDF(){ if(store.pdfData){ const base64Parts=store.pdfData.split(','), contentType=base64Parts[0].split(':')[1].split(';')[0]; const byteCharacters=atob(base64Parts[1]), byteArrays=[]; for(let o=0;o<byteCharacters.length;o+=512){const slice=byteCharacters.slice(o,o+512);const bn=new Array(slice.length);for(let i=0;i<slice.length;i++)bn[i]=slice.charCodeAt(i);byteArrays.push(new Uint8Array(bn));} const blob=new Blob(byteArrays,{type:contentType}), blobUrl=URL.createObjectURL(blob); window.open(blobUrl,'_blank'); setTimeout(()=>URL.revokeObjectURL(blobUrl),100); } }
 function checkPDFStatus(){if(store.pdfData) document.getElementById('btn-pdf').style.display='inline-block';}
 
 // ── SHEET ──
@@ -2262,29 +1890,9 @@ function closeSheet(){document.getElementById('sheet').classList.remove('active'
 function loadImg(e){const r=new FileReader();r.onload=()=>{document.getElementById('profile-pic').src=r.result;store.profilePic=r.result;saveData();};r.readAsDataURL(e.target.files[0]);}
 
 // ── BACKUP / RESTORE ──
-function backupData(){
-    const blob=new Blob([JSON.stringify(store)],{type:"application/json"});
-    const url=URL.createObjectURL(blob), a=document.createElement('a');
-    a.href=url;a.download=`backup_roster_${new Date().toISOString().split('T')[0]}.json`;a.click();
-    alert("Data berjaya dieksport!");
-}
+function backupData(){ const blob=new Blob([JSON.stringify(store)],{type:"application/json"}); const url=URL.createObjectURL(blob), a=document.createElement('a'); a.href=url;a.download=`backup_roster_${new Date().toISOString().split('T')[0]}.json`;a.click(); alert("Data berjaya dieksport!"); }
 function restoreData(){document.getElementById('restore-upload').click();}
-function processRestore(e){
-    const file=e.target.files[0]; if(!file)return;
-    const reader=new FileReader();
-    reader.onload=function(ev){
-        try{
-            const parsed=JSON.parse(ev.target.result);
-            if(typeof parsed!=='object'||!parsed.calendar){alert("Fail tidak sah.");return;}
-            if(!confirm("Data semasa akan digantikan. Teruskan?"))return;
-            store=parsed;
-            if(!store.nursingNotes) store.nursingNotes=[];
-            migrateCalendarKeys(); saveData(); generateCalendar(); renderStats(); loadNotes(); checkPDFStatus();
-            alert("✅ Data berjaya dipulihkan!");
-        }catch(err){alert("Ralat: Fail tidak dapat dibaca.");}
-    };
-    reader.readAsText(file); e.target.value='';
-}
+function processRestore(e){ const file=e.target.files[0]; if(!file)return; const reader=new FileReader(); reader.onload=function(ev){ try{ const parsed=JSON.parse(ev.target.result); if(typeof parsed!=='object'||!parsed.calendar){alert("Fail tidak sah.");return;} if(!confirm("Data semasa akan digantikan. Teruskan?"))return; store=parsed; if(!store.nursingNotes) store.nursingNotes=[]; migrateCalendarKeys(); saveData(); generateCalendar(); renderStats(); loadNotes(); checkPDFStatus(); alert("✅ Data berjaya dipulihkan!"); }catch(err){alert("Ralat: Fail tidak dapat dibaca.");} }; reader.readAsText(file); e.target.value=''; }
 
 // ── IMPORT ──
 function openImportSheet(){
@@ -2296,16 +1904,14 @@ function openImportSheet(){
             2. Copy (Ctrl+C) → Paste dalam kotak bawah<br><br>
             <b style="color:var(--text-dim)">Format:</b> <span style="font-family:'JetBrains Mono',monospace;color:var(--primary);">M* E(T) N# SD DO AL PH MC RPL (T)M/E#</span>
         </div>
-        <label>Bulan & Tahun</label>
-        <input type="month" id="import-month" style="margin-bottom:10px;">
+        <label>Bulan & Tahun</label><input type="month" id="import-month" style="margin-bottom:10px;">
         <label>Paste data dari Excel</label>
         <textarea id="import-paste" style="height:120px;font-family:'JetBrains Mono',monospace;font-size:0.68rem;" placeholder="Paste di sini... (2 baris: DATE dan shift)"></textarea>
         <div id="import-preview" style="margin-top:8px;"></div>
         <button class="btn-secondary" onclick="previewImport()">🔍 PREVIEW</button>
         <button id="btn-confirm-import" class="btn-primary" onclick="confirmImport()" style="display:none;">✅ SIMPAN KE CALENDAR</button>`;
     const y=currentCalDate.getFullYear(),m=String(currentCalDate.getMonth()+1).padStart(2,'0');
-    document.getElementById('import-month').value=`${y}-${m}`;
-    openSheet();
+    document.getElementById('import-month').value=`${y}-${m}`; openSheet();
 }
 
 function parseAssign(sym){if(!sym)return'';sym=sym.trim();if(sym==='*')return'TL';if(sym==='#')return'Amb';if(sym==='(T)')return'Triage';return sym;}
@@ -2316,17 +1922,10 @@ function parseShiftCell(raw){
     const cell=raw.trim().toUpperCase().replace(/\(t\)/gi,'(T)');
     const plain=['SD','DO','AL','PH','MC','RPL','TD','ST','WP','OFF','-'];
     if(plain.includes(cell.replace(/[^A-Z]/g,'')))return{s:cell.replace(/[^A-Z\/]/g,''),a:''};
-    if(cell.includes('/')){
-        const prefix=extractPrefix(cell), suffix=extractSuffix(cell);
-        const core=cell.replace(/^(\*|\(T\)|#)/,'').replace(/(\*|\(T\)|#)$/,'');
-        const parts=core.split('/');
-        if(parts.length===2){const shift=`${parts[0]}/${parts[1]}`,a1=parseAssign(prefix),a2=parseAssign(suffix),assign=(a1&&a2)?`${a1} / ${a2}`:(a1||a2);return{s:shift,a:assign};}
-    }
+    if(cell.includes('/')){ const prefix=extractPrefix(cell), suffix=extractSuffix(cell); const core=cell.replace(/^(\*|\(T\)|#)/,'').replace(/(\*|\(T\)|#)$/,''); const parts=core.split('/'); if(parts.length===2){const shift=`${parts[0]}/${parts[1]}`,a1=parseAssign(prefix),a2=parseAssign(suffix),assign=(a1&&a2)?`${a1} / ${a2}`:(a1||a2);return{s:shift,a:assign};} }
     const singleMatch=cell.match(/^(\*|\(T\)|#)?([MEN])(\*|\(T\)|#)?$/);
     if(singleMatch){const sym=singleMatch[1]||singleMatch[3]||'';return{s:singleMatch[2],a:parseAssign(sym)};}
-    const shiftOnly=cell.replace(/[^A-Z\/]/g,'');
-    if(shiftOnly)return{s:shiftOnly,a:''};
-    return null;
+    const shiftOnly=cell.replace(/[^A-Z\/]/g,''); if(shiftOnly)return{s:shiftOnly,a:''}; return null;
 }
 
 let _importParsed=[];
@@ -2342,97 +1941,61 @@ function previewImport(){
     if(!dateRow||!shiftRow){preview.innerHTML='<p style="color:var(--danger);font-size:0.75rem;">⚠️ Format tidak dikenali. Copy 2 baris: DATE dan shift.</p>';return;}
     let html=`<div style="font-size:0.7rem;margin-top:6px;border:1px solid var(--border);border-radius:var(--radius-xs);overflow:hidden;"><div style="background:var(--surface);padding:6px 10px;font-size:0.6rem;color:var(--text-dim);font-weight:700;font-family:'JetBrains Mono',monospace;">PREVIEW</div>`;
     let count=0;
-    for(let col=0;col<dateRow.length;col++){
-        const dayRaw=dateRow[col].replace(/\(PH\)/i,'').trim(), day=parseInt(dayRaw); if(isNaN(day)||day<1||day>31)continue;
-        const cellRaw=shiftRow[col]||''; if(!cellRaw)continue;
-        const parsed=parseShiftCell(cellRaw); if(!parsed)continue;
-        const key=`${impYear}-${String(impMonth).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
-        _importParsed.push({key,...parsed});
-        const assignLabel=parsed.a?`<span style="color:var(--primary)"> @ ${parsed.a}</span>`:'';
-        html+=`<div style="display:flex;justify-content:space-between;padding:5px 10px;border-bottom:1px solid var(--border);align-items:center;"><span style="color:var(--text-dim);min-width:36px;font-family:'JetBrains Mono',monospace;">${String(day).padStart(2,'0')}/${String(impMonth).padStart(2,'0')}</span><span style="font-weight:700;color:var(--text);">${parsed.s}${assignLabel}</span><span style="font-size:0.58rem;color:var(--text-muted);font-family:'JetBrains Mono',monospace;">${cellRaw}</span></div>`;
-        count++;
-    }
+    for(let col=0;col<dateRow.length;col++){ const dayRaw=dateRow[col].replace(/\(PH\)/i,'').trim(), day=parseInt(dayRaw); if(isNaN(day)||day<1||day>31)continue; const cellRaw=shiftRow[col]||''; if(!cellRaw)continue; const parsed=parseShiftCell(cellRaw); if(!parsed)continue; const key=`${impYear}-${String(impMonth).padStart(2,'0')}-${String(day).padStart(2,'0')}`; _importParsed.push({key,...parsed}); const assignLabel=parsed.a?`<span style="color:var(--primary)"> @ ${parsed.a}</span>`:''; html+=`<div style="display:flex;justify-content:space-between;padding:5px 10px;border-bottom:1px solid var(--border);align-items:center;"><span style="color:var(--text-dim);min-width:36px;font-family:'JetBrains Mono',monospace;">${String(day).padStart(2,'0')}/${String(impMonth).padStart(2,'0')}</span><span style="font-weight:700;color:var(--text);">${parsed.s}${assignLabel}</span><span style="font-size:0.58rem;color:var(--text-muted);font-family:'JetBrains Mono',monospace;">${cellRaw}</span></div>`; count++; }
     html+='</div>';
     if(count===0){preview.innerHTML='<p style="color:var(--danger);font-size:0.75rem;">⚠️ Tiada shift yang dapat dikenali.</p>';document.getElementById('btn-confirm-import').style.display='none';return;}
     html+=`<p style="font-size:0.7rem;color:var(--text-dim);margin-top:6px;">✅ ${count} hari berjaya diparse.</p>`;
     preview.innerHTML=html; document.getElementById('btn-confirm-import').style.display='block';
 }
 
-function confirmImport(){
-    if(_importParsed.length===0)return;
-    _importParsed.forEach(entry=>{store.calendar[entry.key]={s:entry.s,a:entry.a};});
-    saveData();generateCalendar();closeSheet();_importParsed=[];
-    alert("✅ Shift berjaya dimasukkan ke calendar!");
-}
+function confirmImport(){ if(_importParsed.length===0)return; _importParsed.forEach(entry=>{store.calendar[entry.key]={s:entry.s,a:entry.a};}); saveData();generateCalendar();closeSheet();_importParsed=[]; alert("✅ Shift berjaya dimasukkan ke calendar!"); }
 
 // ── MIGRATE DEFAULT DRUGS ──
 const DEFAULT_DRUGS = [
-    {name:"IV Fentanyl",ampule:"0.1mg/2ml (100mcg)",prep:"Undiluted"},
-    {name:"IV Lignocaine",ampule:"100mg/5mls",prep:"Undiluted"},
-    {name:"IV Midazolam",ampule:"5mg/ml",prep:"5mg in 5ml NS"},
-    {name:"IV Etomidate",ampule:"20mg/10ml = 2mg/ml",prep:"Undiluted"},
-    {name:"IV Ketamine",ampule:"200mg/20mls = 10mg/ml",prep:"Undiluted"},
-    {name:"IV Propofol",ampule:"200mg/20mls = 10mg/ml",prep:"Undiluted"},
-    {name:"IV Scoline (Suxamethonium)",ampule:"100mg/2mls = 50mg/ml",prep:"Undiluted"},
-    {name:"Rocuronium (Esmeron)",ampule:"50mg/5mls = 10mg/ml",prep:"Undiluted"},
-    {name:"IVI Midazolam",ampule:"5mg/ml",prep:"20mg in 20mls NS @ 3ml/Hr"},
-    {name:"IVI Fentanyl",ampule:"0.1mg/2ml (100mcg)",prep:"0.2mg (200mcg) in 20ml NS @ 3ml/Hr"},
-    {name:"IVI Morphine",ampule:"10mg/ml",prep:"20mg in 20mls NS @ 3ml/Hr"},
-    {name:"IVI Ketamine",ampule:"200mg/20mls = 10mg/ml",prep:"Undiluted 20mg (2ml)"},
-    {name:"IVI Noradrenaline",ampule:"4mg/4mls",prep:"D.S: 8mg in 50mls D5%"},
-    {name:"IVI Amiodarone (Arrhythmias)",ampule:"150mg/3ml",prep:"L.D: 300mg in 100mls D5% (bolus) @ 1Hr"},
-    {name:"IVI Amiodarone (VF, pVT)",ampule:"150mg/3ml",prep:"L.D: 300mg in 20mls D5% (bolus)"},
-    {name:"IVI Amiodarone (Maintenance)",ampule:"150mg/3ml",prep:"900mg in 500ml D5% @ 24Hr"},
-    {name:"IVI GTN",ampule:"50mg/10mls",prep:"10mg (2mls) in 50mls NS"},
-    {name:"IVI Adrenaline 1:1000",ampule:"1mg/ml",prep:"3mg (3mls) in 50mls NS @ 10mls/Hr. For cardiac arrest 1mg every 3-5min"},
+    {name:"IV Fentanyl",ampule:"0.1mg/2ml (100mcg)",prep:"Undiluted"},{name:"IV Lignocaine",ampule:"100mg/5mls",prep:"Undiluted"},
+    {name:"IV Midazolam",ampule:"5mg/ml",prep:"5mg in 5ml NS"},{name:"IV Etomidate",ampule:"20mg/10ml = 2mg/ml",prep:"Undiluted"},
+    {name:"IV Ketamine",ampule:"200mg/20mls = 10mg/ml",prep:"Undiluted"},{name:"IV Propofol",ampule:"200mg/20mls = 10mg/ml",prep:"Undiluted"},
+    {name:"IV Scoline (Suxamethonium)",ampule:"100mg/2mls = 50mg/ml",prep:"Undiluted"},{name:"Rocuronium (Esmeron)",ampule:"50mg/5mls = 10mg/ml",prep:"Undiluted"},
+    {name:"IVI Midazolam",ampule:"5mg/ml",prep:"20mg in 20mls NS @ 3ml/Hr"},{name:"IVI Fentanyl",ampule:"0.1mg/2ml (100mcg)",prep:"0.2mg (200mcg) in 20ml NS @ 3ml/Hr"},
+    {name:"IVI Morphine",ampule:"10mg/ml",prep:"20mg in 20mls NS @ 3ml/Hr"},{name:"IVI Ketamine",ampule:"200mg/20mls = 10mg/ml",prep:"Undiluted 20mg (2ml)"},
+    {name:"IVI Noradrenaline",ampule:"4mg/4mls",prep:"D.S: 8mg in 50mls D5%"},{name:"IVI Amiodarone (Arrhythmias)",ampule:"150mg/3ml",prep:"L.D: 300mg in 100mls D5% (bolus) @ 1Hr"},
+    {name:"IVI Amiodarone (VF, pVT)",ampule:"150mg/3ml",prep:"L.D: 300mg in 20mls D5% (bolus)"},{name:"IVI Amiodarone (Maintenance)",ampule:"150mg/3ml",prep:"900mg in 500ml D5% @ 24Hr"},
+    {name:"IVI GTN",ampule:"50mg/10mls",prep:"10mg (2mls) in 50mls NS"},{name:"IVI Adrenaline 1:1000",ampule:"1mg/ml",prep:"3mg (3mls) in 50mls NS @ 10mls/Hr. For cardiac arrest 1mg every 3-5min"},
     {name:"IVI Adrenaline 1:10,000 (Paeds)",ampule:"1mg/ml",prep:"For cardiac arrest: dilute 1mg in 10mls NS (1:10,000) given 2.8mls every 3-5min for 28kg patient"},
-    {name:"IVI Atropine",ampule:"1mg/1ml",prep:"IV Bolus 0.6-3mg every 5 mins"},
-    {name:"IVI Dopamine",ampule:"200mg/5mls",prep:"D.S: 400mg in 50mls NS @ 10mls/Hr"},
-    {name:"IVI Dobutamine",ampule:"250mg/20mls",prep:"D.S: 500mg in 50mls NS @ 5mls/Hr"},
-    {name:"IVI Labetalol",ampule:"25mg/5ml",prep:"100mg undiluted (4 amp) in 20ml syringe @ 0.5/min (6ml/Hr)"},
+    {name:"IVI Atropine",ampule:"1mg/1ml",prep:"IV Bolus 0.6-3mg every 5 mins"},{name:"IVI Dopamine",ampule:"200mg/5mls",prep:"D.S: 400mg in 50mls NS @ 10mls/Hr"},
+    {name:"IVI Dobutamine",ampule:"250mg/20mls",prep:"D.S: 500mg in 50mls NS @ 5mls/Hr"},{name:"IVI Labetalol",ampule:"25mg/5ml",prep:"100mg undiluted (4 amp) in 20ml syringe @ 0.5/min (6ml/Hr)"},
     {name:"IVI Sodium Bicarb 8.4%",ampule:"10mmol/10ml = 1mEq/ml",prep:"100ml (10 amp) undiluted in chamber @ 1Hr / 50ml undiluted (5 ampule) in 50ml syringe x2 (@ 30min/syringe)"},
-    {name:"IV Pantoprazole",ampule:"40mg",prep:"80mg in 20mls NS bolus"},
-    {name:"IVI Pantoprazole",ampule:"40mg",prep:"40mg in 50mls NS @ 10mls/Hr"},
-    {name:"IV Morphine",ampule:"10mg/ml",prep:"10mg in 10mls NS"},
-    {name:"IV Adenosine (Adenocor)",ampule:"6mg/2mls",prep:"6mg, 12mg, 18mg"},
-    {name:"IV Propranolol",ampule:"1mg/ml",prep:"1mg/min (in 1cc syringe)"},
-    {name:"IV MgSO4",ampule:"2.46mg/amp",prep:"1 amp dilute in 20mls @ 20mls/1Hr"},
-    {name:"IV Potassium Chloride KCL (1Hr)",ampule:"1g/10mls",prep:"1g in 100mls NS @ 1Hr"},
-    {name:"IV Potassium Chloride KCL (Maintenance)",ampule:"1g/10mls",prep:"1g in 500mls NS @ 1Hr"},
+    {name:"IV Pantoprazole",ampule:"40mg",prep:"80mg in 20mls NS bolus"},{name:"IVI Pantoprazole",ampule:"40mg",prep:"40mg in 50mls NS @ 10mls/Hr"},
+    {name:"IV Morphine",ampule:"10mg/ml",prep:"10mg in 10mls NS"},{name:"IV Adenosine (Adenocor)",ampule:"6mg/2mls",prep:"6mg, 12mg, 18mg"},
+    {name:"IV Propranolol",ampule:"1mg/ml",prep:"1mg/min (in 1cc syringe)"},{name:"IV MgSO4",ampule:"2.46mg/amp",prep:"1 amp dilute in 20mls @ 20mls/1Hr"},
+    {name:"IV Potassium Chloride KCL (1Hr)",ampule:"1g/10mls",prep:"1g in 100mls NS @ 1Hr"},{name:"IV Potassium Chloride KCL (Maintenance)",ampule:"1g/10mls",prep:"1g in 500mls NS @ 1Hr"},
     {name:"IV Flumazenil",ampule:"0.5mg/5ml",prep:"Given undiluted through free-flowing IV solution over 15-30 sec"},
     {name:"IV Lytic Cocktail",ampule:"—",prep:"Calcium Gluconate 10% 10mls 10min, D50% 50mls, Insulin 10u (0.1ml)"},
     {name:"IV Rocephin",ampule:"1g/vial",prep:"2g in 20mls NS (slow bolus) / IV infusion 50-100mls @ 30 minutes"},
     {name:"IV Phenytoin (Dilantin)",ampule:"250mg/5ml",prep:"Maximum dose 1.5g (6 ampule) in 100mls of NS @ 1Hr"},
-    {name:"IV Tranexamic Acid",ampule:"1gm/10ml",prep:"1gm in 100mls NS @ 10min"},
-    {name:"IV Tranexamic Acid (Maintenance)",ampule:"1gm/10ml",prep:"1gm in 500mls NS @ 8Hr"},
-    {name:"IV Bricanyl",ampule:"0.5mg/ml",prep:"3mg (6 amp) in 50mls NS @ 3mls/Hr"},
-    {name:"IV Valium (Diazepam)",ampule:"10mg/2ml",prep:"5mg/min (adults), 0.25mg/kg (children)"}
+    {name:"IV Tranexamic Acid",ampule:"1gm/10ml",prep:"1gm in 100mls NS @ 10min"},{name:"IV Tranexamic Acid (Maintenance)",ampule:"1gm/10ml",prep:"1gm in 500mls NS @ 8Hr"},
+    {name:"IV Bricanyl",ampule:"0.5mg/ml",prep:"3mg (6 amp) in 50mls NS @ 3mls/Hr"},{name:"IV Valium (Diazepam)",ampule:"10mg/2ml",prep:"5mg/min (adults), 0.25mg/kg (children)"}
 ];
 
-function migrateDefaultDrugs(){
-    const existingNames=store.drugs.map(d=>d.name.toLowerCase()); let added=0;
-    DEFAULT_DRUGS.forEach(def=>{if(!existingNames.includes(def.name.toLowerCase())){store.drugs.push(def);added++;}});
-    store.drugs=store.drugs.map(d=>({name:d.name,ampule:d.ampule||d.prep||'—',prep:d.prep||''}));
-    if(added>0) localStorage.setItem('roster_ultimate_v3',JSON.stringify(store));
-}
+function migrateDefaultDrugs(){ const existingNames=store.drugs.map(d=>d.name.toLowerCase()); let added=0; DEFAULT_DRUGS.forEach(def=>{if(!existingNames.includes(def.name.toLowerCase())){store.drugs.push(def);added++;}}); store.drugs=store.drugs.map(d=>({name:d.name,ampule:d.ampule||d.prep||'—',prep:d.prep||''})); if(added>0) localStorage.setItem('roster_ultimate_v3',JSON.stringify(store)); }
 
 // ── THEME ──
+// NOTE: Shift colors are now universal (light theme master).
+// Theme toggle only affects app UI chrome, NOT the calendar shift boxes.
 const THEMES = {
     dark: {
         bg:'#0a0a0a', surface:'#111', card:'#161616', cardRaised:'#1c1c1c',
         border:'#222', borderBright:'#2e2e2e',
         text:'#f0f0f0', textDim:'#777', textMuted:'#333',
         primary:'#50c878', primaryDim:'rgba(80,200,120,0.10)', primaryGlow:'rgba(80,200,120,0.30)',
-        avatarBg:'50c878', avatarFg:'000',
-        icon:'☀️', label:'CERAH'
+        avatarBg:'50c878', avatarFg:'000', icon:'☀️', label:'CERAH'
     },
     light: {
         bg:'#f4f4f4', surface:'#ffffff', card:'#ffffff', cardRaised:'#f9f9f9',
         border:'#e0e0e0', borderBright:'#cccccc',
         text:'#111111', textDim:'#666666', textMuted:'#aaaaaa',
         primary:'#1a8f45', primaryDim:'rgba(26,143,69,0.10)', primaryGlow:'rgba(26,143,69,0.20)',
-        avatarBg:'1a8f45', avatarFg:'fff',
-        icon:'🌙', label:'GELAP'
+        avatarBg:'1a8f45', avatarFg:'fff', icon:'🌙', label:'GELAP'
     }
 };
 
@@ -2462,10 +2025,7 @@ function applyTheme(name) {
     if(glow) glow.style.background=`radial-gradient(circle,${t.primaryGlow} 0%,transparent 70%)`;
     currentTheme=name;
     localStorage.setItem('roster_theme',name);
-    // ── PERUBAHAN: toggle class pada body untuk CSS shift backgrounds ──
-    document.body.classList.toggle('theme-light', name === 'light');
-    // Re-generate calendar supaya data-shift attributes dipakai semula
-    generateCalendar();
+    // No calendar re-render needed — shift colors are now theme-independent
 }
 
 function toggleTheme() { applyTheme(currentTheme==='dark'?'light':'dark'); }
