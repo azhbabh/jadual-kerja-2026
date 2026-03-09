@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' https://accounts.google.com https://apis.google.com https://fonts.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; font-src https://fonts.gstatic.com; connect-src *; img-src * data:;">
     <title>Roster Premium - Ahmad Zilalul Hilmi Bin Adnan</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Bebas+Neue&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://accounts.google.com/gsi/client" onload="console.log('GSI loaded')" onerror="console.warn('GSI failed to load')"></script>
     <style>
         :root {
             --primary: #50c878;
@@ -332,7 +334,7 @@
         .summary-pill:first-child { border-right: 1px solid var(--border); }
         .summary-pill-label { font-size:0.55rem; font-weight:700; text-transform:uppercase; letter-spacing:0.15em; color:var(--text-dim); }
         .summary-pill-val { font-size:0.9rem; font-weight:600; color:var(--text-dim); line-height:1.2; }
-        .summary-pill-val.today-val { font-size:1.05rem; font-weight:800; color:var(--text); }
+        .summary-pill-val.today-val { font-size:1.05rem; font-weight:800; color:var(--primary); }
         #summary-reminders { grid-column:1/-1; border-top:1px solid var(--border); padding:10px 14px 4px; display:none; }
 
         /* ── STATS ROW ── */
@@ -995,6 +997,72 @@
             border-color: #c678dd;
             color: #c678dd;
         }
+
+        /* ── GOOGLE SYNC BAR ── */
+        .gsync-bar {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 10px 14px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        .gsync-left { display: flex; align-items: center; gap: 8px; }
+        .gsync-avatar {
+            width: 28px; height: 28px; border-radius: 50%;
+            background: var(--surface); border: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.75rem; overflow: hidden; flex-shrink: 0;
+        }
+        .gsync-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .gsync-name {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.58rem; font-weight: 700;
+            color: var(--text); letter-spacing: 0.04em;
+            max-width: 130px; overflow: hidden;
+            text-overflow: ellipsis; white-space: nowrap;
+        }
+        .gsync-status {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.52rem; color: var(--text-dim);
+            letter-spacing: 0.06em;
+        }
+        .gsync-status.syncing { color: #f39c12; }
+        .gsync-status.synced { color: var(--success); }
+        .gsync-status.error { color: var(--danger); }
+        .gsync-btn {
+            background: var(--primary-dim);
+            border: 1px solid rgba(80,200,120,0.3);
+            color: var(--primary);
+            border-radius: var(--radius-xs);
+            padding: 5px 10px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.58rem; font-weight: 700;
+            cursor: pointer; transition: all 0.15s;
+            letter-spacing: 0.06em; white-space: nowrap;
+        }
+        .gsync-btn:active { background: var(--primary); color: black; }
+        .gsync-btn.danger {
+            background: rgba(255,82,82,0.08);
+            border-color: rgba(255,82,82,0.3);
+            color: var(--danger);
+        }
+        .gsync-signin-btn {
+            width: 100%;
+            background: #fff;
+            border: 1px solid #dadce0;
+            border-radius: var(--radius-xs);
+            padding: 9px 14px;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            cursor: pointer; transition: all 0.15s;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.78rem; font-weight: 600; color: #3c4043;
+        }
+        .gsync-signin-btn:hover { background: #f8f9fa; box-shadow: 0 1px 3px rgba(0,0,0,0.15); }
+        .gsync-signin-btn:active { background: #f1f3f4; }
     </style>
 </head>
 <body>
@@ -1009,6 +1077,18 @@
             <span id="theme-toggle-icon">☀️</span>
             <span id="theme-toggle-label">CERAH</span>
         </button>
+    </div>
+
+    <!-- GOOGLE SYNC BAR -->
+    <div class="gsync-bar" id="gsync-bar">
+        <div class="gsync-left">
+            <div class="gsync-avatar" id="gsync-avatar">☁️</div>
+            <div>
+                <div class="gsync-name" id="gsync-name">Tidak Log Masuk</div>
+                <div class="gsync-status" id="gsync-status">Google Drive — Tidak aktif</div>
+            </div>
+        </div>
+        <button class="gsync-btn" id="gsync-action-btn" onclick="handleGsyncAction()">LOG MASUK</button>
     </div>
 
     <!-- PRAYER TIME WIDGET -->
@@ -1089,23 +1169,6 @@
         </div>
     </div>
 
-    <!-- SUB STATS ROW -->
-    <div class="stats-row-sub">
-        <div class="action-card" onclick="backupData()">
-            <div class="action-icon">💾</div>
-            <div>
-                <span class="action-label">Backup</span>
-                <span class="action-title save">Simpan Data</span>
-            </div>
-        </div>
-        <div class="action-card" onclick="restoreData()">
-            <div class="action-icon">📂</div>
-            <div>
-                <span class="action-label">Restore</span>
-                <span class="action-title restore">Pulihkan Data</span>
-            </div>
-        </div>
-    </div>
     <input type="file" id="restore-upload" accept="application/json" hidden onchange="processRestore(event)">
 
     <!-- CALENDAR -->
@@ -1624,8 +1687,8 @@ function renderNursingNotes(query = '') {
 }
 
 function toMY(d) { if(!d) return ''; const p=d.split('-'); return p.length===3?`${p[2]}/${p[1]}/${p[0]}`:d; }
-function saveData() { localStorage.setItem('roster_ultimate_v3',JSON.stringify(store)); renderStats(); updateShiftSummary(); }
-function saveNotes() { store.notes=document.getElementById('personal-notes').value; localStorage.setItem('roster_ultimate_v3',JSON.stringify(store)); }
+function saveData() { localStorage.setItem('roster_ultimate_v3',JSON.stringify(store)); renderStats(); updateShiftSummary(); gTriggerSave(); }
+function saveNotes() { store.notes=document.getElementById('personal-notes').value; localStorage.setItem('roster_ultimate_v3',JSON.stringify(store)); gTriggerSave(); }
 function loadNotes() { document.getElementById('personal-notes').value=store.notes||""; if(store.profilePic) document.getElementById('profile-pic').src=store.profilePic; }
 function triggerDatePicker(id) { const el=document.getElementById(id); if(el&&'showPicker' in HTMLInputElement.prototype) el.showPicker(); else if(el){el.focus();el.click();} }
 
@@ -1877,7 +1940,7 @@ function renderClaim(){
             const dateLabel = count === 1
                 ? `${days[0]}/${mm}/${year}`
                 : `${days.join(',')}/${mm}/${year}`;
-            const shifts = [...new Set(Array.from({length:count},(_,i)=>malamDayMap[g.start+i]).filter(Boolean))];
+            const shifts = Array.from({length:count}, (_,i) => malamDayMap[g.start+i] || 'N');
             const shiftLabel = shifts.join(', ');
             const countLabel = count > 1 ? `<span style="font-size:0.62rem;color:var(--text-dim);margin-left:4px;">(${count}x)</span>` : '';
             return `<div class="claim-row"><span style="font-size:0.78rem;color:var(--text);font-weight:600;">${dateLabel}${countLabel}</span><span style="font-size:0.72rem;color:var(--primary);">${shiftLabel}</span></div>`;
@@ -2042,8 +2105,199 @@ function applyTheme(name) {
     });
 }
 
+// ══════════════════════════════════════════
+//  GOOGLE DRIVE API
+// ══════════════════════════════════════════
+
+// ⚠️  GANTI dengan Client ID anda dari Google Cloud Console
+const GDRIVE_CLIENT_ID = '651057198399-d7gg5lom71omt7k42uq21rumdejrj7k0.apps.googleusercontent.com';
+const GDRIVE_SCOPES    = 'https://www.googleapis.com/auth/drive.appdata';
+const GDRIVE_FILENAME  = 'roster_data.json';
+
+let gAccessToken   = null;
+let gUserInfo      = null;
+let gFileId        = null;
+let gSaveDebounce  = null;
+let gSyncing       = false;
+
+// ── UI helpers ──
+function gsyncSetStatus(msg, cls='') {
+    const el = document.getElementById('gsync-status');
+    if(!el) return;
+    el.className = 'gsync-status' + (cls ? ' '+cls : '');
+    el.innerText = msg;
+}
+
+function gsyncSetUser(user) {
+    const name = document.getElementById('gsync-name');
+    const avatar = document.getElementById('gsync-avatar');
+    const btn = document.getElementById('gsync-action-btn');
+    if(user) {
+        if(name) name.innerText = user.name || user.email || 'Google User';
+        if(avatar) avatar.innerHTML = user.picture ? `<img src="${user.picture}">` : '👤';
+        if(btn) { btn.innerText = 'LOG KELUAR'; btn.className = 'gsync-btn danger'; }
+    } else {
+        if(name) name.innerText = 'Tidak Log Masuk';
+        if(avatar) avatar.innerHTML = '☁️';
+        if(btn) { btn.innerText = 'LOG MASUK'; btn.className = 'gsync-btn'; }
+        gsyncSetStatus('Google Drive — Tidak aktif');
+    }
+}
+
+function handleGsyncAction() {
+    if(gAccessToken) { gSignOut(); } else { gSignIn(); }
+}
+
+// ── Sign In ──
+function gSignIn() {
+    if(!GDRIVE_CLIENT_ID || GDRIVE_CLIENT_ID.includes('YOUR_CLIENT_ID')) {
+        alert('⚠️ Sila masukkan Google Client ID anda dalam kod.');
+        return;
+    }
+    if(typeof google === 'undefined' || !google.accounts) {
+        gsyncSetStatus('Memuatkan Google...', 'syncing');
+        setTimeout(gSignIn, 1000);
+        return;
+    }
+    gsyncSetStatus('Menghubungi Google...', 'syncing');
+    const client = google.accounts.oauth2.initTokenClient({
+        client_id: GDRIVE_CLIENT_ID,
+        scope: GDRIVE_SCOPES + ' https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email',
+        callback: async (resp) => {
+            if(resp.error) { gsyncSetStatus('Gagal log masuk', 'error'); return; }
+            gAccessToken = resp.access_token;
+            localStorage.setItem('roster_gtoken_hint', '1');
+            await gFetchUserInfo();
+            await gLoadFromDrive();
+        }
+    });
+    client.requestAccessToken();
+}
+
+// ── Sign Out ──
+function gSignOut() {
+    if(gAccessToken) google.accounts.oauth2.revoke(gAccessToken, ()=>{});
+    gAccessToken = null; gUserInfo = null; gFileId = null;
+    localStorage.removeItem('roster_gtoken_hint');
+    gsyncSetUser(null);
+}
+
+// ── Fetch user info ──
+async function gFetchUserInfo() {
+    try {
+        const res = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
+            headers: { Authorization: `Bearer ${gAccessToken}` }
+        });
+        gUserInfo = await res.json();
+        gsyncSetUser(gUserInfo);
+    } catch(e) { gsyncSetUser({name:'Google User'}); }
+}
+
+// ── Find or create file in appDataFolder ──
+async function gGetFileId() {
+    if(gFileId) return gFileId;
+    const res = await fetch(
+        `https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&q=name='${GDRIVE_FILENAME}'&fields=files(id,name)`,
+        { headers: { Authorization: `Bearer ${gAccessToken}` } }
+    );
+    const data = await res.json();
+    if(data.files && data.files.length > 0) {
+        gFileId = data.files[0].id;
+    }
+    return gFileId;
+}
+
+// ── Load data from Drive ──
+async function gLoadFromDrive() {
+    if(!gAccessToken) return;
+    gsyncSetStatus('Memuatkan dari Drive...', 'syncing');
+    try {
+        const fileId = await gGetFileId();
+        if(!fileId) {
+            gsyncSetStatus('Tiada data lama — data tempatan digunakan', 'synced');
+            setTimeout(()=>gsyncSetStatus('✓ Bersambung — auto-save aktif','synced'), 2000);
+            return;
+        }
+        const res = await fetch(
+            `https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`,
+            { headers: { Authorization: `Bearer ${gAccessToken}` } }
+        );
+        const remote = await res.json();
+        if(remote && remote.calendar) {
+            // Merge: remote lebih utama, tapi tanya user jika ada konflik
+            const localStr = JSON.stringify(store);
+            const remoteStr = JSON.stringify(remote);
+            if(localStr !== remoteStr) {
+                const useRemote = confirm('Data ditemui dalam Google Drive.\n\nGuna data dari Google Drive? (Tekan Batal untuk kekal data tempatan)');
+                if(useRemote) {
+                    store = remote;
+                    if(!store.nursingNotes) store.nursingNotes = [];
+                    migrateCalendarKeys();
+                    localStorage.setItem('roster_ultimate_v3', JSON.stringify(store));
+                    generateCalendar(); renderStats(); loadNotes(); checkPDFStatus();
+                }
+            }
+        }
+        gsyncSetStatus('✓ Bersambung — auto-save aktif', 'synced');
+    } catch(e) {
+        gsyncSetStatus('Ralat memuatkan data', 'error');
+        console.error('Drive load error:', e);
+    }
+}
+
+// ── Save data to Drive (debounced) ──
+async function gSaveToDrive() {
+    if(!gAccessToken || gSyncing) return;
+    gSyncing = true;
+    gsyncSetStatus('Menyimpan...', 'syncing');
+    try {
+        const content = JSON.stringify(store);
+        const fileId = await gGetFileId();
+
+        if(fileId) {
+            // Update existing file
+            await fetch(`https://www.googleapis.com/upload/drive/v3/files/${fileId}?uploadType=media`, {
+                method: 'PATCH',
+                headers: {
+                    Authorization: `Bearer ${gAccessToken}`,
+                    'Content-Type': 'application/json'
+                },
+                body: content
+            });
+        } else {
+            // Create new file in appDataFolder
+            const meta = { name: GDRIVE_FILENAME, parents: ['appDataFolder'] };
+            const form = new FormData();
+            form.append('metadata', new Blob([JSON.stringify(meta)], {type:'application/json'}));
+            form.append('file', new Blob([content], {type:'application/json'}));
+            const res = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
+                method: 'POST',
+                headers: { Authorization: `Bearer ${gAccessToken}` },
+                body: form
+            });
+            const created = await res.json();
+            gFileId = created.id;
+        }
+        const now = new Date();
+        gsyncSetStatus(`✓ Disimpan ${now.toLocaleTimeString('ms-MY',{hour12:false,hour:'2-digit',minute:'2-digit'})}`, 'synced');
+    } catch(e) {
+        gsyncSetStatus('Gagal simpan ke Drive', 'error');
+        console.error('Drive save error:', e);
+    }
+    gSyncing = false;
+}
+
+// ── Debounced trigger ──
+function gTriggerSave() {
+    if(!gAccessToken) return;
+    if(gSaveDebounce) clearTimeout(gSaveDebounce);
+    gSaveDebounce = setTimeout(gSaveToDrive, 1500);
+}
+
 function toggleTheme() { applyTheme(currentTheme==='dark'?'light':'dark'); }
 function loadTheme() { applyTheme(localStorage.getItem('roster_theme')==='light'?'light':'dark'); }
+
+
 
 window.addEventListener('load', () => {
     checkPDFStatus();
