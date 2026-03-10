@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' https://accounts.google.com https://apis.google.com https://fonts.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; font-src https://fonts.gstatic.com; connect-src *; img-src * data:;">
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' https://accounts.google.com https://apis.google.com https://fonts.googleapis.com https://*.googleapis.com https://*.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com https://accounts.google.com; font-src https://fonts.gstatic.com; connect-src * https://accounts.google.com https://*.googleapis.com; img-src * data: https://*.googleusercontent.com; frame-src https://accounts.google.com;">
     <title>Roster Premium - Ahmad Zilalul Hilmi Bin Adnan</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Bebas+Neue&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -2145,33 +2145,37 @@ function gsyncSetUser(user) {
 }
 
 function handleGsyncAction() {
-    if(gAccessToken) { gSignOut(); } else { gSignIn(); }
+    if(gAccessToken) { gSignOut(); } else { gSignIn(false); }
 }
 
-// ── Sign In ──
-function gSignIn() {
+// ── Sign In — silent=true untuk auto reconnect tanpa popup ──
+function gSignIn(silent = false) {
     if(!GDRIVE_CLIENT_ID || GDRIVE_CLIENT_ID.includes('YOUR_CLIENT_ID')) {
         alert('⚠️ Sila masukkan Google Client ID anda dalam kod.');
         return;
     }
     if(typeof google === 'undefined' || !google.accounts) {
-        gsyncSetStatus('Memuatkan Google...', 'syncing');
-        setTimeout(gSignIn, 1000);
+        if(!silent) gsyncSetStatus('Memuatkan Google...', 'syncing');
+        setTimeout(() => gSignIn(silent), 1000);
         return;
     }
-    gsyncSetStatus('Menghubungi Google...', 'syncing');
+    if(!silent) gsyncSetStatus('Menghubungi Google...', 'syncing');
     const client = google.accounts.oauth2.initTokenClient({
         client_id: GDRIVE_CLIENT_ID,
         scope: GDRIVE_SCOPES + ' https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email',
         callback: async (resp) => {
-            if(resp.error) { gsyncSetStatus('Gagal log masuk', 'error'); return; }
+            if(resp.error) {
+                if(!silent) gsyncSetStatus('Gagal log masuk', 'error');
+                else gsyncSetStatus('Google Drive — Tidak aktif');
+                return;
+            }
             gAccessToken = resp.access_token;
             localStorage.setItem('roster_gtoken_hint', '1');
             await gFetchUserInfo();
             await gLoadFromDrive();
         }
     });
-    client.requestAccessToken();
+    client.requestAccessToken({ prompt: silent ? '' : 'select_account' });
 }
 
 // ── Sign Out ──
@@ -2304,6 +2308,12 @@ window.addEventListener('load', () => {
     fetchPrayerTimes();
     startPrayerTick();
     schedulePrayerRefresh();
+
+    // Auto silent sign-in jika pernah login sebelum ini
+    if(localStorage.getItem('roster_gtoken_hint') === '1') {
+        gsyncSetStatus('Menyambung semula...', 'syncing');
+        setTimeout(() => gSignIn(true), 1500);
+    }
 });
 migrateCalendarKeys();
 migrateDefaultDrugs();
